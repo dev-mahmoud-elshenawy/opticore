@@ -94,7 +94,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     Logger.info("BaseBloc | API RESPONSE: ${apiResponse?.type} $stateFactory");
     try {
       /// Success
-      if (apiResponse?.type == ApiResponseType.SUCCESS) {
+      if (apiResponse?.type == ApiResponseType.success) {
         if (stateFactory != null) {
           return stateFactory!.getState(apiResponse?.data);
         } else {
@@ -105,8 +105,8 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// API Error
-      else if (apiResponse?.type == ApiResponseType.API_ERROR ||
-          apiResponse?.type == ApiResponseType.UNAUTHORIZED_ERROR) {
+      else if (apiResponse?.type == ApiResponseType.apiError ||
+          apiResponse?.type == ApiResponseType.unauthorizedError) {
         Logger.debug(
             "BaseBloc | API Error ${apiResponse?.apiError} - Type: $errorType");
         return handleErrorAndException(
@@ -117,18 +117,18 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// Network || Parsing Error
-      else if (apiResponse?.type == ApiResponseType.NETWORK_ERROR ||
-          apiResponse?.type == ApiResponseType.PARSING_ERROR) {
+      else if (apiResponse?.type == ApiResponseType.networkError ||
+          apiResponse?.type == ApiResponseType.parsingError) {
         Logger.debug("BaseBloc | Network Error ${apiResponse?.apiError}");
         return handleNetworkException(
           apiResponse,
           errorType: errorType,
         );
-      } else if (apiResponse?.type == ApiResponseType.UNAUTHORIZED_ERROR) {
+      } else if (apiResponse?.type == ApiResponseType.unauthorizedError) {
       }
 
       /// Server Error
-      else if (apiResponse?.type == ApiResponseType.SERVER_ERROR) {
+      else if (apiResponse?.type == ApiResponseType.serverError) {
         Logger.debug("BaseBloc | Server Error ${apiResponse?.apiError}");
         return handleServerErrorException(
           apiResponse,
@@ -138,7 +138,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// No Internet Error
-      else if (apiResponse?.type == ApiResponseType.NO_INTERNET_ERROR) {
+      else if (apiResponse?.type == ApiResponseType.noInternetError) {
         Logger.debug("BaseBloc | No Internet Error ${apiResponse?.apiError}");
         return handleNoInternetException(
           apiResponse,
@@ -153,7 +153,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       return returnErrorHandler(
         isException: true,
         errorType: errorType,
-        apiErrorType: ApiResponseType.API_ERROR,
+        apiErrorType: ApiResponseType.apiError,
       );
     }
   }
@@ -183,13 +183,13 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   }) {
     try {
       /// Api Error
-      if (apiResponse?.type == ApiResponseType.API_ERROR) {
+      if (apiResponse?.type == ApiResponseType.apiError) {
         return handleApiError(
           apiResponse,
           onApiErrorAction: onApiErrorAction,
           errorType: errorType,
         );
-      } else if (apiResponse?.type == ApiResponseType.UNAUTHORIZED_ERROR) {
+      } else if (apiResponse?.type == ApiResponseType.unauthorizedError) {
         return handleUnAuthorizedException(
           apiResponse,
           errorType: errorType,
@@ -197,7 +197,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// Network Error
-      else if (apiResponse?.type == ApiResponseType.NETWORK_ERROR) {
+      else if (apiResponse?.type == ApiResponseType.networkError) {
         return handleNetworkException(
           apiResponse,
           errorType: errorType,
@@ -210,7 +210,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       return returnErrorHandler(
         isException: true,
         errorType: errorType,
-        apiErrorType: ApiResponseType.API_ERROR,
+        apiErrorType: ApiResponseType.apiError,
       );
     }
   }
@@ -244,7 +244,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       // No need to handle Render Case because it always navigates to Splash Screen and remove User Cache
       return ErrorStateNonRender(
         errorMessage: "",
-        type: ApiResponseType.UNAUTHORIZED_ERROR,
+        type: ApiResponseType.unauthorizedError,
       );
     }
 
@@ -264,7 +264,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
           errorMsg:
               (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
           errorType: errorType,
-          apiErrorType: ApiResponseType.API_ERROR,
+          apiErrorType: ApiResponseType.apiError,
         );
       }
     }
@@ -290,20 +290,20 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
   }) {
-    if (apiResponse!.type == ApiResponseType.NETWORK_ERROR) {
+    if (apiResponse!.type == ApiResponseType.networkError) {
       /// Error
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
         errorType: errorType,
-        apiErrorType: ApiResponseType.NETWORK_ERROR,
+        apiErrorType: ApiResponseType.networkError,
       );
-    } else if (apiResponse.type == ApiResponseType.PARSING_ERROR &&
+    } else if (apiResponse.type == ApiResponseType.parsingError &&
         kDebugMode) {
       /// Error
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
         errorType: errorType,
-        apiErrorType: ApiResponseType.PARSING_ERROR,
+        apiErrorType: ApiResponseType.parsingError,
       );
     }
   }
@@ -331,7 +331,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     String? errorType,
     Function? retryFunc,
   }) {
-    if (apiResponse!.type == ApiResponseType.NO_INTERNET_ERROR) {
+    if (apiResponse!.type == ApiResponseType.noInternetError) {
       _navigate(
         NoInternetScreen(
           refreshCallBack: () {
@@ -342,8 +342,8 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
 
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
-        errorType: ErrorType.NONE,
-        apiErrorType: ApiResponseType.NO_INTERNET_ERROR,
+        errorType: ErrorType.none,
+        apiErrorType: ApiResponseType.noInternetError,
       );
     }
   }
@@ -371,7 +371,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     String? errorType,
     Function? retryFunc,
   }) {
-    if (apiResponse!.type == ApiResponseType.SERVER_ERROR) {
+    if (apiResponse!.type == ApiResponseType.serverError) {
       _navigate(
         MaintenanceScreen(
           refreshCallBack: () {
@@ -382,8 +382,8 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
 
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
-        errorType: ErrorType.NONE,
-        apiErrorType: ApiResponseType.SERVER_ERROR,
+        errorType: ErrorType.none,
+        apiErrorType: ApiResponseType.serverError,
       );
     }
   }
@@ -411,11 +411,11 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     String? errorType,
     Function? retryFunc,
   }) {
-    if (apiResponse!.type == ApiResponseType.UNAUTHORIZED_ERROR) {
+    if (apiResponse!.type == ApiResponseType.unauthorizedError) {
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
-        errorType: ErrorType.NONE,
-        apiErrorType: ApiResponseType.UNAUTHORIZED_ERROR,
+        errorType: ErrorType.none,
+        apiErrorType: ApiResponseType.unauthorizedError,
       );
     }
   }
@@ -445,21 +445,21 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     String? errorType,
     ApiResponseType? apiErrorType,
   }) {
-    if (errorType == ErrorType.RENDER) {
+    if (errorType == ErrorType.render) {
       return isException
           ? ErrorStateRender.exception()
           : ErrorStateRender(errorMessage: errorMsg);
-    } else if (errorType == ErrorType.NONE) {
+    } else if (errorType == ErrorType.none) {
       return ErrorStateNonRender(
         errorMessage: '',
-        type: apiErrorType ?? ApiResponseType.NONE,
+        type: apiErrorType ?? ApiResponseType.none,
       );
     } else {
       return isException
           ? ErrorStateNonRender.exception()
           : ErrorStateNonRender(
               errorMessage: errorMsg ?? 'Sorry, an error occurred',
-              type: apiErrorType ?? ApiResponseType.NONE,
+              type: apiErrorType ?? ApiResponseType.none,
             );
     }
   }

@@ -36,7 +36,7 @@ class NoInternetConfig extends Equatable {
 
   /// The default animation asset shown when the user is offline.
   /// This animation is displayed on the "No Internet" screen.
-  static String _anim = CoreAssets.NO_INTERNET_ANIM;
+  static String _anim = CoreAssets.noInternetAnim;
 
   // Instance fields for optional custom configuration values
   /// The custom message to be displayed on the "No Internet" screen.
@@ -89,7 +89,7 @@ class NoInternetConfig extends Equatable {
   static void resetToDefaults() {
     _message = 'No Internet, Please Check Your Internet Connection';
     _messageButton = 'Refresh';
-    _anim = CoreAssets.NO_INTERNET_ANIM;
+    _anim = CoreAssets.noInternetAnim;
   }
 
   // Factory constructor for creating a new `NoInternetConfig` instance with custom values

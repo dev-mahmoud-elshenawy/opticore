@@ -80,8 +80,8 @@ class CoreSheet {
               children: [
                 10.ph,
                 SvgWidget(
-                  path: CoreAssets.IC_DRAG,
-                  type: SvgType.ASSET,
+                  path: CoreAssets.icDrag,
+                  type: SvgType.asset,
                 ),
                 25.ph,
                 Material(

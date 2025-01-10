@@ -9,28 +9,28 @@ part of '../enum_import.dart';
 /// that can be used instead of raw strings, making the code more maintainable.
 ///
 /// **Enum Values:**
-/// - [GET]: Represents the HTTP GET method, typically used for retrieving data.
-/// - [POST]: Represents the HTTP POST method, typically used for creating new resources.
-/// - [PUT]: Represents the HTTP PUT method, typically used for updating or replacing resources.
-/// - [PATCH]: Represents the HTTP PATCH method, typically used for partially updating resources.
-/// - [DELETE]: Represents the HTTP DELETE method, typically used for deleting resources.
-/// - [NONE]: Represents an unknown or unspecified HTTP method.
+/// - [get]: Represents the HTTP GET method, typically used for retrieving data.
+/// - [post]: Represents the HTTP POST method, typically used for creating new resources.
+/// - [put]: Represents the HTTP PUT method, typically used for updating or replacing resources.
+/// - [patch]: Represents the HTTP PATCH method, typically used for partially updating resources.
+/// - [delete]: Represents the HTTP DELETE method, typically used for deleting resources.
+/// - [none]: Represents an unknown or unspecified HTTP method.
 enum HTTPMethod {
   /// Represents the HTTP GET method, typically used for retrieving data.
-  GET,
+  get,
 
   /// Represents the HTTP POST method, typically used for creating new resources.
-  POST,
+  post,
 
   /// Represents the HTTP PUT method, typically used for updating or replacing resources.
-  PUT,
+  put,
 
   /// Represents the HTTP PATCH method, typically used for partially updating resources.
-  PATCH,
+  patch,
 
   /// Represents the HTTP DELETE method, typically used for deleting resources.
-  DELETE,
+  delete,
 
   /// Represents an unknown or unspecified HTTP method.
-  NONE;
+  none;
 }

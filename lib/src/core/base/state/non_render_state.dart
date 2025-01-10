@@ -20,7 +20,7 @@ part of '../import/base_import.dart';
 /// ```
 ///
 /// This allows for handling business logic states without involving UI updates.
-abstract class NonRenderState extends BaseState {}
+class NonRenderState extends BaseState {}
 
 /// State representing an ongoing loading process.
 ///
@@ -96,7 +96,7 @@ class ErrorStateNonRender extends NonRenderState {
   /// without specific error details. It defaults to a general error message
   /// and an undefined error type.
   ErrorStateNonRender.exception()
-      : type = ApiResponseType.NONE,
+      : type = ApiResponseType.none,
         errorMessage = 'Sorry, an error occurred';
 
   /// Provides a string representation of the error state for debugging purposes.

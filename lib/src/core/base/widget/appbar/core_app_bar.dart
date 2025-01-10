@@ -90,8 +90,8 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: config?.searchAction,
           icon: config?.customShare ??
               SvgWidget(
-                path: CoreAssets.IC_SEARCH,
-                type: SvgType.ASSET,
+                path: CoreAssets.icSearch,
+                type: SvgType.asset,
               ),
         ),
       );
@@ -102,8 +102,8 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: config?.customFilter ??
               SvgWidget(
-                path: CoreAssets.IC_FILTER,
-                type: SvgType.ASSET,
+                path: CoreAssets.icFilter,
+                type: SvgType.asset,
               ),
           onPressed: config?.filterAction ?? () {},
         ),
@@ -116,8 +116,8 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: config?.shareAction,
           icon: config?.customShare ??
               SvgWidget(
-                path: CoreAssets.IC_SHARE,
-                type: SvgType.ASSET,
+                path: CoreAssets.icShare,
+                type: SvgType.asset,
               ),
         ),
       );

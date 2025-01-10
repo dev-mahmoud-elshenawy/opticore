@@ -40,7 +40,7 @@ class ErrorType {
   ///   // Handle rendering-related error.
   /// }
   /// ```
-  static const String RENDER = 'RENDER';
+  static const String render = 'RENDER';
 
   /// Represents an error type that is not related to rendering but still
   /// impacts the application state, such as business logic or data issues.
@@ -51,7 +51,7 @@ class ErrorType {
   ///   // Handle non-rendering related error.
   /// }
   /// ```
-  static const String NON_RENDER = 'NON_RENDER';
+  static const String nonRender = 'NON_RENDER';
 
   /// Represents a general or undefined error type, used when the error type
   /// cannot be categorized or is unknown.
@@ -62,7 +62,7 @@ class ErrorType {
   ///   // Handle general error.
   /// }
   /// ```
-  static const String NONE = 'NONE';
+  static const String none = 'NONE';
 
   /// Prevents instantiation of this class as it only serves as a container
   /// for error type constants.

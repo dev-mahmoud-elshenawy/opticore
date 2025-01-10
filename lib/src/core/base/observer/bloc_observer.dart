@@ -41,12 +41,12 @@ class GlobalBlocListener extends BlocObserver {
       "$error\nStackTrace:\n${stackTrace.toString()}";
 
   // Constants defining event tags for easier identification in logs.
-  static const String CREATE_TAG = "CREATE";
-  static const String CLOSE_TAG = "CLOSE";
-  static const String ERROR_TAG = "ERROR";
-  static const String TRANSITION_TAG = "TRANSITION";
-  static const String CHANGE_TAG = "CHANGE";
-  static const String EVENT_TAG = "EVENT";
+  static const String createTag = "CREATE";
+  static const String closeTag = "CLOSE";
+  static const String errorTag = "ERROR";
+  static const String transitionTag = "TRANSITION";
+  static const String changeTag = "CHANGE";
+  static const String eventTag = "EVENT";
 
   /// Called when a Bloc or Cubit is created.
   ///
@@ -55,7 +55,7 @@ class GlobalBlocListener extends BlocObserver {
   /// - [bloc]: The Bloc or Cubit instance being created.
   @override
   void onCreate(BlocBase bloc) {
-    Logger.info(_createTag(CREATE_TAG, bloc));
+    Logger.info(_createTag(createTag, bloc));
     super.onCreate(bloc);
   }
 
@@ -66,7 +66,7 @@ class GlobalBlocListener extends BlocObserver {
   /// - [bloc]: The Bloc or Cubit instance being closed.
   @override
   void onClose(BlocBase bloc) {
-    Logger.info(_createTag(CLOSE_TAG, bloc));
+    Logger.info(_createTag(closeTag, bloc));
     super.onClose(bloc);
   }
 
@@ -80,7 +80,7 @@ class GlobalBlocListener extends BlocObserver {
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     Logger.error(
-      "${_createTag(ERROR_TAG, bloc)} | ${_formatError(error, stackTrace)}",
+      "${_createTag(errorTag, bloc)} | ${_formatError(error, stackTrace)}",
     );
     super.onError(bloc, error, stackTrace);
   }
@@ -94,7 +94,7 @@ class GlobalBlocListener extends BlocObserver {
   /// - [transition]: The transition object containing state change details.
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    Logger.debug("${_createTag(TRANSITION_TAG, bloc)} | $transition");
+    Logger.debug("${_createTag(transitionTag, bloc)} | $transition");
     super.onTransition(bloc, transition);
   }
 
@@ -107,7 +107,7 @@ class GlobalBlocListener extends BlocObserver {
   /// - [change]: The change object containing details of the state update.
   @override
   void onChange(BlocBase bloc, Change change) {
-    Logger.debug("${_createTag(CHANGE_TAG, bloc)} | $change");
+    Logger.debug("${_createTag(changeTag, bloc)} | $change");
     super.onChange(bloc, change);
   }
 
@@ -119,7 +119,7 @@ class GlobalBlocListener extends BlocObserver {
   /// - [event]: The event object added to the Bloc.
   @override
   void onEvent(Bloc bloc, Object? event) {
-    Logger.info("${_createTag(EVENT_TAG, bloc)} | $event");
+    Logger.info("${_createTag(eventTag, bloc)} | $event");
     super.onEvent(bloc, event);
   }
 }

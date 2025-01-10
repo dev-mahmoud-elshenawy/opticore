@@ -20,7 +20,7 @@ part of '../import/base_import.dart';
 ///
 /// This allows for clean separation of rendering-related states from those
 /// that do not involve UI updates.
-abstract class RenderState extends BaseState {}
+class RenderState extends BaseState {}
 
 /// State representing a successful data load with generic data.
 ///

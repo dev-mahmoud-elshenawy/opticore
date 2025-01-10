@@ -7,20 +7,20 @@ part of '../enum_import.dart';
 /// to communicate the outcome of actions or system statuses effectively.
 ///
 /// **Enum Values:**
-/// - [SUCCESS]: Represents a successful action or operation.
-/// - [ERROR]: Represents an error or failure during an operation.
-/// - [INFO]: Represents an informational message or status update.
-/// - [WARNING]: Represents a warning or cautionary message.
+/// - [success]: Represents a successful action or operation.
+/// - [error]: Represents an error or failure during an operation.
+/// - [info]: Represents an informational message or status update.
+/// - [warning]: Represents a warning or cautionary message.
 enum ToastType {
   /// Represents a successful action or operation.
-  SUCCESS,
+  success,
 
   /// Represents an error or failure during an operation.
-  ERROR,
+  error,
 
   /// Represents an informational message or status update.
-  INFO,
+  info,
 
   /// Represents a warning or cautionary message.
-  WARNING,
+  warning,
 }

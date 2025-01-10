@@ -53,7 +53,8 @@ class InternetConnectionHandler {
   static Future<bool> isInternetConnected() async {
     // Return cached connection status if available
     if (_cachedIsConnected) {
-      Logger.verbose('Using cached internet connection status: $_cachedIsConnected');
+      Logger.verbose(
+          'Using cached internet connection status: $_cachedIsConnected');
       return _cachedIsConnected;
     }
 
@@ -61,10 +62,12 @@ class InternetConnectionHandler {
 
     try {
       // Check for network connectivity (Wi-Fi or mobile)
-      var connectivityResult = await Connectivity().checkConnectivity();
+      final List<ConnectivityResult> connectivityResult =
+          await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.mobile) ||
           connectivityResult.contains(ConnectivityResult.wifi)) {
-        Logger.verbose('Network connection detected (Mobile or Wi-Fi), checking actual internet access...');
+        Logger.verbose(
+            'Network connection detected (Mobile or Wi-Fi), checking actual internet access...');
         // Check for actual internet access using the external checker
         _cachedIsConnected = await _checkInternetWithChecker();
         return _cachedIsConnected;

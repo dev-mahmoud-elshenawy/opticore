@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../../OptiCore.dart';
+import '../base/import/base_import.dart';
 
 /// A class that combines [ScaffoldConfig] with a provided [body] widget.
 ///

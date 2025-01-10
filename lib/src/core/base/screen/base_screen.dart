@@ -249,6 +249,8 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
       hideLoading();
     } else if (state is ErrorStateNonRender) {
       _handleErrorState(state);
+    } else {
+      Logger.error('Unhandled state: $state');
     }
   }
 
@@ -277,7 +279,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   void _handleErrorState(ErrorStateNonRender state) {
     hideLoading();
     switch (state.type) {
-      case ApiResponseType.UNAUTHORIZED_ERROR:
+      case ApiResponseType.unauthorizedError:
         handleUnauthenticated();
         break;
 
@@ -318,7 +320,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void showSuccess({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.SUCCESS);
+      ToastHelper.instance.showToast(message!, type: ToastType.success);
     }
   }
 
@@ -326,7 +328,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void showError({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.ERROR);
+      ToastHelper.instance.showToast(message!, type: ToastType.error);
     }
   }
 
@@ -334,7 +336,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void showWarning({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.WARNING);
+      ToastHelper.instance.showToast(message!, type: ToastType.warning);
     }
   }
 }

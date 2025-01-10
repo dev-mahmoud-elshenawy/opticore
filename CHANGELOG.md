@@ -1,3 +1,11 @@
+## [Beta 1.0.1]
+### Enhancements and Optimizations
+- **Improved code quality** by addressing warnings and enhancing linting rules to comply with best practices.
+- **Optimized the code** for better performance, including refactoring certain components and reducing redundant logic.
+- **Enhanced analyzer warnings** to ensure better detection of potential issues, improving code maintainability.
+- Made minor **UI adjustments** to enhance the user experience in various components.
+- Improved **documentation** for better understanding of the package's architecture and future extensibility.
+
 ## [Beta 1.0.0]
 ### Initial Release (Beta)
 - **Initial version** of the package, laying the foundation for future development.

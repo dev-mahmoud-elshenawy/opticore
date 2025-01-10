@@ -61,7 +61,7 @@ class DioConnectivityRequest {
       streamSubscription = connectivity.onConnectivityChanged.listen(
         (connectivityResult) async {
           // Only proceed if the device has internet connectivity
-          if (connectivityResult != ConnectivityResult.none) {
+          if (!connectivityResult.contains(ConnectivityResult.none)) {
             // Ensure the request is not already in progress
             if (!responseCompleter.isCompleted) {
               streamSubscription

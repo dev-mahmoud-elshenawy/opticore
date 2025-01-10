@@ -64,7 +64,7 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
     }
     ToastHelper.instance.showToast(
       MaintenanceConfig.messageRetryToast, // Custom message toast
-      type: ToastType.WARNING,
+      type: ToastType.warning,
     );
     return false;
   }

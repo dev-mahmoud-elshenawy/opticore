@@ -50,14 +50,14 @@ class RestartWidget extends StatefulWidget {
   /// This method triggers the `restartApp()` method on the nearest [RestartWidget] ancestor
   /// in the widget tree, causing it to rebuild by generating a new unique key.
   static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+    context.findAncestorStateOfType<RestartWidgetState>()?.restartApp();
   }
 
   @override
-  _RestartWidgetState createState() => _RestartWidgetState();
+  RestartWidgetState createState() => RestartWidgetState();
 }
 
-class _RestartWidgetState extends State<RestartWidget> {
+class RestartWidgetState extends State<RestartWidget> {
   Key key = UniqueKey();
 
   /// Restarts the widget by generating a new [UniqueKey].

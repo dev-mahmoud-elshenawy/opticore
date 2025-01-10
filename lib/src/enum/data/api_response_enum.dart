@@ -7,36 +7,36 @@ part of '../enum_import.dart';
 /// allowing the app to handle different cases appropriately.
 ///
 /// **Enum Values:**
-/// - [SUCCESS]: The response was successful and contains the expected data.
-/// - [NETWORK_ERROR]: There was a network error while making the request.
-/// - [NO_INTERNET_ERROR]: The device does not have an internet connection.
-/// - [SERVER_ERROR]: The response contained an error from the server (e.g., 5xx HTTP status codes).
-/// - [UNAUTHORIZED_ERROR]: The response returned a 401 Unauthorized status.
-/// - [API_ERROR]: The response returned a generic API error (e.g., invalid request).
-/// - [PARSING_ERROR]: There was an error while parsing the response data.
-/// - [NON]: There was no specific error type or the response doesn't fit any of the other categories.
+/// - [success]: The response was successful and contains the expected data.
+/// - [networkError]: There was a network error while making the request.
+/// - [noInternetError]: The device does not have an internet connection.
+/// - [serverError]: The response contained an error from the server (e.g., 5xx HTTP status codes).
+/// - [unauthorizedError]: The response returned a 401 Unauthorized status.
+/// - [apiError]: The response returned a generic API error (e.g., invalid request).
+/// - [parsingError]: There was an error while parsing the response data.
+/// - [none]: There was no specific error type or the response doesn't fit any of the other categories.
 enum ApiResponseType {
   /// The response was successful and contains the expected data.
-  SUCCESS,
+  success,
 
   /// There was a network error while making the request.
-  NETWORK_ERROR,
+  networkError,
 
   /// The device does not have an internet connection.
-  NO_INTERNET_ERROR,
+  noInternetError,
 
   /// The response contained an error from the server (e.g., 5xx HTTP status codes).
-  SERVER_ERROR,
+  serverError,
 
   /// The response returned a 401 Unauthorized status.
-  UNAUTHORIZED_ERROR,
+  unauthorizedError,
 
   /// The response returned a generic API error.
-  API_ERROR,
+  apiError,
 
   /// There was an error while parsing the response data.
-  PARSING_ERROR,
+  parsingError,
 
   /// There was not a specific error type.
-  NONE,
+  none,
 }

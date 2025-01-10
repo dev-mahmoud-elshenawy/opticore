@@ -31,7 +31,7 @@ class NetworkHelper {
   /// The constructor also adds Dio interceptors for logging in debug mode
   /// and handles retries on network failures using the [RetryConnection]
   /// class.
-  NetworkProvider() {
+  NetworkHelper() {
     dio = Dio();
     dio.options = BaseOptions(headers: NetworkConfig.headers);
 
@@ -90,7 +90,7 @@ class NetworkHelper {
   Future<ApiResponse<T?>> request<T>(
     String url,
     Function(Map<String, dynamic>?) create, {
-    HTTPMethod method = HTTPMethod.NONE,
+    HTTPMethod method = HTTPMethod.none,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
     bool rawData = false,
@@ -133,7 +133,7 @@ class NetworkHelper {
   Future<ApiResponse<T>> _request<T>(
     String url,
     Function(Map<String, dynamic>?) create, {
-    HTTPMethod method = HTTPMethod.GET,
+    HTTPMethod method = HTTPMethod.get,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
     bool rawData = false,
@@ -193,13 +193,13 @@ class NetworkHelper {
         : (body != null ? FormData.fromMap(body) : null);
 
     switch (method) {
-      case HTTPMethod.GET:
+      case HTTPMethod.get:
         return dio.get(
           url,
           queryParameters: params,
           options: Options(headers: NetworkConfig.headers),
         );
-      case HTTPMethod.POST:
+      case HTTPMethod.post:
         return dio.post(
           url,
           queryParameters: params,
@@ -207,21 +207,21 @@ class NetworkHelper {
           options: Options(headers: NetworkConfig.headers),
           onSendProgress: onSendProgress,
         );
-      case HTTPMethod.PUT:
+      case HTTPMethod.put:
         return dio.put(
           url,
           queryParameters: params,
           data: data,
           options: Options(headers: NetworkConfig.headers),
         );
-      case HTTPMethod.PATCH:
+      case HTTPMethod.patch:
         return dio.patch(
           url,
           queryParameters: params,
           data: data,
           options: Options(headers: NetworkConfig.headers),
         );
-      case HTTPMethod.DELETE:
+      case HTTPMethod.delete:
         return dio.delete(
           url,
           queryParameters: params,

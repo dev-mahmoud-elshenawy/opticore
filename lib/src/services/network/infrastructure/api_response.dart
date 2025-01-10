@@ -94,7 +94,7 @@ class ApiResponse<M> {
           dioResponse.statusCode! >= 200 &&
           dioResponse.statusCode! <= 299) {
         return ApiResponse<M>(
-          type: ApiResponseType.SUCCESS,
+          type: ApiResponseType.success,
           statusCode: dioResponse.statusCode,
           data: create!(dioResponse.data),
         );
@@ -128,15 +128,15 @@ class ApiResponse<M> {
     void Function(String? message)? onParsingError,
   }) {
     switch (type) {
-      case ApiResponseType.SUCCESS:
+      case ApiResponseType.success:
         if (data != null) {
           onSuccess(data as M);
         }
         break;
 
-      case ApiResponseType.API_ERROR:
-      case ApiResponseType.SERVER_ERROR:
-      case ApiResponseType.UNAUTHORIZED_ERROR:
+      case ApiResponseType.apiError:
+      case ApiResponseType.serverError:
+      case ApiResponseType.unauthorizedError:
         if (apiError != null && (apiError ?? []).isNotEmpty) {
           onFailure(apiError!.join(', '));
         } else {
@@ -144,13 +144,13 @@ class ApiResponse<M> {
         }
         break;
 
-      case ApiResponseType.NETWORK_ERROR:
+      case ApiResponseType.networkError:
         if (onNetworkError != null) {
           onNetworkError(exceptionMessage);
         }
         break;
 
-      case ApiResponseType.PARSING_ERROR:
+      case ApiResponseType.parsingError:
         if (onParsingError != null) {
           onParsingError(exceptionMessage);
         }
@@ -199,17 +199,17 @@ class ApiResponse<M> {
     Logger.error("Exception caught: $exception");
     if (exception is TimeoutException) {
       return ApiResponse<M>(
-        type: ApiResponseType.NETWORK_ERROR,
+        type: ApiResponseType.networkError,
         exceptionMessage: "Request Timeout. Please try again.",
       );
     } else if (exception.toString().contains("487")) {
       return ApiResponse<M>(
-        type: ApiResponseType.NO_INTERNET_ERROR,
+        type: ApiResponseType.noInternetError,
         exceptionMessage: "No Internet connection. Please check your network.",
       );
     } else {
       return ApiResponse<M>(
-        type: ApiResponseType.NETWORK_ERROR,
+        type: ApiResponseType.networkError,
         exceptionMessage:
             "An unexpected error occurred. Please try again later.",
       );
@@ -229,7 +229,7 @@ class ApiResponse<M> {
   factory ApiResponse.parsingError(dynamic error, StackTrace? stackTrace) {
     Logger.debug("Parsing error occurred: $error\n$stackTrace");
     return ApiResponse<M>(
-      type: ApiResponseType.PARSING_ERROR,
+      type: ApiResponseType.parsingError,
       exceptionMessage: "Failed to parse the response data.",
     );
   }
@@ -269,11 +269,11 @@ class ApiResponse<M> {
   static ApiResponseType _getApiErrorType(DioException dioError) {
     int? statusCode = dioError.response?.statusCode ?? 0;
     if (statusCode == 401) {
-      return ApiResponseType.UNAUTHORIZED_ERROR;
+      return ApiResponseType.unauthorizedError;
     } else if (statusCode >= 500) {
-      return ApiResponseType.SERVER_ERROR;
+      return ApiResponseType.serverError;
     } else {
-      return ApiResponseType.API_ERROR;
+      return ApiResponseType.apiError;
     }
   }
 }

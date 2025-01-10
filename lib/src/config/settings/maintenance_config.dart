@@ -50,7 +50,7 @@ class MaintenanceConfig extends Equatable {
 
   /// The default animation asset shown during maintenance mode.
   /// Custom animation can be set via the `instantiate` method.
-  static String _anim = CoreAssets.MAINTENANCE_ANIM;
+  static String _anim = CoreAssets.maintenanceAnim;
 
   // Instance fields for optional custom configuration values
   /// A custom message that is shown when the app is in maintenance mode.
@@ -107,7 +107,7 @@ class MaintenanceConfig extends Equatable {
     _message = 'Maintenance is in progress. Please try again later.';
     _messageButton = 'Retry';
     _messageRetryToast = 'Wait for retry';
-    _anim = CoreAssets.MAINTENANCE_ANIM;
+    _anim = CoreAssets.maintenanceAnim;
   }
 
   // Factory constructor to create an instance with custom values

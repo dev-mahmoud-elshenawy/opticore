@@ -36,10 +36,10 @@ part of '../reusable_import.dart';
 /// ```
 ///
 /// ## Constructor Parameters:
-/// - `type`: The type of SVG source. This determines how the SVG will be loaded (can be one of [SvgType.ASSET], [SvgType.NETWORK], [SvgType.STRING], [SvgType.FILE], or [SvgType.MEMORY]).
+/// - `type`: The type of SVG source. This determines how the SVG will be loaded (can be one of [SvgType.asset], [SvgType.network], [SvgType.string], [SvgType.file], or [SvgType.memory]).
 /// - `path`: The path to the SVG source. This can be the asset path, network URL, or string representation of the SVG (based on the selected [type]).
-/// - `bytes`: The raw byte data of the SVG image (used with [SvgType.MEMORY]).
-/// - `file`: The file containing the SVG image (used with [SvgType.FILE]).
+/// - `bytes`: The raw byte data of the SVG image (used with [SvgType.memory]).
+/// - `file`: The file containing the SVG image (used with [SvgType.file]).
 class SvgWidget extends StatelessWidget {
   final SvgType? type;
   final String? path;
@@ -48,10 +48,10 @@ class SvgWidget extends StatelessWidget {
 
   /// Creates a [SvgWidget] to display SVG images from various sources.
   ///
-  /// [type] specifies the source of the SVG (can be [SvgType.ASSET], [SvgType.NETWORK], [SvgType.STRING], [SvgType.FILE], or [SvgType.MEMORY]).
-  /// [path] is the path or URL of the SVG image (used for [SvgType.ASSET], [SvgType.NETWORK], and [SvgType.STRING]).
-  /// [bytes] is the byte data of the SVG image (used for [SvgType.MEMORY]).
-  /// [file] is the file containing the SVG image (used for [SvgType.FILE]).
+  /// [type] specifies the source of the SVG (can be [SvgType.asset], [SvgType.network], [SvgType.string], [SvgType.file], or [SvgType.memory]).
+  /// [path] is the path or URL of the SVG image (used for [SvgType.asset], [SvgType.network], and [SvgType.string]).
+  /// [bytes] is the byte data of the SVG image (used for [SvgType.memory]).
+  /// [file] is the file containing the SVG image (used for [SvgType.file]).
   const SvgWidget({
     super.key,
     this.type,
@@ -72,23 +72,23 @@ class SvgWidget extends StatelessWidget {
   /// based on the selected [type]. It handles asset, network, string, file, and memory sources.
   Widget _buildSvg() {
     switch (type) {
-      case SvgType.ASSET:
+      case SvgType.asset:
         // Load SVG from asset path
         return SvgPicture.asset(path ?? '');
 
-      case SvgType.NETWORK:
+      case SvgType.network:
         // Load SVG from network URL
         return SvgPicture.network(path ?? '');
 
-      case SvgType.STRING:
+      case SvgType.string:
         // Load SVG from a string containing SVG data
         return SvgPicture.string(path ?? '');
 
-      case SvgType.FILE:
+      case SvgType.file:
         // Load SVG from file
         return SvgPicture.file(file ?? File(''));
 
-      case SvgType.MEMORY:
+      case SvgType.memory:
         // Load SVG from memory (Uint8List of byte data)
         return SvgPicture.memory(bytes ?? Uint8List(0));
 

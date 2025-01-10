@@ -36,7 +36,7 @@ class NotFoundConfig extends Equatable {
   // Private static field for storing the global default configuration value
   /// The default animation asset used for the "Page Not Found" screen.
   /// This is the animation that will be shown when a user navigates to a page that doesn't exist.
-  static String _anim = CoreAssets.PAGE_NOT_FOUND_ANIM;
+  static String _anim = CoreAssets.pageNotFoundAnim;
 
   // Instance field for holding a custom animation (if provided)
   /// A custom animation asset to display on the "Page Not Found" screen.
@@ -73,7 +73,7 @@ class NotFoundConfig extends Equatable {
   /// NotFoundConfig.resetToDefaults();
   /// ```
   static void resetToDefaults() {
-    _anim = CoreAssets.PAGE_NOT_FOUND_ANIM;
+    _anim = CoreAssets.pageNotFoundAnim;
   }
 
   // Factory constructor to create an instance with optional custom values

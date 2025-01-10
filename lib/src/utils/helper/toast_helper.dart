@@ -61,22 +61,22 @@ class ToastHelper {
   /// Returns a [_ToastConfig] containing the icon and color for the toast.
   _ToastConfig _getToastConfig(ToastType type) {
     switch (type) {
-      case ToastType.SUCCESS:
+      case ToastType.success:
         return _ToastConfig(
           icon: FontAwesomeIcons.solidCircleCheck,
           color: CoreColors.success,
         );
-      case ToastType.ERROR:
+      case ToastType.error:
         return _ToastConfig(
           icon: FontAwesomeIcons.triangleExclamation,
           color: CoreColors.error,
         );
-      case ToastType.INFO:
+      case ToastType.info:
         return _ToastConfig(
           icon: FontAwesomeIcons.circleInfo,
           color: CoreColors.info,
         );
-      case ToastType.WARNING:
+      case ToastType.warning:
         return _ToastConfig(
           icon: FontAwesomeIcons.triangleExclamation,
           color: CoreColors.warning,

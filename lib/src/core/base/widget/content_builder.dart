@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../OptiCore.dart';
+import 'package:opticore/opticore.dart';
 
 /// A reusable widget that listens to state changes in a [Bloc] and builds UI
 /// based on specific render states.
