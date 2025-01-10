@@ -1,0 +1,45 @@
+part of '../extensions_import.dart';
+
+/// Extension to convert a hex color code string to a [Color] object.
+///
+/// This extension adds a `toColor` method to the `String` class to easily convert
+/// a hex color code in the form of a string (e.g., "#FF5733" or "FF5733") into
+/// a [Color] object. It provides error handling in case the provided string
+/// does not represent a valid hex color code.
+///
+/// **Example usage:**
+/// ```dart
+/// String hexColor = "#FF5733";
+/// Color color = hexColor.toColor();
+/// print(color); // Output: Color(0xffff5733)
+/// ```
+extension HexColorExtension on String {
+  /// Converts a hex color code string to a [Color] object.
+  ///
+  /// This method checks if the string starts with a '#' character and removes
+  /// it if necessary. Then, it attempts to parse the hex code and return
+  /// the corresponding [Color] object. If the parsing fails (invalid hex code),
+  /// it logs an error and returns the default color black.
+  ///
+  /// **Returns:**
+  /// - A [Color] object corresponding to the hex color code.
+  /// - If the hex code is invalid, it returns [Colors.black] and logs an error.
+  ///
+  /// **Example usage:**
+  /// ```dart
+  /// String hexColor = "FF5733";
+  /// Color color = hexColor.toColor();
+  /// print(color); // Output: Color(0xffff5733)
+  /// ```
+  Color toColor() {
+    // Check if the hex code starts with '#'
+    String hexString = startsWith('#') ? substring(1) : this;
+
+    try {
+      return Color(int.parse(hexString, radix: 16));
+    } catch (e) {
+      Logger.error('Invalid hex color code: $this');
+      return Colors.black;
+    }
+  }
+}
