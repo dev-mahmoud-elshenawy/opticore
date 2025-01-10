@@ -78,12 +78,8 @@ typedef BlocCreator<D extends BaseBloc> = D Function();
 /// - Customizable app bar and scaffold configurations.
 abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     extends State<T> with ViewStateHandler {
-  /// The BLoC instance associated with this scene.
-  /// This instance is passed through the constructor and used for state management.
-  final M _bloc;
-
   /// Constructor to initialize the [BaseScreen] with a BLoC instance.
-  BaseScreen(M bloc) : _bloc = bloc;
+  BaseScreen(M bloc);
 
   /// The base context of the widget. This is updated during the widget's lifecycle.
   late BuildContext baseContext;

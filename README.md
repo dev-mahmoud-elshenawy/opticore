@@ -4,7 +4,7 @@
 
 With **OptiCore**, you no longer need multiple external packages—everything you need, from API handling to state management, is built-in. The framework minimizes boilerplate code, optimizes common development tasks, and enhances scalability, ensuring that your app remains maintainable and easy to extend over time.
 
-[![Pub Package](https://img.shields.io/badge/Pub%20get-OptiCore-yellow)](https://pub.dev/packages/OptiCore)
+[![Pub Package](https://img.shields.io/badge/Pub%20get-OptiCore-yellow)](https://pub.dev/packages/opticore)
 ![Build Status](https://img.shields.io/badge/Build-Passing-teal)
 ![Unit Test](https://img.shields.io/badge/Unit%20Test-Passing-red)
 [![creator](https://img.shields.io/badge/Creator-Mahmoud%20El%20Shenawy-blue)](https://www.linkedin.com/in/dev-mahmoud-elshenawy/)

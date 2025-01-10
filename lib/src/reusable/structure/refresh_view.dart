@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../reusable_import.dart';
 
 /// A custom widget that wraps a [child] widget with a [RefreshIndicator] to provide pull-to-refresh functionality.
 ///

@@ -102,7 +102,7 @@ class CoreButton extends StatelessWidget {
                   (!dimmed
                       ? theme
                           .primaryColor // Default background color if not specified
-                      : theme.primaryColor.withOpacity(0.5)),
+                      : theme.primaryColor.withValues(alpha: 0.5)),
               // Dimming effect
               border: (withBorder ?? false)
                   ? Border.all(
@@ -110,7 +110,7 @@ class CoreButton extends StatelessWidget {
                           (!dimmed
                               ? theme
                                   .primaryColor // Default border color if not specified
-                              : theme.primaryColor.withOpacity(0.5))),
+                              : theme.primaryColor.withValues(alpha: 0.5))),
                     )
                   : null,
             ),

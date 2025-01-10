@@ -110,12 +110,12 @@ class LinePainter extends CustomPainter {
 
     // Determine which line type to draw: solid or dotted
     switch (line.runtimeType) {
-      case SolidLine:
+      case const (SolidLine):
         {
           _drawSolidLine(canvas, width, paintDef!);
           break;
         }
-      case DottedLine:
+      case const (DottedLine):
         {
           if (paintDef!.strokeWidth <= 0.0) paintDef!.strokeWidth = 1.0;
           if (paintDef!.strokeWidth >= width) {
