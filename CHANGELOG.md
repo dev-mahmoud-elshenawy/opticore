@@ -1,3 +1,14 @@
+## [Beta 1.0.2]
+### Enhancements and New Features
+- **Added comprehensive documentation** for all string-related extensions, improving clarity and ease of use.
+- **Enhanced error handling** in string formatting extensions to ensure robust and fail-safe operations.
+- **Improved Arabic to English number conversion logic** ensuring better handling of edge cases.
+- **Refactored formatPrice method** for better performance and readability.
+- **Streamlined the formatDate method** to handle malformed date strings gracefully.
+### Fixes
+- Fixed minor inconsistencies in null-checking logic for nullable strings.
+- Resolved an issue where invalid date strings would not default to the current date properly.
+
 ## [Beta 1.0.1]
 ### Enhancements and Optimizations
 - **Improved code quality** by addressing warnings and enhancing linting rules to comply with best practices.
