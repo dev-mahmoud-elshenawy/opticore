@@ -1,5 +1,4 @@
 ## [Beta 1.0.3]
-
 ### Enhancements and New Features
 - **Integrated dependencies into the package export** to simplify usage. These dependencies can now be accessed directly through the package, eliminating the need for separate installations:
     - `flutter_bloc`
