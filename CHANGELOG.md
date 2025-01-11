@@ -3,6 +3,7 @@
 - **Improved code quality** by addressing warnings and enhancing linting rules to comply with best practices.
 - **Optimized the code** for better performance, including refactoring certain components and reducing redundant logic.
 - **Enhanced analyzer warnings** to ensure better detection of potential issues, improving code maintainability.
+- **Added Example** to demonstrate the package’s structure and usage, making it easier for developers to understand and integrate the package into their projects.
 - Made minor **UI adjustments** to enhance the user experience in various components.
 - Improved **documentation** for better understanding of the package's architecture and future extensibility.
 

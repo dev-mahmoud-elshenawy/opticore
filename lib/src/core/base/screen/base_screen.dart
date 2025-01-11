@@ -171,6 +171,9 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   /// Provides an initial widget. Override to customize.
   Widget? initialWidget() => SizedBox.fromSize();
 
+  /// Listener [Optional Implementation](To keep from breaking Interface Segregation Principle)
+  listenToState(BuildContext context, BaseState state) {}
+
   @override
   void initState() {
     super.initState();
@@ -337,6 +340,14 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   void showWarning({String? message}) {
     if (message?.isNotEmpty ?? false) {
       ToastHelper.instance.showToast(message!, type: ToastType.warning);
+    }
+  }
+
+  /// Shows an info toast with a message.
+  @override
+  void showInfo({String? message}) {
+    if (message?.isNotEmpty ?? false) {
+      ToastHelper.instance.showToast(message!, type: ToastType.info);
     }
   }
 }
