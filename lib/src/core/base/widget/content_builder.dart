@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opticore/opticore.dart';
 
 /// A reusable widget that listens to state changes in a [Bloc] and builds UI
@@ -17,6 +16,7 @@ import 'package:opticore/opticore.dart';
 /// ### Example Usage:
 /// ```dart
 /// ContentBuilder<MyBloc>(
+///  create: (context) => MyBloc(),
 ///   stateListener: (context, state) {
 ///     if (state is SomeNonRenderState) {
 ///       // Handle state changes like showing a toast or a dialog.
@@ -42,6 +42,8 @@ import 'package:opticore/opticore.dart';
 /// - [widgetRenderer]: A function that returns the widget to display based on
 ///   the current [RenderState].
 ///   - [state]: The emitted state used for rendering.
+/// - [create]: A function that creates the BLoC instance to provide to the [BlocProvider].
+///
 ///
 /// ### Widget Lifecycle:
 /// - **Listening:** The [stateListener] is triggered when a [NonRenderState] is
@@ -52,6 +54,7 @@ import 'package:opticore/opticore.dart';
 /// ### Example:
 /// ```dart
 /// ContentBuilder<MyBloc>(
+///  create: (context) => MyBloc(),
 ///   stateListener: (context, state) {
 ///     if (state is ErrorStateNonRender) {
 ///       showErrorDialog(context, state.errorMessage);
@@ -80,6 +83,12 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
   /// It receives the emitted [BaseState] and returns the corresponding widget.
   final Widget Function(BaseState state) widgetRenderer;
 
+  /// The BLoC instance to provide to the [BlocProvider].
+  ///
+  /// This BLoC instance is used to provide the BLoC to the [BlocProvider] widget.
+  /// It is used to manage the state of the widget and emit new states.
+  final M Function(BuildContext) create;
+
   /// Creates a [ContentBuilder] instance.
   ///
   /// - [stateListener]: The callback to handle non-render state changes.
@@ -88,17 +97,22 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
     super.key,
     required this.stateListener,
     required this.widgetRenderer,
+    required this.create,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<M, BaseState>(
-      // Rebuilds UI only for states that implement RenderState.
-      buildWhen: (previous, current) => current is RenderState,
-      // Listens only for states that implement NonRenderState.
-      listenWhen: (previous, current) => current is NonRenderState,
-      listener: (context, state) => stateListener(context, state),
-      builder: (context, state) => widgetRenderer(state),
+    return BlocProvider(
+      lazy: false,
+      create: create,
+      child: BlocConsumer<M, BaseState>(
+        // Rebuilds UI only for states that implement RenderState.
+        buildWhen: (previous, current) => current is RenderState,
+        // Listens only for states that implement NonRenderState.
+        listenWhen: (previous, current) => current is NonRenderState,
+        listener: (context, state) => stateListener(context, state),
+        builder: (context, state) => widgetRenderer(state),
+      ),
     );
   }
 }

@@ -65,7 +65,7 @@ extension SafeMapAccess<M> on Map<String, dynamic> {
   ///
   /// **Returns:**
   /// - A list of values after conversion, or an empty list if the key is missing or an error occurs.
-  List<M> safeListValue({
+  List<M> safeListValue<M>({
     required String key,
     required M Function(dynamic) converter,
   }) {

@@ -94,7 +94,7 @@ class NetworkHelper {
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
     bool rawData = false,
-    Function? onSendProgress,
+    Function(int, int)? onSendProgress,
   }) async {
     bool connected = await InternetConnectionHandler.isInternetConnected();
     if (connected) {
@@ -105,6 +105,7 @@ class NetworkHelper {
         params: params,
         body: body,
         rawData: rawData,
+        onSendProgress: onSendProgress,
       );
     } else {
       Exception exception = Exception(487);
@@ -138,6 +139,8 @@ class NetworkHelper {
     Map<String, dynamic>? body,
     bool rawData = false,
     Function(int, int)? onSendProgress,
+    Function(int, int)? onReceiveProgress,
+    String? savePath,
   }) async {
     params ??= {};
     body ??= {};
@@ -153,6 +156,8 @@ class NetworkHelper {
         body: body,
         rawData: rawData,
         onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+        savePath: savePath,
       );
 
       // Return success response.
@@ -177,7 +182,9 @@ class NetworkHelper {
   /// - [params]: Query parameters for the request.
   /// - [body]: The body of the request (used for methods like POST, PUT, etc.).
   /// - [rawData]: If true, sends the body as raw data (default is false).
-  /// - [onSendProgress]: A callback to track the progress of file uploads.
+  /// - [onSendProgress]: A callback to track the progress of file uploads for all methods except DELETE.
+  /// - [savePath]: The path to save the downloaded file (used for the DOWNLOAD method).
+  /// - [onReceiveProgress]: A callback to track the progress of file downloads (used only for the DOWNLOAD method).
   ///
   /// Returns a [Response] from Dio containing the server's response.
   Future<Response> _makeRequest(
@@ -187,6 +194,8 @@ class NetworkHelper {
     Map<String, dynamic>? body,
     bool rawData = false,
     Function(int, int)? onSendProgress,
+    Function(int, int)? onReceiveProgress,
+    String? savePath,
   }) async {
     final data = rawData
         ? jsonEncode(body)
@@ -213,6 +222,7 @@ class NetworkHelper {
           queryParameters: params,
           data: data,
           options: Options(headers: NetworkConfig.headers),
+          onSendProgress: onSendProgress,
         );
       case HTTPMethod.patch:
         return dio.patch(
@@ -220,12 +230,21 @@ class NetworkHelper {
           queryParameters: params,
           data: data,
           options: Options(headers: NetworkConfig.headers),
+          onSendProgress: onSendProgress,
         );
       case HTTPMethod.delete:
         return dio.delete(
           url,
           queryParameters: params,
           options: Options(headers: NetworkConfig.headers),
+        );
+      case HTTPMethod.download:
+        return dio.download(
+          url,
+          savePath,
+          queryParameters: params,
+          options: Options(headers: NetworkConfig.headers),
+          onReceiveProgress: onReceiveProgress,
         );
       default:
         throw Exception("Unsupported HTTP method");

@@ -72,7 +72,7 @@ class NoInternetConfig extends Equatable {
   ///   NoInternetConfig(customMessage: 'Unable to connect', customMessageButton: 'Try Again'),
   /// );
   /// ```
-  static void instantiate(NoInternetConfig customConfig) {
+  static Future<void> instantiate(NoInternetConfig customConfig) async{
     _message = customConfig.customMessage ?? _message;
     _messageButton = customConfig.customMessageButton ?? _messageButton;
     _anim = customConfig.customAnim ?? _anim;

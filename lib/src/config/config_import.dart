@@ -1,5 +1,5 @@
-import 'package:bot_toast/bot_toast.dart';
-import 'package:equatable/equatable.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:opticore/opticore.dart';
 

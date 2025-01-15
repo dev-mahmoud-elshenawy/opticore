@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:opticore/opticore.dart';
 
 /// A class that facilitates retrying HTTP requests when the internet connection is restored.

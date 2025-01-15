@@ -1,12 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lottie/lottie.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:opticore/opticore.dart';
 
 import '../utils/ui/core_assets.dart';
@@ -23,3 +21,4 @@ part '../reusable/paint/gradient_outlined_button.dart';
 part '../reusable/structure/refresh_view.dart';
 part '../reusable/structure/scroll_to_top.dart';
 part 'fallback_screen/no_internet_screen.dart';
+part 'mixin/after_layout_mixin.dart';

@@ -77,9 +77,13 @@ typedef BlocCreator<D extends BaseBloc> = D Function();
 /// - Utility methods for showing toasts, handling safe areas, and managing scaffolds.
 /// - Customizable app bar and scaffold configurations.
 abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
-    extends State<T> with ViewStateHandler {
+    extends State<T>
+    with ViewStateHandler {
+  /// The BLoC instance associated with the screen.
+  final M _bloc;
+
   /// Constructor to initialize the [BaseScreen] with a BLoC instance.
-  BaseScreen(M bloc);
+  BaseScreen(M bloc) : _bloc = bloc;
 
   /// The base context of the widget. This is updated during the widget's lifecycle.
   late BuildContext baseContext;
@@ -94,10 +98,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   CancelFunc? _cancelFunc;
 
   /// Builder for rendering content and handling state changes.
-  ContentBuilder _builder = ContentBuilder<M>(
-    stateListener: (context, state) {},
-    widgetRenderer: (state) => const SizedBox.shrink(),
-  );
+  ContentBuilder? _builder;
 
   /// The width of the screen, calculated during the `build` method.
   double screenWidth = 0.0;
@@ -122,12 +123,20 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
 
   /// Configuration for the scaffold, including the app bar and other properties.
   /// Override to customize the scaffold for the scene.
-  ScaffoldConfig get scaffoldConfig => ScaffoldConfig(
+  ScaffoldConfig get scaffoldConfig =>
+      ScaffoldConfig(
         appBar: _buildAppBar(),
       );
 
   /// The BLoC instance exposed to subclasses for convenience.
-  M get bloc => BlocProvider.of<M>(baseContext);
+  M get bloc {
+    try {
+      return BlocProvider.of<M>(baseContext);
+    } catch (e) {
+      Logger.error('Error while accessing BLoC: $e');
+      rethrow;
+    }
+  }
 
   /// Posts a [BaseEvent] to the BLoC associated with this scene.
   void postEvent(BaseEvent event) => BlocProvider.of<M>(baseContext).add(event);
@@ -181,8 +190,11 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
       init();
       _builder = ContentBuilder<M>(
         stateListener: _handleStateListener,
-        widgetRenderer: (state) {
+        create: (context) {
           baseContext = context;
+          return _bloc;
+        },
+        widgetRenderer: (state) {
           Widget ui = _handleWidgetRendering(state) ?? SizedBox.shrink();
           return ignoreSafeArea == true ? ui : SafeArea(child: ui);
         },
@@ -213,7 +225,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness:
-            isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
+        isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -222,14 +234,23 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
           screenWidth = constraints.maxWidth;
           screenHeight = constraints.maxHeight;
           return ignoreScaffold
-              ? _builder
+              ? _handleNullBuilder()
               : BodyScaffoldConfig(
-                  scaffoldConfig: scaffoldConfig,
-                  body: _builder,
-                ).toScaffold();
+            scaffoldConfig: scaffoldConfig,
+            body: _handleNullBuilder(),
+          ).toScaffold();
         },
       ),
     );
+  }
+
+  /// Handle null scenario checker for [_builder]
+  dynamic _handleNullBuilder() {
+    if (_builder == null) {
+      return SizedBox.shrink();
+    } else {
+      return _builder;
+    }
   }
 
   /// Builds the app bar using the provided configurations or a custom widget.

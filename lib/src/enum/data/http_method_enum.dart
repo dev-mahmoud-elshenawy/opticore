@@ -31,6 +31,9 @@ enum HTTPMethod {
   /// Represents the HTTP DELETE method, typically used for deleting resources.
   delete,
 
+  /// Represents the HTTP HEAD method, typically used for downloading rescources.
+  download,
+
   /// Represents an unknown or unspecified HTTP method.
   none;
 }

@@ -1,3 +1,24 @@
+## [Beta 1.0.4]
+### Enhancements and New Features
+- **`ArabicToEnglishNumberFormatter`**: Added a utility for converting Arabic numerals to English numerals for consistent number formatting across locales.
+- **`ScrollBehaviorHelper`**: Introduced a custom implementation of `MaterialScrollBehavior` to provide platform-specific scroll physics. This improves the scrolling experience on iOS, Android, macOS, and other platforms.
+- **`LifecycleEventHelper`**: A new class that observes app lifecycle changes, enabling developers to run custom actions when the app is resumed or suspended. It provides optional `resumeCallBack` and `suspendingCallBack` parameters for handling specific lifecycle states.
+- **Download Method Enhancement**: Fixed an issue with the `HTTPMethod.download` case in the Dio integration, including improved handling of download progress through the `onReceiveProgress` callback.
+- **Fixed `onSendProgress` Issue**: Resolved issues with tracking upload progress in the Dio `onSendProgress` callback.
+- **`AfterLayoutMixin`**: Introduced a mixin to trigger actions after the first layout of a widget has been rendered. This ensures that layout-dependent logic is executed after the widget tree has been fully built.
+- **Safe List Value Fix**: Corrected issues with safe access to list values, ensuring null safety and preventing runtime errors.
+- **Enhanced `ContentBuilder` and `BaseScreen`**: Improved handling of content rendering and base screen management to optimize app flow and usability.
+- **Enhanced `CoreSetup`**: Refined the `CoreSetup` class by incorporating the `AfterLayoutMixin` to manage the configuration initialization process more effectively. The `_initializeConfigurations` method now allows the use of `onBeforeConfigApply` for handling actions before configuration is applied.
+### Improvements
+- **Default Scroll Behavior**: The `ScrollBehaviorHelper` is now the default class for scroll behavior, enhancing scrolling performance with platform-specific optimizations.
+- **Configuration Handling**: Added `checkerboardRasterCacheImages`, `checkerboardOffscreenLayers`, `showPerformanceOverlay`, `locale`, `scaffoldMessengerKey`, and `scrollBehavior` as configurable options in `CoreSetup` to allow fine-grained control over app behavior and performance.
+- **Improved Config Initialization**: The `CoreSetup` class now supports more flexible configuration management by providing hooks like `onBeforeConfigApply`, ensuring that configurations are applied in a structured, sequence-sensitive manner.
+### Fixes
+- **Improved Error Handling**: Addressed minor issues in the error-handling logic, ensuring more robust behavior when handling edge cases and null values.
+- **Resolved Layout Timing Issues**: Fixed issues with the timing of layout-dependent operations using `AfterLayoutMixin`, ensuring smoother UI rendering.
+### Documentation
+- **Expanded Documentation**: Enhanced the documentation to cover the new features and improvements, including detailed explanations for `LifecycleEventHelper`, `AfterLayoutMixin`, and the updated configuration flow in `CoreSetup`.
+
 ## [Beta 1.0.3]
 ### Enhancements and New Features
 - **Integrated dependencies into the package export** to simplify usage. These dependencies can now be accessed directly through the package, eliminating the need for separate installations:
