@@ -45,7 +45,7 @@ class RouteHelper {
   /// widget through the `navigatorKey` property to manage navigation throughout
   /// the app.
   static final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
 
   /// Constructor to initialize the RouteHelper with a [BuildContext].
   /// The [BuildContext] is required to perform navigation operations.
@@ -67,9 +67,9 @@ class RouteHelper {
   /// RouteHelper(context).push(NewScreen());
   /// ```
   Future<dynamic> push(
-      Widget screen, {
-        bool maintainState = true,
-      }) {
+    Widget screen, {
+    bool maintainState = true,
+  }) {
     return context.push(screen, maintainState: maintainState);
   }
 
@@ -145,10 +145,10 @@ class RouteHelper {
   /// RouteHelper(context).pushAndRemoveUntil(NewScreen(), '/home');
   /// ```
   Future<dynamic> pushAndRemoveUntil(
-      Widget screen,
-      String path, {
-        bool maintainState = true,
-      }) {
+    Widget screen,
+    String path, {
+    bool maintainState = true,
+  }) {
     return context.pushAndRemoveUntil(
       screen,
       path,
@@ -171,9 +171,9 @@ class RouteHelper {
   /// RouteHelper(context).pushNamedAndRemoveUntil('/login');
   /// ```
   Future<dynamic> pushNamedAndRemoveUntil(
-      String screenName, {
-        Object? arguments,
-      }) {
+    String screenName, {
+    Object? arguments,
+  }) {
     return context.pushNamedAndRemoveUntil(
       screenName,
       arguments: arguments,

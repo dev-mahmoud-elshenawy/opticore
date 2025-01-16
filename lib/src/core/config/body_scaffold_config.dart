@@ -69,7 +69,7 @@ class BodyScaffoldConfig extends Equatable {
 
   @override
   List<Object?> get props => [
-    scaffoldConfig,
-    body,
-  ];
+        scaffoldConfig,
+        body,
+      ];
 }

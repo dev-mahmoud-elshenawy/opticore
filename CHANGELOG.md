@@ -1,3 +1,8 @@
+## [Beta 1.0.6]
+### Improvements
+- Enhanced code formatting for better readability.
+- Fixed all warnings and analysis issues for a cleaner codebase.
+
 ## [Beta 1.0.5]
 ### Enhancements and New Features
 - **Updated Dependencies**: Upgraded the package dependencies to ensure compatibility, security, and performance improvements.

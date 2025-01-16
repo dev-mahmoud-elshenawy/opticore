@@ -137,6 +137,6 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// This ensures the app bar has a consistent height across different screens.
   @override
   Size get preferredSize => Size.fromHeight(
-    kToolbarHeight,
-  ); // Standard app bar height.
+        kToolbarHeight,
+      ); // Standard app bar height.
 }

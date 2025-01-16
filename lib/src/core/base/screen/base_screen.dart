@@ -77,8 +77,7 @@ typedef BlocCreator<D extends BaseBloc> = D Function();
 /// - Utility methods for showing toasts, handling safe areas, and managing scaffolds.
 /// - Customizable app bar and scaffold configurations.
 abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
-    extends State<T>
-    with ViewStateHandler {
+    extends State<T> with ViewStateHandler {
   /// The BLoC instance associated with the screen.
   final M _bloc;
 
@@ -123,8 +122,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
 
   /// Configuration for the scaffold, including the app bar and other properties.
   /// Override to customize the scaffold for the scene.
-  ScaffoldConfig get scaffoldConfig =>
-      ScaffoldConfig(
+  ScaffoldConfig get scaffoldConfig => ScaffoldConfig(
         appBar: _buildAppBar(),
       );
 
@@ -225,7 +223,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness:
-        isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
+            isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -236,9 +234,9 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
           return ignoreScaffold
               ? _handleNullBuilder()
               : BodyScaffoldConfig(
-            scaffoldConfig: scaffoldConfig,
-            body: _handleNullBuilder(),
-          ).toScaffold();
+                  scaffoldConfig: scaffoldConfig,
+                  body: _handleNullBuilder(),
+                ).toScaffold();
         },
       ),
     );

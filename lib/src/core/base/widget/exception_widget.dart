@@ -43,12 +43,12 @@ class ExceptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        message ?? '',  // Displays an empty string if no message is provided
+        message ?? '', // Displays an empty string if no message is provided
         style: const TextStyle(
           fontWeight: FontWeight.bold, // Makes the text bold
-          color: CoreColors.error,     // Uses the error color from CoreColors
+          color: CoreColors.error, // Uses the error color from CoreColors
         ),
-        textAlign: TextAlign.center,    // Centers the text within the widget
+        textAlign: TextAlign.center, // Centers the text within the widget
       ),
     );
   }

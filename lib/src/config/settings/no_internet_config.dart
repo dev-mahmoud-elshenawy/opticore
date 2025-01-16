@@ -72,7 +72,7 @@ class NoInternetConfig extends Equatable {
   ///   NoInternetConfig(customMessage: 'Unable to connect', customMessageButton: 'Try Again'),
   /// );
   /// ```
-  static Future<void> instantiate(NoInternetConfig customConfig) async{
+  static Future<void> instantiate(NoInternetConfig customConfig) async {
     _message = customConfig.customMessage ?? _message;
     _messageButton = customConfig.customMessageButton ?? _messageButton;
     _anim = customConfig.customAnim ?? _anim;
@@ -129,8 +129,8 @@ class NoInternetConfig extends Equatable {
   // Override Equatable's props to enable comparison based on instance fields
   @override
   List<Object?> get props => [
-    customMessage,
-    customMessageButton,
-    customAnim,
-  ];
+        customMessage,
+        customMessageButton,
+        customAnim,
+      ];
 }

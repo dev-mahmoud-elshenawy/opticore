@@ -27,7 +27,8 @@ class LoadingAnimatedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       // Displays the Lottie animation in the center of the screen
-      child: Lottie.asset(CoreAssets.loadingAnim), // Uses the loading animation asset
+      child: Lottie.asset(
+          CoreAssets.loadingAnim), // Uses the loading animation asset
     );
   }
 }

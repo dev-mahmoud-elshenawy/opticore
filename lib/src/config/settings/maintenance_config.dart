@@ -158,9 +158,9 @@ class MaintenanceConfig extends Equatable {
   /// It ensures that the state of the configuration instance is considered during comparisons.
   @override
   List<Object?> get props => [
-    customMessage,
-    customMessageButton,
-    customMessageRetryToast,
-    customAnim,
-  ];
+        customMessage,
+        customMessageButton,
+        customMessageRetryToast,
+        customAnim,
+      ];
 }

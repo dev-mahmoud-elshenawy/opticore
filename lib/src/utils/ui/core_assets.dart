@@ -20,7 +20,8 @@ class CoreAssets {
   static String get loadingAnim => _packageAsset("${_anim}loading_anim.json");
 
   /// This animation is typically used to indicate a maintenance state in the app.
-  static String get maintenanceAnim => _packageAsset("${_anim}maintenance.json");
+  static String get maintenanceAnim =>
+      _packageAsset("${_anim}maintenance.json");
 
   /// This animation is typically used to indicate a no internet state in the app.
   static String get noInternetAnim => _packageAsset("${_anim}no_internet.json");

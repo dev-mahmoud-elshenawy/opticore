@@ -59,10 +59,10 @@ class GradientOutlinedButton extends StatelessWidget {
     required Widget child,
     required VoidCallback onPressed,
   })  : _painter = _GradientPainter(
-    strokeWidth: strokeWidth,
-    radius: radius,
-    gradient: gradient,
-  ),
+          strokeWidth: strokeWidth,
+          radius: radius,
+          gradient: gradient,
+        ),
         _child = child,
         _callback = onPressed,
         _radius = radius;
@@ -70,18 +70,22 @@ class GradientOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _painter,  // Paint the gradient outline
+      painter: _painter, // Paint the gradient outline
       child: GestureDetector(
-        behavior: HitTestBehavior.translucent, // Ensure the tap detection is translucent over the area
+        behavior: HitTestBehavior
+            .translucent, // Ensure the tap detection is translucent over the area
         onTap: _callback, // Trigger the callback when the button is tapped
         child: InkWell(
           borderRadius: BorderRadius.circular(_radius), // Apply rounded corners
           onTap: _callback, // Tap detection callback
           child: Container(
-            constraints: const BoxConstraints(minWidth: 88, minHeight: 48), // Minimum button size
+            constraints: const BoxConstraints(
+                minWidth: 88, minHeight: 48), // Minimum button size
             child: Row(
-              mainAxisSize: MainAxisSize.min, // Ensure the child widget is centered
-              mainAxisAlignment: MainAxisAlignment.center, // Align the child widget in the center
+              mainAxisSize:
+                  MainAxisSize.min, // Ensure the child widget is centered
+              mainAxisAlignment: MainAxisAlignment
+                  .center, // Align the child widget in the center
               children: <Widget>[
                 _child!, // The child widget inside the button
               ],
@@ -128,7 +132,8 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Create the outer rectangle (same size as the button)
     Rect outerRect = Offset.zero & size;
-    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect =
+        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // Create the inner rectangle, smaller by strokeWidth
     Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,

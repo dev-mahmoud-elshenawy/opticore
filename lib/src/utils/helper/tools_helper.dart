@@ -53,7 +53,8 @@ class ToolsHelper {
     DateTime now = DateTime.now();
 
     // Check if the action is allowed to run based on the last triggered time
-    if (_lastActionTime == null || now.difference(_lastActionTime!) > duration) {
+    if (_lastActionTime == null ||
+        now.difference(_lastActionTime!) > duration) {
       _lastActionTime = now; // Update the last action time
 
       // Execute the action if provided

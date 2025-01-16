@@ -107,12 +107,14 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
                     ),
                     40.ph, // Custom padding
                     CoreButton(
-                      title: MaintenanceConfig.messageButton, // Custom message button
+                      title: MaintenanceConfig
+                          .messageButton, // Custom message button
                       onTap: () async {
                         ToolsHelper.triggerWithInternet(() {
                           // Trigger refresh action
                           stopRepeating(action: () {
-                            widget.refreshCallBack!(); // Calls the refresh callback
+                            widget
+                                .refreshCallBack!(); // Calls the refresh callback
                             Navigator.pop(context); // Pops the screen
                           });
                         });

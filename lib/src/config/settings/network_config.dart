@@ -51,15 +51,15 @@ class NetworkConfig extends Equatable {
   /// print(updatedHeaders);
   /// ```
   static Future<Map<String, String>> updateHeaders(
-      Map<String, String>? newHeaders,
-      ) async {
+    Map<String, String>? newHeaders,
+  ) async {
     // Return current headers if no new headers are provided
     if (newHeaders == null) return _headers;
 
     // Merge custom headers directly with existing headers, ensuring non-null values
     final Map<String, String> filteredHeaders = Map<String, String>.fromEntries(
       newHeaders.entries.map(
-            (entry) => MapEntry(entry.key, entry.value),
+        (entry) => MapEntry(entry.key, entry.value),
       ),
     );
 
@@ -100,6 +100,6 @@ class NetworkConfig extends Equatable {
   /// comparing two [NetworkConfig] instances.
   @override
   List<Object?> get props => [
-    _headers,
-  ];
+        _headers,
+      ];
 }

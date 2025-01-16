@@ -35,7 +35,6 @@ class CapitalizeFirstWordFormatter extends TextInputFormatter {
   }
 }
 
-
 /// A custom text input formatter that converts Arabic numerals to English numerals.
 ///
 /// This formatter ensures that any Arabic numerals (`٠`, `١`, `٢`, etc.)

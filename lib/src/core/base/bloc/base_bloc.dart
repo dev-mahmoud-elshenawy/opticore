@@ -297,8 +297,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
         errorType: errorType,
         apiErrorType: ApiResponseType.networkError,
       );
-    } else if (apiResponse.type == ApiResponseType.parsingError &&
-        kDebugMode) {
+    } else if (apiResponse.type == ApiResponseType.parsingError && kDebugMode) {
       /// Error
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
