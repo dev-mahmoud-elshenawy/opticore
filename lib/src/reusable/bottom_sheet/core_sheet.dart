@@ -86,7 +86,9 @@ class CoreSheet {
                 25.ph,
                 Material(
                   color: backgroundColor ?? CoreColors.backgroundColor,
-                  child: child,
+                  child: SafeArea(
+                    child: child,
+                  ),
                 )
               ],
             ),

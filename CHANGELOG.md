@@ -1,3 +1,14 @@
+## [Beta 1.0.5]
+### Enhancements and New Features
+- **Updated Dependencies**: Upgraded the package dependencies to ensure compatibility, security, and performance improvements.
+- **`SvgWidget` Enhancements**: Made the `type` parameter required, ensuring more robust and predictable behavior when using the `SvgWidget`.
+- **`CoreSheet` Improvements**: Added a `SafeArea` to the child of `CoreSheet`, enhancing the user interface by preventing content from being obscured by system UI elements.
+- **Theme Extension**: Introduced a new `ThemeExtension` to provide developers with an extended theming capability, enabling more customized and consistent styling across the application.
+### Fixes
+- **`CoreAssets` Issue Resolved**: Fixed an issue with `CoreAssets` paths to ensure proper resolution and loading of assets when the package is used in other projects.
+### Documentation
+- **Updated Documentation**: Enhanced the documentation to cover the changes in `SvgWidget`, `CoreSheet`, and the new `ThemeExtension` feature, along with usage examples for seamless integration.
+
 ## [Beta 1.0.4]
 ### Enhancements and New Features
 - **`ArabicToEnglishNumberFormatter`**: Added a utility for converting Arabic numerals to English numerals for consistent number formatting across locales.

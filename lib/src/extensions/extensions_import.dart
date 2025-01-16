@@ -12,3 +12,4 @@ part '../extensions/data/padding_extension.dart';
 part '../extensions/data/precache_extension.dart';
 part '../extensions/data/set_non_null_extension.dart';
 part '../extensions/data/string_extension.dart';
+part '../extensions/data/theme_extension.dart';

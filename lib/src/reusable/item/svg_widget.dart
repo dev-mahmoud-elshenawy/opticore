@@ -54,7 +54,7 @@ class SvgWidget extends StatelessWidget {
   /// [file] is the file containing the SVG image (used for [SvgType.file]).
   const SvgWidget({
     super.key,
-    this.type,
+    required this.type,
     this.path,
     this.bytes,
     this.file,
