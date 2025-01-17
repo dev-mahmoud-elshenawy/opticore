@@ -1,3 +1,7 @@
+## [1.0.8]
+### Minor Updates
+- **Code Refinement**: Improved internal code structure for better maintainability and readability.
+
 ## [1.0.7]
 ### Enhancements and New Features
 - **`AlignmentExtension`**: Added alignment methods like `alignTopStart`, `alignCenter`, etc., to easily align widgets using the `Align` widget.

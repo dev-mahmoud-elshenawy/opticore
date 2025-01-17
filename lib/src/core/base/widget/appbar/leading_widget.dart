@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opticore/opticore.dart';
 
-import '../../../../utils/ui/core_colors.dart';
-
 /// A custom widget for the leading (back) button in the app bar.
 ///
 /// The `LeadingWidget` provides a back button for navigation within the application.
