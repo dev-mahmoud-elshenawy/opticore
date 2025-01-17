@@ -1,8 +1,17 @@
-## [1.0.8]
+## [Beta 1.0.9]
+### Enhancements and New Features
+- **App Bar Logic**: Added `_getAppBar()` to handle app bar selection based on `scaffoldConfig` and `appBarData`.
+- **ScaffoldConfig**: Added `copyWith` method for easier object modification.
+- **BlocProvider Fix**: Corrected baseContext issue.
+- **Widget Extensions**: Added `expanded` and `flexible` extensions for better layout handling.
+- **Content Builder**: Enhanced functionality.
+- **NullNonRenderState**: Added `NullNonRenderState` class.
+
+## [Beta 1.0.8]
 ### Minor Updates
 - **Code Refinement**: Improved internal code structure for better maintainability and readability.
 
-## [1.0.7]
+## [Beta 1.0.7]
 ### Enhancements and New Features
 - **`AlignmentExtension`**: Added alignment methods like `alignTopStart`, `alignCenter`, etc., to easily align widgets using the `Align` widget.
 - **`CenterExtension`**: Introduced the `center` getter to simplify centering widgets within their parent using the `Center` widget.

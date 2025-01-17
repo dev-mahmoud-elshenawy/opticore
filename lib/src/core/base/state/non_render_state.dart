@@ -110,3 +110,18 @@ class ErrorStateNonRender extends NonRenderState {
         'errorMessage: $errorMessage }';
   }
 }
+
+/// State representing a null or empty state.
+///
+/// This state is used to represent a null or empty state in the application.
+/// It can be used to handle scenarios where a state is not yet initialized
+/// or does not have any data to display. This state does not trigger UI
+///
+/// ### Usage
+/// This state can be used to represent a null or empty state:
+///
+/// ### Example
+/// ```dart
+/// NullNonRenderState();
+/// ```
+class NullNonRenderState extends NonRenderState {}

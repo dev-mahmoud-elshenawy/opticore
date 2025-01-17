@@ -6,7 +6,7 @@ part of '../import/base_import.dart';
 /// [BaseBloc] or its subclass. It is commonly used for dependency injection
 /// or dynamic BLoC creation in applications that follow the BLoC architecture.
 ///
-/// The generic parameter [D] ensures that the factory function creates instances
+/// The generic parameter [M] ensures that the factory function creates instances
 /// of a specific type that extends [BaseBloc].
 ///
 /// Example Usage:
@@ -18,7 +18,7 @@ part of '../import/base_import.dart';
 /// This typedef is particularly useful in scenarios where BLoCs need to be
 /// dynamically created or injected into widgets.
 ///
-/// - [D] is a type parameter that represents the type of BLoC to be created.
+/// - [M] is a type parameter that represents the type of BLoC to be created.
 /// It must extend [BaseBloc].
 ///
 /// Example:
@@ -29,7 +29,7 @@ part of '../import/base_import.dart';
 ///
 /// BlocCreator<MyBloc> creator = () => MyBloc();
 /// ```
-typedef BlocCreator<D extends BaseBloc> = D Function();
+typedef BlocCreator<M extends BaseBloc> = M Function();
 
 /// A base class for scenes that manage state and provide common functionalities
 /// for a screen in a Flutter application.
@@ -187,12 +187,10 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     if (mounted) {
       init();
       _builder = ContentBuilder<M>(
+        create: (context) => _bloc,
         stateListener: _handleStateListener,
-        create: (context) {
+        widgetRenderer: (context, state) {
           baseContext = context;
-          return _bloc;
-        },
-        widgetRenderer: (state) {
           Widget ui = _handleWidgetRendering(state) ?? SizedBox.shrink();
           return ignoreSafeArea == true ? ui : SafeArea(child: ui);
         },
@@ -234,12 +232,28 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
           return ignoreScaffold
               ? _handleNullBuilder()
               : BodyScaffoldConfig(
-                  scaffoldConfig: scaffoldConfig,
+                  scaffoldConfig: scaffoldConfig.copyWith(
+                    appBar: _getAppBar(),
+                  ),
                   body: _handleNullBuilder(),
                 ).toScaffold();
         },
       ),
     );
+  }
+
+  /// A helper method to determine the appBar value.
+  PreferredSizeWidget? _getAppBar() {
+    // If scaffoldConfig.appBar is not null, return it and ignore appBarData.
+    if (scaffoldConfig.appBar != null) {
+      return scaffoldConfig.appBar;
+    }
+    // If appBarData is not null, return the custom app bar.
+    if (appBarData != null) {
+      return _buildAppBar();
+    }
+    // If both appBar and appBarData are null, return null.
+    return null;
   }
 
   /// Handle null scenario checker for [_builder]

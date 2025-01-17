@@ -60,7 +60,6 @@ class LeadingWidget extends StatelessWidget {
               padding: EdgeInsets.zero,
               foregroundColor: iconColor,
               backgroundColor: iconBackgroundColor,
-
             ),
             onPressed: () => route?.canPop() ?? false ? route!.pop() : null,
           ),

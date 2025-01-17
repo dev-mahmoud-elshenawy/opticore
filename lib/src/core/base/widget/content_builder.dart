@@ -81,7 +81,7 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
   ///
   /// This function is called to render the widget for any emitted [RenderState].
   /// It receives the emitted [BaseState] and returns the corresponding widget.
-  final Widget Function(BaseState state) widgetRenderer;
+  final Widget Function(BuildContext context, BaseState state) widgetRenderer;
 
   /// The BLoC instance to provide to the [BlocProvider].
   ///
@@ -111,7 +111,7 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
         // Listens only for states that implement NonRenderState.
         listenWhen: (previous, current) => current is NonRenderState,
         listener: (context, state) => stateListener(context, state),
-        builder: (context, state) => widgetRenderer(state),
+        builder: (context, state) => widgetRenderer(context, state),
       ),
     );
   }

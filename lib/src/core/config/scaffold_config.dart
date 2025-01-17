@@ -145,6 +145,71 @@ class ScaffoldConfig extends Equatable {
     this.restorationId,
   });
 
+  /// Creates a copy of the current [ScaffoldConfig] with the provided changes.
+  ///
+  /// This method allows you to create a new [ScaffoldConfig] based on the current configuration
+  /// while selectively updating specific properties. This is useful for making incremental
+  /// changes to the configuration without modifying the original object.
+  ScaffoldConfig copyWith({
+    PreferredSizeWidget? appBar,
+    Key? key,
+    Widget? floatingActionButton,
+    FloatingActionButtonLocation? floatingActionButtonLocation,
+    FloatingActionButtonAnimator? floatingActionButtonAnimator,
+    List<Widget>? persistentFooterButtons,
+    Widget? drawer,
+    void Function(bool)? onDrawerChanged,
+    Widget? endDrawer,
+    void Function(bool)? onEndDrawerChanged,
+    Widget? bottomNavigationBar,
+    Widget? bottomSheet,
+    Color? backgroundColor,
+    bool? resizeToAvoidBottomInset,
+    bool? primary,
+    DragStartBehavior? drawerDragStartBehavior,
+    bool? extendBody,
+    bool? extendBodyBehindAppBar,
+    Color? drawerScrimColor,
+    double? drawerEdgeDragWidth,
+    bool? drawerEnableOpenDragGesture,
+    bool? endDrawerEnableOpenDragGesture,
+    String? restorationId,
+  }) {
+    return ScaffoldConfig(
+      key: key ?? this.key,
+      appBar: appBar ?? this.appBar,
+      floatingActionButton: floatingActionButton ?? this.floatingActionButton,
+      floatingActionButtonLocation:
+          floatingActionButtonLocation ?? this.floatingActionButtonLocation,
+      floatingActionButtonAnimator:
+          floatingActionButtonAnimator ?? this.floatingActionButtonAnimator,
+      persistentFooterButtons:
+          persistentFooterButtons ?? this.persistentFooterButtons,
+      drawer: drawer ?? this.drawer,
+      onDrawerChanged: onDrawerChanged ?? this.onDrawerChanged,
+      endDrawer: endDrawer ?? this.endDrawer,
+      onEndDrawerChanged: onEndDrawerChanged ?? this.onEndDrawerChanged,
+      bottomNavigationBar: bottomNavigationBar ?? this.bottomNavigationBar,
+      bottomSheet: bottomSheet ?? this.bottomSheet,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      resizeToAvoidBottomInset:
+          resizeToAvoidBottomInset ?? this.resizeToAvoidBottomInset,
+      primary: primary ?? this.primary,
+      drawerDragStartBehavior:
+          drawerDragStartBehavior ?? this.drawerDragStartBehavior,
+      extendBody: extendBody ?? this.extendBody,
+      extendBodyBehindAppBar:
+          extendBodyBehindAppBar ?? this.extendBodyBehindAppBar,
+      drawerScrimColor: drawerScrimColor ?? this.drawerScrimColor,
+      drawerEdgeDragWidth: drawerEdgeDragWidth ?? this.drawerEdgeDragWidth,
+      drawerEnableOpenDragGesture:
+          drawerEnableOpenDragGesture ?? this.drawerEnableOpenDragGesture,
+      endDrawerEnableOpenDragGesture:
+          endDrawerEnableOpenDragGesture ?? this.endDrawerEnableOpenDragGesture,
+      restorationId: restorationId ?? this.restorationId,
+    );
+  }
+
   /// Converts the configuration into a fully constructed [Scaffold] widget.
   ///
   /// This method uses the current [ScaffoldConfig] to create a `Scaffold` widget and inject

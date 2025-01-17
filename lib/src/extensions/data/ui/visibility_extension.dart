@@ -36,7 +36,6 @@ extension VisibilityExtension on Widget {
   /// [isHidden]: Determines whether the widget should be hidden.
   Widget hide(bool isHidden) => isHidden ? const SizedBox.shrink() : this;
 
-
   /// Wraps the widget with an [AnimatedOpacity] widget to animate its visibility.
   ///
   /// The widget fades in or out based on the [isVisible] parameter. You can customize the
