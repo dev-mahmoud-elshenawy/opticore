@@ -6,11 +6,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:opticore/opticore.dart';
-import 'package:opticore/src/core/base/widget/appbar/core_app_bar.dart';
 import 'package:opticore/src/core/base/widget/exception_widget.dart';
 import 'package:opticore/src/core/base/widget/loading_widget.dart';
 import 'package:opticore/src/core/config/body_scaffold_config.dart';
 
+import '../../../utils/ui/core_assets.dart';
+import '../../../utils/ui/core_colors.dart';
+import '../widget/appbar/leading_widget.dart';
 import '../widget/content_builder.dart';
 import '../widget/loading_animated_widget.dart';
 
@@ -21,6 +23,7 @@ part '../event/base_event.dart';
 part '../factory/base_factory.dart';
 part '../observer/bloc_observer.dart';
 part '../repo/base_repo.dart';
+part '../widget/appbar/core_app_bar.dart';
 part '../screen/base_screen.dart';
 part '../state/base_state.dart';
 part '../state/error_type.dart';

@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:opticore/opticore.dart';
-import 'package:opticore/src/utils/ui/core_assets.dart';
-import 'package:opticore/src/utils/ui/core_colors.dart';
-
-import 'leading_widget.dart';
+part of '../../import/base_import.dart';
 
 /// A customizable app bar widget for the application.
 ///
@@ -60,7 +55,14 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: config?.centerTitle ?? false,
       backgroundColor: config?.backgroundColor ?? CoreColors.backgroundColor,
       automaticallyImplyLeading: config?.automaticallyImplyLeading ?? false,
-      leading: (config?.hasBack ?? true) ? LeadingWidget(route: route) : null,
+      leading: (config?.hasBack ?? true)
+          ? LeadingWidget(
+              route: route,
+              backIcon: config?.customIconBack,
+              iconBackgroundColor: config?.iconBackgroundColor,
+              iconColor: config?.iconColor,
+            )
+          : null,
       titleSpacing: config?.hasBack ?? false ? 0 : 16,
       iconTheme: config?.iconTheme,
       actions: _buildActions(),

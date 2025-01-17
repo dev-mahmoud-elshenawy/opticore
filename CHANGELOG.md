@@ -1,3 +1,15 @@
+## [1.0.7]
+### Enhancements and New Features
+- **`AlignmentExtension`**: Added alignment methods like `alignTopStart`, `alignCenter`, etc., to easily align widgets using the `Align` widget.
+- **`CenterExtension`**: Introduced the `center` getter to simplify centering widgets within their parent using the `Center` widget.
+- **`EmptyPadding`**: Added shorthand methods `ph` for vertical and `pw` for horizontal padding, making it easier to add padding to widgets.
+- **`PaddingExtension`**: Enhanced with methods for custom directional padding (`paddingOnly`), uniform padding (`paddingAll`), and symmetric padding (`paddingSymmetric`).
+- **`VisibilityExtension`**: Added the `animatedOpacity` method to toggle visibility with animation, allowing widgets to fade in/out.
+### Improvements
+- **AppBarConfig**: Enhanced the `AppBarConfig` with additional properties to customize app bars further.
+- **Leading Widget**: Improved handling of the `leading_widget` in `CoreAppBar` for better consistency.
+- **CoreAppBar**: Polished and refined the `CoreAppBar` for a more consistent and efficient experience.
+
 ## [Beta 1.0.6]
 ### Improvements
 - Enhanced code formatting for better readability.
@@ -11,8 +23,6 @@
 - **Theme Extension**: Introduced a new `ThemeExtension` to provide developers with an extended theming capability, enabling more customized and consistent styling across the application.
 ### Fixes
 - **`CoreAssets` Issue Resolved**: Fixed an issue with `CoreAssets` paths to ensure proper resolution and loading of assets when the package is used in other projects.
-### Documentation
-- **Updated Documentation**: Enhanced the documentation to cover the changes in `SvgWidget`, `CoreSheet`, and the new `ThemeExtension` feature, along with usage examples for seamless integration.
 
 ## [Beta 1.0.4]
 ### Enhancements and New Features
@@ -32,8 +42,6 @@
 ### Fixes
 - **Improved Error Handling**: Addressed minor issues in the error-handling logic, ensuring more robust behavior when handling edge cases and null values.
 - **Resolved Layout Timing Issues**: Fixed issues with the timing of layout-dependent operations using `AfterLayoutMixin`, ensuring smoother UI rendering.
-### Documentation
-- **Expanded Documentation**: Enhanced the documentation to cover the new features and improvements, including detailed explanations for `LifecycleEventHelper`, `AfterLayoutMixin`, and the updated configuration flow in `CoreSetup`.
 
 ## [Beta 1.0.3]
 ### Enhancements and New Features

@@ -20,17 +20,33 @@ import '../../../../utils/ui/core_colors.dart';
 /// ### Properties:
 /// - [route]: The `RouteHelper` instance responsible for managing navigation. This
 ///   allows the widget to perform route popping if the navigation stack allows it.
+/// - [backIcon]: The icon to use for the back button. Default is `FontAwesomeIcons.arrowLeft`.
+/// - [iconColor]: The color of the icon. Default is `null`.
+/// - [iconBackgroundColor]: The background color of the icon. Default is `null`.
 class LeadingWidget extends StatelessWidget {
   /// The route helper used for managing navigation in the app.
   final RouteHelper? route;
+
+  /// The icon to use for the back button. Default is `FontAwesomeIcons.arrowLeft`.
+  final Widget? backIcon;
+
+  /// The color of the icon.
+  final Color? iconColor;
+
+  /// The background color of the icon.
+  final Color? iconBackgroundColor;
 
   /// Constructor for the `LeadingWidget`.
   ///
   /// - [route]: The `RouteHelper` that provides navigation functionality,
   ///   allowing the widget to perform actions like `pop()` to go back in the navigation stack.
+  /// - [backIcon]: The icon to use for the back button. Default is `FontAwesomeIcons.arrowLeft`.
   const LeadingWidget({
     super.key,
     required this.route,
+    this.backIcon,
+    this.iconColor,
+    this.iconBackgroundColor,
   });
 
   @override
@@ -41,10 +57,12 @@ class LeadingWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: FaIcon(FontAwesomeIcons.arrowLeft),
+            icon: backIcon ?? FaIcon(FontAwesomeIcons.arrowLeft),
             style: IconButton.styleFrom(
               padding: EdgeInsets.zero,
-              backgroundColor: CoreColors.black,
+              foregroundColor: iconColor,
+              backgroundColor: iconBackgroundColor,
+
             ),
             onPressed: () => route?.canPop() ?? false ? route!.pop() : null,
           ),
