@@ -41,60 +41,145 @@ part of '../reusable_import.dart';
 /// - `bytes`: The raw byte data of the SVG image (used with [SvgType.memory]).
 /// - `file`: The file containing the SVG image (used with [SvgType.file]).
 class SvgWidget extends StatelessWidget {
+  /// Specifies the source type of the SVG (asset, network, string, file, or memory).
   final SvgType? type;
+
+  /// The path or URL of the SVG image (used for [SvgType.asset], [SvgType.network], and [SvgType.string]).
   final String? path;
+
+  /// The byte data of the SVG image (used for [SvgType.memory]).
   final Uint8List? bytes;
+
+  /// The file containing the SVG image (used for [SvgType.file]).
   final File? file;
 
-  /// Creates a [SvgWidget] to display SVG images from various sources.
+  /// The color to tint the SVG image.
   ///
-  /// [type] specifies the source of the SVG (can be [SvgType.asset], [SvgType.network], [SvgType.string], [SvgType.file], or [SvgType.memory]).
-  /// [path] is the path or URL of the SVG image (used for [SvgType.asset], [SvgType.network], and [SvgType.string]).
-  /// [bytes] is the byte data of the SVG image (used for [SvgType.memory]).
-  /// [file] is the file containing the SVG image (used for [SvgType.file]).
+  /// If null, the original colors of the SVG are used.
+  final Color? color;
+
+  /// The placeholder widget to display while the SVG is loading (for [SvgType.network]).
+  final Widget? placeholder;
+
+  /// The widget to display if loading the SVG fails (e.g., network errors or invalid data).
+  final Widget? errorWidget;
+
+  /// The width of the SVG image.
+  final double? width;
+
+  /// The height of the SVG image.
+  final double? height;
+
+  /// Box fit for the SVG image (e.g., [BoxFit.contain], [BoxFit.cover]).
+  final BoxFit fit;
+
+  /// Creates a [SvgWidget] to display SVG images from various sources with enhanced customization.
+  ///
+  /// - [type] is required and specifies the SVG source type.
+  /// - [path], [bytes], or [file] should be provided based on the selected [type].
+  /// - Optional parameters include [color], [placeholder], [errorWidget], [width], [height], and [fit].
   const SvgWidget({
     super.key,
     required this.type,
     this.path,
     this.bytes,
     this.file,
+    this.color,
+    this.placeholder,
+    this.errorWidget,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Return the appropriate widget based on the type of SVG source
     return _buildSvg();
   }
 
-  /// A private method to determine which type of SVG to render based on the provided [type].
-  ///
-  /// This method uses a switch statement to return the appropriate SVG rendering widget
-  /// based on the selected [type]. It handles asset, network, string, file, and memory sources.
+  /// A private method to build the appropriate SVG widget based on the provided [type].
   Widget _buildSvg() {
-    switch (type) {
-      case SvgType.asset:
-        // Load SVG from asset path
-        return SvgPicture.asset(path ?? '');
+    ColorFilter? colorFilter = color != null
+        ? ColorFilter.mode(
+            color!,
+            BlendMode.srcIn,
+          )
+        : null;
+    Widget Function(BuildContext)? placeholderBuilder =
+        placeholder != null ? (_) => placeholder! : null;
+    try {
+      switch (type) {
+        case SvgType.asset:
+          // Load SVG from asset path
+          return SvgPicture.asset(
+            path ?? '',
+            colorFilter: colorFilter,
+            width: width,
+            height: height,
+            fit: fit,
+            placeholderBuilder: placeholderBuilder,
+            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+          );
 
-      case SvgType.network:
-        // Load SVG from network URL
-        return SvgPicture.network(path ?? '');
+        case SvgType.network:
+          // Load SVG from network URL with placeholder and error handling
+          return SvgPicture.network(
+            path ?? '',
+            colorFilter: colorFilter,
+            width: width,
+            height: height,
+            fit: fit,
+            placeholderBuilder: placeholderBuilder,
+            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+          );
 
-      case SvgType.string:
-        // Load SVG from a string containing SVG data
-        return SvgPicture.string(path ?? '');
+        case SvgType.string:
+          // Load SVG from a string containing SVG data
+          return SvgPicture.string(
+            path ?? '',
+            colorFilter: colorFilter,
+            width: width,
+            height: height,
+            fit: fit,
+            placeholderBuilder: placeholderBuilder,
+            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+          );
 
-      case SvgType.file:
-        // Load SVG from file
-        return SvgPicture.file(file ?? File(''));
+        case SvgType.file:
+          // Load SVG from a file
+          return SvgPicture.file(
+            file ?? File(''),
+            colorFilter: colorFilter,
+            width: width,
+            height: height,
+            fit: fit,
+            placeholderBuilder: placeholderBuilder,
+            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+          );
 
-      case SvgType.memory:
-        // Load SVG from memory (Uint8List of byte data)
-        return SvgPicture.memory(bytes ?? Uint8List(0));
+        case SvgType.memory:
+          // Load SVG from memory (Uint8List of byte data)
+          return SvgPicture.memory(
+            bytes ?? Uint8List(0),
+            colorFilter: colorFilter,
+            width: width,
+            height: height,
+            fit: fit,
+            placeholderBuilder: placeholderBuilder,
+            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+          );
 
-      default:
-        // Return an empty widget if no valid type is provided
-        return SizedBox.shrink();
+        default:
+          return _buildErrorWidget();
+      }
+    } catch (e) {
+      // Handle errors gracefully by displaying the error widget
+      return _buildErrorWidget();
     }
+  }
+
+  /// Returns the error widget if specified, or an empty widget by default.
+  Widget _buildErrorWidget() {
+    return errorWidget ?? const SizedBox.shrink();
   }
 }

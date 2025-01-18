@@ -1,3 +1,9 @@
+## [1.0.10]
+### Enhancements and New Features
+- **LazyIndexedStack Widget**: Introduced `LazyIndexedStack` for optimized performance by deferring the loading of non-visible children.
+- **SizedBox Extension**: Added extensions for more flexible `SizedBox` creation with methods like `width()`, `height()`, `box()`, `expand()`, `alignedBox()`, `paddedBox()`, and `flexible()`.
+- **SVG Widget Customization**: Enhanced the customization options for `SvgWidget`, allowing for more flexible and efficient use in applications.
+
 ## [Beta 1.0.9]
 ### Enhancements and New Features
 - **App Bar Logic**: Added `_getAppBar()` to handle app bar selection based on `scaffoldConfig` and `appBarData`.
