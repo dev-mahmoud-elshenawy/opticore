@@ -1,4 +1,8 @@
-## [1.0.10]
+## [Beta 1.0.11]
+### Code Optimizations and Documentation Updates
+- **Documentation Update**: Enhanced documentation with clearer examples and more detailed explanations for new widgets and extensions.
+
+## [Beta 1.0.10]
 ### Enhancements and New Features
 - **LazyIndexedStack Widget**: Introduced `LazyIndexedStack` for optimized performance by deferring the loading of non-visible children.
 - **SizedBox Extension**: Added extensions for more flexible `SizedBox` creation with methods like `width()`, `height()`, `box()`, `expand()`, `alignedBox()`, `paddedBox()`, and `flexible()`.
