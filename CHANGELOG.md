@@ -1,3 +1,16 @@
+## [Beta 1.0.12]
+### New Features and Enhancements
+- **New Extension**: Added the `PositionedExtension` for improved widget positioning.
+  - Provides utility methods:
+    - `positioned`: Wraps a widget with `PositionedDirectional` for precise positioning.
+    - `positionedFill`: Wraps a widget with `Positioned.fill` for edge-to-edge placement.
+    - `positionedDirectional`: Wraps a widget with `Positioned.directional` to support text direction for `start` and `end` positions.
+  - Includes detailed documentation and examples for easy usage.
+- **Enhancements to Existing Extensions**:
+  - Updated and refined older extensions for better consistency and usability.
+- **Code Refactor**:
+  - Improved `LazyIndexedStack` to stop unnecessary rebuilding of child widgets, optimizing performance.
+
 ## [Beta 1.0.11]
 ### Code Optimizations and Documentation Updates
 - **Documentation Update**: Enhanced documentation with clearer examples and more detailed explanations for new widgets and extensions.
@@ -10,8 +23,8 @@
 
 ## [Beta 1.0.9]
 ### Enhancements and New Features
-- **App Bar Logic**: Added `_getAppBar()` to handle app bar selection based on `scaffoldConfig` and `appBarData`.
-- **ScaffoldConfig**: Added `copyWith` method for easier object modification.
+- **App Bar Logic**: Handle app bar selection based on `scaffoldConfig` and `appBarData`.
+- **ScaffoldConfig**: Added `copyWithz` method for easier object modification.
 - **BlocProvider Fix**: Corrected baseContext issue.
 - **Widget Extensions**: Added `expanded` and `flexible` extensions for better layout handling.
 - **Content Builder**: Enhanced functionality.
@@ -30,7 +43,7 @@
 - **`VisibilityExtension`**: Added the `animatedOpacity` method to toggle visibility with animation, allowing widgets to fade in/out.
 ### Improvements
 - **AppBarConfig**: Enhanced the `AppBarConfig` with additional properties to customize app bars further.
-- **Leading Widget**: Improved handling of the `leading_widget` in `CoreAppBar` for better consistency.
+- **Leading Widget**: Improved handling of the `LeadingWidget` in `CoreAppBar` for better consistency.
 - **CoreAppBar**: Polished and refined the `CoreAppBar` for a more consistent and efficient experience.
 
 ## [Beta 1.0.6]

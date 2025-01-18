@@ -81,7 +81,7 @@ class SvgWidget extends StatelessWidget {
   const SvgWidget({
     super.key,
     required this.type,
-    this.path,
+    required this.path,
     this.bytes,
     this.file,
     this.color,

@@ -18,6 +18,7 @@ part '../reusable/fallback_screen/restart_widget.dart';
 part '../reusable/item/svg_widget.dart';
 part '../reusable/paint/dashed_line_vertical_widget.dart';
 part '../reusable/paint/gradient_outlined_button.dart';
+part '../reusable/structure/lazy_indexed_stack.dart';
 part '../reusable/structure/refresh_view.dart';
 part '../reusable/structure/scroll_to_top.dart';
 part 'fallback_screen/no_internet_screen.dart';

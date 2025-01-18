@@ -49,11 +49,10 @@ extension VisibilityExtension on Widget {
   AnimatedOpacity animatedOpacity(
     bool isVisible, {
     Duration duration = const Duration(milliseconds: 300),
-  }) {
-    return AnimatedOpacity(
-      duration: duration,
-      opacity: isVisible ? 1.0 : 0.0,
-      child: this,
-    );
-  }
+  }) =>
+      AnimatedOpacity(
+        duration: duration,
+        opacity: isVisible ? 1.0 : 0.0,
+        child: this,
+      );
 }

@@ -39,6 +39,17 @@ extension AlignmentExtension on Widget {
         child: this,
       );
 
+  /// Aligns the widget to the top center of its parent.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text("Top Center").alignTopCenter;
+  /// ```
+  Widget get alignTopCenter => Align(
+        alignment: Alignment.topCenter,
+        child: this,
+      );
+
   /// Aligns the widget to the bottom center of its parent.
   ///
   /// Example:

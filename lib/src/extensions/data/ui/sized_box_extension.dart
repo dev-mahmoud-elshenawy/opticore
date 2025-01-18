@@ -15,9 +15,7 @@ extension SizedBoxExtension on Widget {
   /// ```
   ///
   /// [width]: The width of the `SizedBox`.
-  Widget width(double width) {
-    return SizedBox(width: width, child: this);
-  }
+  Widget width(double width) => SizedBox(width: width, child: this);
 
   /// Creates a [SizedBox] with a specified height.
   ///
@@ -29,9 +27,7 @@ extension SizedBoxExtension on Widget {
   /// ```
   ///
   /// [height]: The height of the `SizedBox`.
-  Widget height(double height) {
-    return SizedBox(height: height, child: this);
-  }
+  Widget height(double height) => SizedBox(height: height, child: this);
 
   /// Creates a [SizedBox] with both width and height.
   ///
@@ -44,21 +40,38 @@ extension SizedBoxExtension on Widget {
   ///
   /// [width]: The width of the `SizedBox`.
   /// [height]: The height of the `SizedBox`.
-  Widget box({required double width, required double height}) {
-    return SizedBox(width: width, height: height, child: this);
-  }
+  Widget box({
+    double? width,
+    double? height,
+  }) =>
+      SizedBox(width: width, height: height, child: this);
 
   /// Creates a [SizedBox] that fills the available space in both dimensions.
   ///
-  /// This is equivalent to `SizedBox.expand()`, and ensures the box takes up all available space.
+  /// This is equivalent to `SizedBox.boxExpand()`, and ensures the box takes up all available space.
   ///
   /// Example:
   /// ```dart
-  /// Image.asset('test').expand(); // A box that takes all available space.
+  /// Image.asset('test').boxExpand(); // A box that takes all available space.
   /// ```
-  Widget expand() {
-    return SizedBox.expand(child: this);
-  }
+  Widget expandBox() => SizedBox.expand(child: this);
+
+  /// Creates a [SizedBox] with a flexible width and height.
+  ///
+  /// This is useful when you want the box to be flexible in terms of its width or height.
+  ///
+  /// Example:
+  /// ```dart
+  /// Image.asset('test').flexible(width: 100); // A box with flexible height and fixed width.
+  /// ```
+  ///
+  /// [width]: The fixed width of the `SizedBox`.
+  /// [height]: The flexible height of the `SizedBox`.
+  Widget flexibleBox({required double width, double? height}) => SizedBox(
+        width: width,
+        height: height ?? double.infinity,
+        child: this,
+      );
 
   /// Creates a [SizedBox] with specified width, height, and alignment.
   ///
@@ -76,16 +89,15 @@ extension SizedBoxExtension on Widget {
     double? width,
     double? height,
     AlignmentDirectional? alignment,
-  }) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Align(
-        alignment: alignment ?? AlignmentDirectional.topStart,
-        child: this,
-      ),
-    );
-  }
+  }) =>
+      SizedBox(
+        width: width,
+        height: height,
+        child: Align(
+          alignment: alignment ?? AlignmentDirectional.topStart,
+          child: this,
+        ),
+      );
 
   /// Creates a [SizedBox] with padding around the child widget.
   ///
@@ -103,33 +115,13 @@ extension SizedBoxExtension on Widget {
     double? width,
     double? height,
     EdgeInsets? padding,
-  }) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Padding(
-        padding: padding ?? EdgeInsets.zero,
-        child: this,
-      ),
-    );
-  }
-
-  /// Creates a [SizedBox] with a flexible width and height.
-  ///
-  /// This is useful when you want the box to be flexible in terms of its width or height.
-  ///
-  /// Example:
-  /// ```dart
-  /// Image.asset('test').flexible(width: 100); // A box with flexible height and fixed width.
-  /// ```
-  ///
-  /// [width]: The fixed width of the `SizedBox`.
-  /// [height]: The flexible height of the `SizedBox`.
-  Widget flexible({required double width, double? height}) {
-    return SizedBox(
-      width: width,
-      height: height ?? double.infinity,
-      child: this,
-    );
-  }
+  }) =>
+      SizedBox(
+        width: width,
+        height: height,
+        child: Padding(
+          padding: padding ?? EdgeInsets.zero,
+          child: this,
+        ),
+      );
 }
