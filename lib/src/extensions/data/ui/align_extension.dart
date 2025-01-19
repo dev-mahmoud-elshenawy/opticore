@@ -28,6 +28,28 @@ extension AlignmentExtension on Widget {
         child: this,
       );
 
+  /// Aligns the widget to the bottom start corner of its parent.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text("Bottom Start").alignBottomStart;
+  /// ```
+  Widget get alignBottomStart => Align(
+        alignment: AlignmentDirectional.bottomStart,
+        child: this,
+      );
+
+  /// Aligns the widget to the bottom end corner of its parent.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text("Bottom End").alignBottomEnd;
+  /// ```
+  Widget get alignBottomEnd => Align(
+        alignment: AlignmentDirectional.bottomEnd,
+        child: this,
+      );
+
   /// Aligns the widget to the center of its parent.
   ///
   /// Example:

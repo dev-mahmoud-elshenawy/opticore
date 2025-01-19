@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:opticore/opticore.dart';
 
@@ -18,8 +21,13 @@ part '../reusable/fallback_screen/restart_widget.dart';
 part '../reusable/item/svg_widget.dart';
 part '../reusable/paint/dashed_line_vertical_widget.dart';
 part '../reusable/paint/gradient_outlined_button.dart';
+part '../reusable/structure/auto_scroll_when_focused.dart';
+part '../reusable/structure/expandable_text.dart';
+part '../reusable/structure/flexible_gridview.dart';
+part '../reusable/structure/flexible_listview.dart';
+part '../reusable/structure/index_scroller.dart';
 part '../reusable/structure/lazy_indexed_stack.dart';
 part '../reusable/structure/refresh_view.dart';
-part '../reusable/structure/scroll_to_top.dart';
+part '../reusable/structure/top_scroller.dart';
 part 'fallback_screen/no_internet_screen.dart';
 part 'mixin/after_layout_mixin.dart';

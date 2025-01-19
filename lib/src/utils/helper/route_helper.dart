@@ -18,6 +18,17 @@ part of '../util_import.dart';
 /// This class is intended to be used with a `BuildContext` for navigation within widget trees, but it also
 /// includes a static `navigatorKey` to allow navigation control outside of the widget tree (e.g., from services).
 ///
+/// ## Included Methods:
+/// - [push]: Pushes a new screen onto the navigation stack.
+/// - [pushNamed]: Pushes a new screen using a named route.
+/// - [pushReplacement]: Replaces the current screen with a new screen.
+/// - [pushReplacementNamed]: Replaces the current screen with a new named route.
+/// - [pushAndRemoveUntil]: Pushes a new screen and removes all previous routes up to the provided path.
+/// - [pushNamedAndRemoveUntil]: Pushes a new named route and removes all previous routes up to the provided path.
+/// - [pop]: Pops the current route off the stack, optionally returning a result to the previous screen.
+/// - [canPop]: Determines whether the current route can be popped from the navigation stack.
+/// - [navigatorKey]: A global key to access the navigator state of the application.
+///
 /// Example usage:
 /// ```dart
 /// RouteHelper(navigatorKey.currentContext).pushNamed('/home');

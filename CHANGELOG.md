@@ -1,3 +1,50 @@
+## [Beta 1.0.13]
+### New Features and Enhancements
+#### **Extensions**
+- **Align Extensions**:
+  - Added `alignBottomEnd` and `alignBottomStart` for quick alignment to bottom corners.
+- **Positioned Extension Enhancements**:
+  - Updated `PositionedExtension` to utilize `PositionedDirectional` instead of `Positioned`, ensuring better support for `TextDirection` in layouts.
+#### **Reusable Widgets**
+- **AutoScrollWhenFocused**:
+  - Ensures a child widget scrolls into view when it gains focus.
+- **ExpandableText**:
+  - Displays text with a "Read more/Read less" toggle for better readability in constrained layouts.
+- **FlexibleGridView**:
+  - A dynamic `GridView` that adjusts to the height of its children.
+- **FlexibleListView**:
+  - Displays a scrollable list of items with dynamically varying heights.
+- **HideOnScroll**:
+  - Animates visibility of a child widget based on scroll direction, perfect for headers or floating action buttons.
+- **IndexScroller**:
+  - Provides functionality to scroll to a specific index in a list effortlessly.
+- **LazyIndexedStack**:
+  - Enhanced with transition duration customization for smoother animations.
+- **TopScroller**:
+  - Listens for and responds to scroll-to-top gestures, improving navigation flow.
+#### **Helper Classes**
+- **AsyncHelper**:
+  - Added utilities for managing asynchronous tasks:
+    - `executeSequentially`: Ensures tasks execute in sequence without overlap.
+    - `catchAnimationCancel`: Gracefully handles `TickerCanceled` exceptions in animations.
+- **ClipboardHelper**:
+  - Simplified interaction with the system clipboard:
+    - `copyText`: Copies a string to the clipboard, with error handling for empty strings.
+    - `pasteText`: Retrieves plain text from the clipboard.
+    - `copyWithResult`: Provides a boolean result indicating success or failure of the copy operation.
+    - `getClipboardData`: Fetches raw `ClipboardData` for advanced use cases.
+- **SnapScrollSize**:
+  - Introduced a custom `ScrollPhysics` for snapping scroll positions to a fixed interval.
+  - Features include:
+    - Smooth snapping animations.
+    - Support for velocity-based adjustments.
+    - Seamless integration with existing scrolling mechanisms.
+### **General Improvements**
+- **Code Refactoring**:
+  - Optimized logic in reusable components to improve maintainability and performance.
+- **Enhanced Documentation**:
+  - Comprehensive examples and usage guides for new additions, ensuring easier adoption.
+
 ## [Beta 1.0.12]
 ### New Features and Enhancements
 - **New Extension**: Added the `PositionedExtension` for improved widget positioning.

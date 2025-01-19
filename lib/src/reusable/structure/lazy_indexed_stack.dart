@@ -77,7 +77,7 @@ class LazyIndexedStack extends StatefulWidget {
     super.key,
     this.index,
     this.length,
-    this.duration = const Duration(milliseconds: 400),
+    this.duration = const Duration(milliseconds: 200),
     this.pageBuilder,
     this.unloadWidget = const SizedBox.shrink(),
   });

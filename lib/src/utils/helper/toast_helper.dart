@@ -1,6 +1,25 @@
 part of '../util_import.dart';
 
 /// A helper class for displaying custom toast messages using BotToast.
+///
+/// This class provides a simple interface for displaying toast messages with
+/// different types (success, error, info, warning) and durations. It abstracts
+///
+/// the complexity of creating custom toast widgets and managing their display.
+///
+/// **Main Features:**
+/// - Display toast messages with different types (success, error, info, warning).
+/// - Set custom durations for toast messages.
+/// - Automatically handle the display of toast messages using BotToast.
+///
+/// ## included Methods:
+/// - [showToast]: Displays a toast message with the specified type and duration.
+/// enum [ToastType] { success, error, info, warning }
+///
+/// ### Example Usage:
+/// ```dart
+/// ToastHelper.instance.showToast('Success message', type: ToastType.success);
+/// ```
 class ToastHelper {
   /// Private constructor for singleton instance.
   ToastHelper._();

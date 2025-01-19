@@ -47,16 +47,16 @@ extension PositionedExtension on Widget {
   Widget positioned({
     double? top,
     double? bottom,
-    double? left,
-    double? right,
+    double? start,
+    double? end,
     double? width,
     double? height,
   }) =>
       PositionedDirectional(
         top: top,
         bottom: bottom,
-        start: left,
-        end: right,
+        start: start,
+        end: end,
         width: width,
         height: height,
         child: this,
