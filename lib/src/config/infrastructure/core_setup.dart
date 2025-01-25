@@ -20,32 +20,7 @@ part of '../config_import.dart';
 ///     initialRoute: '/home',
 ///   )
 ///   ```
-/// - [maintenanceConfig] (optional): A custom configuration object for the maintenance screen. If provided, it overrides
-///   the default maintenance screen configuration. If not provided, the default behavior will be used.
-///   Example:
-///   ```dart
-///   MaintenanceConfig(
-///     customMessage: 'We are under maintenance, please try again later.',
-///   )
-///   ```
-/// - [noInternetConfig] (optional): A custom configuration for the no internet screen. If provided, it customizes the
-///   appearance and behavior of the no internet page. If not provided, the app will default to its standard behavior.
-///   Example:
-///   ```dart
-///   NoInternetConfig(
-///     customAnim: 'assets/no_internet_anim.json',
-///   )
-///   ```
-/// - [notFoundConfig] (optional): A custom configuration for the not found screen that appears when a user navigates to
-///   a non-existent route. If provided, it customizes the behavior of this screen. If not provided, the default screen
-///   will be shown.
-///   Example:
-///   ```dart
-///   NotFoundConfig(
-///     customAnim: 'assets/404_animation.json',
-///   )
-///   ```
-///   - [onBeforeConfigApply] (optional): A callback function that runs before applying the configurations. This can be used
+///   - [prepConfig] (optional): A callback function that runs before applying the configurations. This can be used
 ///   to perform any necessary setup or initialization tasks before the app configurations are applied.
 ///   Example:
 ///   ```dart
@@ -60,26 +35,14 @@ class CoreSetup extends StatefulWidget {
   /// This parameter is **required** to set up the app properly.
   final AppConfig appConfig;
 
-  /// Custom configuration for the Maintenance screen. If not provided, the default screen will be shown.
-  final MaintenanceConfig? maintenanceConfig;
-
-  /// Custom configuration for the No Internet screen. If not provided, the default behavior will be used.
-  final NoInternetConfig? noInternetConfig;
-
-  /// Custom configuration for the Not Found screen. If not provided, the default behavior will be used.
-  final NotFoundConfig? notFoundConfig;
-
   /// A callback to handle Firebase or other initialization before configurations are applied.
-  final Future<void> Function()? onBeforeConfigApply;
+  final Future<void> Function()? prepConfig;
 
   /// Constructor for initializing the `CoreSetup` widget with app configurations.
   const CoreSetup({
     super.key,
     required this.appConfig,
-    this.maintenanceConfig,
-    this.noInternetConfig,
-    this.notFoundConfig,
-    this.onBeforeConfigApply,
+    this.prepConfig,
   });
 
   @override
@@ -106,27 +69,8 @@ class _CoreSetupState extends State<CoreSetup> with AfterLayoutMixin {
 
   /// Initializes Firebase or other resources and then applies custom configurations.
   Future<void> _initializeConfigurations() async {
-    if (widget.onBeforeConfigApply != null) {
-      await widget.onBeforeConfigApply!();
-    }
-
-    _applyCustomConfigurations();
-  }
-
-  /// Applies custom configurations for the Maintenance, No Internet, and Not Found screens,
-  /// if any are provided. This method ensures that the app uses the custom error screens
-  /// or falls back to default behavior when no custom configurations are provided.
-  void _applyCustomConfigurations() {
-    if (widget.noInternetConfig != null) {
-      NoInternetConfig.instantiate(widget.noInternetConfig!);
-    }
-
-    if (widget.maintenanceConfig != null) {
-      MaintenanceConfig.instantiate(widget.maintenanceConfig!);
-    }
-
-    if (widget.notFoundConfig != null) {
-      NotFoundConfig.instantiate(widget.notFoundConfig!);
+    if (widget.prepConfig != null) {
+      await widget.prepConfig!();
     }
   }
 

@@ -82,6 +82,28 @@ extension AlignmentExtension on Widget {
         alignment: Alignment.bottomCenter,
         child: this,
       );
+
+  /// Aligns the widget to the start center of its parent.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text("Start Center").alignStartCenter;
+  /// ```
+  Widget get alignEndCenter => Align(
+        alignment: AlignmentDirectional.centerEnd,
+        child: this,
+      );
+
+  /// Aligns the widget to the start center of its parent.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text("Start Center").alignStartCenter;
+  /// ```
+  Widget get alignStartCenter => Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: this,
+      );
 }
 
 /// An extension on `Widget` to provide methods for centering widgets

@@ -30,6 +30,13 @@ extension SafeMapAccess<M> on Map<String, dynamic> {
   ///
   /// **Returns:**
   /// - The parsed value if successful, or [defaultValue] in case of errors or null values.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// Map<String, dynamic> map = {'age': 25};
+  /// int age = map.safeValue(key: 'age', parser: (value) => value as int, defaultValue: 0);
+  /// print(age); // Output: 25
+  /// ```
   M safeValue({
     required String key,
     M Function(dynamic)? parser,
@@ -65,6 +72,13 @@ extension SafeMapAccess<M> on Map<String, dynamic> {
   ///
   /// **Returns:**
   /// - A list of values after conversion, or an empty list if the key is missing or an error occurs.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// Map<String, dynamic> map = {'numbers': [1, 2, 3]};
+  /// List<int> numbers = map.safeListValue(key: 'numbers', converter: (value) => value as int);
+  /// print(numbers); // Output: [1, 2, 3]
+  /// ```
   List<T> safeListValue<T>({
     required String key,
     required T Function(dynamic) converter,

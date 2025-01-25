@@ -79,7 +79,7 @@ abstract class BaseRepo {
           await onUpdate(NetworkConfig.headers);
 
       // Update the global headers in NetworkConfig
-      await NetworkConfig.updateHeaders(updatedHeaders);
+      await NetworkConfig.updateHeaders(newHeaders: updatedHeaders);
     }
   }
 }

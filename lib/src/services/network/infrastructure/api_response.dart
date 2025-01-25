@@ -140,7 +140,7 @@ class ApiResponse<M> {
         if (apiError != null && (apiError ?? []).isNotEmpty) {
           onFailure(apiError!.join(', '));
         } else {
-          onFailure('An error occurred.');
+          onFailure(ApiResponseConfig.errorMessage);
         }
         break;
 
@@ -157,7 +157,7 @@ class ApiResponse<M> {
         break;
 
       default:
-        onFailure('Unexpected response type.');
+        onFailure(ApiResponseConfig.errorMessage);
     }
   }
 
@@ -200,18 +200,17 @@ class ApiResponse<M> {
     if (exception is TimeoutException) {
       return ApiResponse<M>(
         type: ApiResponseType.networkError,
-        exceptionMessage: "Request Timeout. Please try again.",
+        exceptionMessage: ApiResponseConfig.requestTimeoutMessage,
       );
     } else if (exception.toString().contains("487")) {
       return ApiResponse<M>(
         type: ApiResponseType.noInternetError,
-        exceptionMessage: "No Internet connection. Please check your network.",
+        exceptionMessage: ApiResponseConfig.networkIssuesMessage,
       );
     } else {
       return ApiResponse<M>(
         type: ApiResponseType.networkError,
-        exceptionMessage:
-            "An unexpected error occurred. Please try again later.",
+        exceptionMessage: ApiResponseConfig.errorMessage,
       );
     }
   }
@@ -247,11 +246,12 @@ class ApiResponse<M> {
     List<String> errors = [];
     if (dioError.response != null) {
       try {
-        errors.add(dioError.response?.data["message"] ??
-            "Something went wrong. Please try again later.");
+        errors.add(
+          dioError.response?.data["message"] ?? ApiResponseConfig.errorMessage,
+        );
       } catch (e) {
         Logger.error('Error extracting API error message: $e');
-        errors.add("Unknown error occurred.");
+        errors.add(ApiResponseConfig.errorMessage);
       }
     }
     return errors;

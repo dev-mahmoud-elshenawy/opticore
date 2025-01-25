@@ -16,7 +16,7 @@ extension SafeString on String? {
   /// Returns `true` if the string has content, otherwise `false`.
   /// Example:
   /// ```dart
-  /// String? nullableString = 'example';
+  /// String? nullableString = 'Mahmoud';
   /// print(nullableString.notNullOrEmpty); // Output: true
   /// ```
   bool get notNullOrEmpty => ((this ?? '').trim().isNotEmpty);
@@ -109,6 +109,52 @@ extension FormatPriceExtension on String {
       return DateTime.tryParse(formattedDate) ?? DateTime.now();
     } catch (_) {
       return DateTime.now();
+    }
+  }
+}
+
+extension SafeJsonDecode on String? {
+  /// Safely decodes a JSON string into a dynamic object
+  /// Returns the decoded JSON object if the string is non-null, non-empty, and can be successfully decoded.
+  /// If the string is null, empty, or invalid, it returns `null`.
+  ///
+  /// Example:
+  /// ```dart
+  /// String? jsonString = '{"name": "Mahmoud"}';
+  /// dynamic? decoded = jsonString.safeJsonDecode;
+  /// print(decoded); // Output: {name: Mahmoud}
+  /// ```
+  T? safeJsonDecode<T>() {
+    if (this == null || this!.isEmpty) return null;
+    try {
+      final decoded = jsonDecode(this!);
+      if (decoded is T) {
+        return decoded;
+      } else {
+        Logger.error('Decoded JSON does not match the expected type: $T');
+        return null;
+      }
+    } catch (e) {
+      Logger.error('Error decoding JSON string: $e');
+      return null;
+    }
+  }
+
+  /// Safely encodes the object to a JSON string.
+  /// Returns `null` if the object cannot be encoded.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> map = {'name': 'Mahmoud'};
+  /// String? jsonString = map.safeJsonEncode;
+  /// print(jsonString); // Output: {"name":"Mahmoud"}
+  /// ```
+  String? get safeJsonEncode {
+    try {
+      return jsonEncode(this);
+    } catch (e) {
+      Logger.error('Error encoding JSON: $e');
+      return null;
     }
   }
 }

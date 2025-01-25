@@ -9,8 +9,8 @@ part of '../extensions_import.dart';
 ///
 /// **Example usage:**
 /// ```dart
-/// final String name = "John";
-/// print(name.setNonNull(null)); // Outputs: "John"
+/// final String name = "Mahmoud";
+/// print(name.setNonNull(null)); // Outputs: "Mahmoud"
 /// ```
 ///
 /// The extension provides methods to:
@@ -27,7 +27,7 @@ extension SetNonNullExtension<M> on M {
   /// **Example:**
   /// ```dart
   /// String? name = null;
-  /// print(name.setNonNull("Default Name"));  // Outputs: "Default Name"
+  /// print(name.setNonNull("Mahmoud"));  // Outputs: "Mahmoud"
   /// ```
   M setNonNull(M? value) {
     return value ?? this;

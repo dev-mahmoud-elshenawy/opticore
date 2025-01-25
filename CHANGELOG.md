@@ -1,3 +1,24 @@
+## [Beta 1.0.14]
+### New Features
+- **UnAuthenticatedConfig**: Added a new configuration class to handle unauthenticated scenarios more effectively.
+- **ApiResponseConfig**: Introduced a new configuration class for handling custom API response messages, such as request timeout, network issues, and generic errors.
+- **New Extensions**:
+  - `safeJsonEncode`: A safer way to encode JSON, ensuring exceptions are handled gracefully.
+  - `safeJsonDecode`: A safer way to decode JSON, preventing errors with malformed or empty JSON strings.
+  - `let`: An extension for executing a block of code on non-null values, improving code readability.
+### Improvements
+- **Configuration Setup**: Simplified configuration setup:
+  - Removed any config setup except for app config related to unloaded data when using remote localization.
+  - Use the `instantiate` method for managing each configuration separately.
+- **NetworkConfig**: Added a new `removeHeaders` method for enhanced control over network headers.
+- **Functions Converted to Getters**:
+  - `toColor`: Converts a string to a color value.
+  - `precacheSvgAsset`: Handles precaching of SVG assets.
+  - `precacheNetwork`: Handles precaching of network images.
+  - `precacheAsset`: Handles precaching of asset images.
+### Bug Fixes
+- Resolved an issue with states not rendering correctly in specific scenarios.
+
 ## [Beta 1.0.13]
 ### New Features and Enhancements
 #### **Extensions**

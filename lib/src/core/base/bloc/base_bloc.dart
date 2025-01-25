@@ -91,7 +91,8 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     String? errorType,
     required Function? retryFunc,
   }) {
-    Logger.info("BaseBloc | API RESPONSE: ${apiResponse?.type} $stateFactory");
+    Logger.info(
+        "BaseBloc | API RESPONSE: ${apiResponse?.type} - ${stateFactory.runtimeType}");
     try {
       /// Success
       if (apiResponse?.type == ApiResponseType.success) {

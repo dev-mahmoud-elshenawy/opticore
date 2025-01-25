@@ -36,7 +36,7 @@ class NetworkConfig extends Equatable {
   /// with the existing ones. If no new headers are provided, the current headers are returned unchanged.
   ///
   /// **Parameters:**
-  /// - `newHeaders`: A map containing the new headers to be added or updated in the global headers.
+  /// - [newHeaders]: A map containing the new headers to be added or updated in the global headers.
   ///   If `null` is passed, the current headers remain unchanged.
   ///
   /// **Returns:**
@@ -50,9 +50,9 @@ class NetworkConfig extends Equatable {
   /// });
   /// print(updatedHeaders);
   /// ```
-  static Future<Map<String, String>> updateHeaders(
+  static Future<Map<String, String>> updateHeaders({
     Map<String, String>? newHeaders,
-  ) async {
+  }) async {
     // Return current headers if no new headers are provided
     if (newHeaders == null) return _headers;
 
@@ -65,6 +65,41 @@ class NetworkConfig extends Equatable {
 
     // Update the global headers map with the new headers
     _headers.addAll(filteredHeaders);
+
+    // Return the updated headers
+    return _headers;
+  }
+
+  // Static method to remove headers globally and return the updated headers
+  /// This method allows you to remove specific headers from the global headers by providing
+  /// a list of `keys` to be removed. If no keys are provided, the current headers are returned unchanged.
+  /// If the provided keys do not exist in the headers, they are ignored.
+  ///
+  /// **Parameters:**
+  /// - [keys]: A list of header keys to be removed from the global headers. If `null` is passed,
+  ///  the current headers remain unchanged.
+  ///
+  /// **Returns:**
+  /// - A [Future<Map<String, String>>] representing the updated global headers,
+  ///  after removing the specified headers.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// var updatedHeaders = await NetworkConfig.removeHeaders(keys:
+  ///  ['Authorization
+  ///  ]);
+  ///  print(updatedHeaders);
+  ///  ```
+  static Future<Map<String, String>> removeHeaders({
+    List<String>? keys,
+  }) async {
+    // Return current headers if no new headers are provided
+    if (keys == null) return _headers;
+
+    // Remove custom headers directly with existing headers, ensuring non-null values
+    for (var key in keys) {
+      _headers.remove(key);
+    }
 
     // Return the updated headers
     return _headers;

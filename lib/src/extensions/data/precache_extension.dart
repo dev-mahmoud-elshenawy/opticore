@@ -21,9 +21,9 @@ extension PrecacheExtension on String {
   ///
   /// **Example:**
   /// ```dart
-  /// "assets/images/logo.png".precacheAsset();
+  /// "assets/images/logo.png".precacheAsset;
   /// ```
-  Future<void> precacheAsset() async {
+  Future<void> get precacheAsset async {
     try {
       await precacheImage(
         AssetImage(this),
@@ -41,9 +41,9 @@ extension PrecacheExtension on String {
   ///
   /// **Example:**
   /// ```dart
-  /// "https://example.com/image.jpg".precacheNetwork();
+  /// "https://example.com/image.jpg".precacheNetwork;
   /// ```
-  Future<void> precacheNetwork() async {
+  Future<void> get precacheNetwork async {
     try {
       await precacheImage(
         CachedNetworkImageProvider(this),
@@ -63,7 +63,7 @@ extension PrecacheExtension on String {
   /// ```dart
   /// "assets/svgs/logo.svg".precacheSvgAsset();
   /// ```
-  Future<void> precacheSvgAsset() async {
+  Future<void> get precacheSvgAsset async {
     try {
       final SvgAssetLoader loader = SvgAssetLoader(this);
       svg.cache

@@ -158,9 +158,6 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   /// Override to handle widget updates.
   void updateWidget(covariant T oldWidget) {}
 
-  /// Called when the user is unauthenticated. Override to provide custom handling.
-  void handleUnauthenticated() {}
-
   // UI Widgets for States
 
   /// Override to provide the widget rendered for a `RenderDataState`.
@@ -279,15 +276,19 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
 
   /// Handles state changes that do not trigger UI rendering.
   void _handleStateListener(BuildContext context, BaseState state) {
-    if (state is LoadingStateNonRender) {
-      showLoading();
-    } else if (state is EndLoadingStateNonRender) {
-      hideLoading();
-    } else if (state is ErrorStateNonRender) {
-      _handleErrorState(state);
-    } else {
-      Logger.error('Unhandled state: $state');
+    switch (state) {
+      case LoadingStateNonRender _:
+        showLoading();
+        break;
+      case EndLoadingStateNonRender _:
+        hideLoading();
+        break;
+      case ErrorStateNonRender _:
+        _handleErrorState(state);
+        break;
     }
+
+    listenToState(context, state);
   }
 
   /// Handles state rendering based on the type of state received.
@@ -316,7 +317,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     hideLoading();
     switch (state.type) {
       case ApiResponseType.unauthorizedError:
-        handleUnauthenticated();
+        UnAuthenticatedConfig.onUnauthenticated?.call();
         break;
 
       default:

@@ -31,7 +31,7 @@ extension HexColorExtension on String {
   /// Color color = hexColor.toColor();
   /// print(color); // Output: Color(0xffff5733)
   /// ```
-  Color toColor() {
+  Color get toColor {
     // Check if the hex code starts with '#'
     String hexString = startsWith('#') ? substring(1) : this;
 

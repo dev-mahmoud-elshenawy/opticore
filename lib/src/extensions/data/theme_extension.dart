@@ -9,7 +9,7 @@ part of '../extensions_import.dart';
 /// **Example usage:**
 /// ```dart
 /// Text(
-///   'Hello',
+///   'Hello Mahmoud!',
 ///   style: context.textTheme.headlineSmall,
 /// );
 /// Container(
