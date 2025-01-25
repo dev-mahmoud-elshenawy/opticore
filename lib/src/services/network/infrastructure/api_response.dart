@@ -180,6 +180,7 @@ class ApiResponse<M> {
     return ApiResponse<M>(
       type: type,
       statusCode: dioError.response?.statusCode,
+      exceptionMessage: errors.firstOrNull ?? ApiResponseConfig.errorMessage,
       apiError: errors,
       code: dioError.response?.data["code"] ?? 0,
     );
@@ -269,6 +270,9 @@ class ApiResponse<M> {
   static ApiResponseType _getApiErrorType(DioException dioError) {
     int? statusCode = dioError.response?.statusCode ?? 0;
     if (statusCode == 401) {
+      if (UnAuthenticatedConfig.onUnauthenticated != null) {
+        UnAuthenticatedConfig.onUnauthenticated!();
+      }
       return ApiResponseType.unauthorizedError;
     } else if (statusCode >= 500) {
       return ApiResponseType.serverError;

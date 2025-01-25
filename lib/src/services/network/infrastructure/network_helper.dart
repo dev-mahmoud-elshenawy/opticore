@@ -39,11 +39,15 @@ class NetworkHelper {
       dio.interceptors.add(
         TalkerDioLogger(
           settings: TalkerDioLoggerSettings(
-            printRequestHeaders: true,
-            printRequestData: true,
-            printResponseHeaders: false,
+            enabled: true,
             printResponseData: true,
-            printResponseMessage: false,
+            printResponseHeaders: false,
+            printResponseMessage: true,
+            printErrorData: true,
+            printErrorHeaders: true,
+            printErrorMessage: true,
+            printRequestData: true,
+            printRequestHeaders: true,
             errorPen: AnsiPen()..xterm(160),
             requestPen: AnsiPen()..xterm(215),
             responsePen: AnsiPen()..xterm(42),
@@ -52,11 +56,11 @@ class NetworkHelper {
       );
     }
 
-    final request = DioConnectivityRequest(
+    final DioConnectivityRequest request = DioConnectivityRequest(
       connectivity: Connectivity(),
       dio: dio,
     );
-    final retryInterceptor = RetryConnection(
+    final RetryConnection retryInterceptor = RetryConnection(
       request: request,
     );
 
@@ -83,7 +87,7 @@ class NetworkHelper {
   /// - [method]: The HTTP method to use for the request (GET, POST, etc.).
   /// - [params]: Query parameters for the request.
   /// - [body]: The body of the request (used for methods like POST, PUT, etc.).
-  /// - [rawData]: If true, sends the body as raw data (default is false).
+  /// - [requestBodyType]: The type of request body (JSON, FormData, etc.). Defaults to JSON.
   /// - [onSendProgress]: A callback to track the progress of file uploads.
   ///
   /// Returns an [ApiResponse] of the requested type.
@@ -93,10 +97,12 @@ class NetworkHelper {
     HTTPMethod method = HTTPMethod.none,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
-    bool rawData = false,
+    RequestBodyType? requestBodyType,
     Function(int, int)? onSendProgress,
   }) async {
     bool connected = await InternetConnectionHandler.isInternetConnected();
+    requestBodyType ??= RequestBodyType.json;
+
     if (connected) {
       return await _request(
         url,
@@ -104,7 +110,7 @@ class NetworkHelper {
         method: method,
         params: params,
         body: body,
-        rawData: rawData,
+        requestBodyType: requestBodyType,
         onSendProgress: onSendProgress,
       );
     } else {
@@ -127,7 +133,7 @@ class NetworkHelper {
   /// - [method]: The HTTP method to use for the request (GET, POST, etc.).
   /// - [params]: Query parameters for the request.
   /// - [body]: The body of the request (used for methods like POST, PUT, etc.).
-  /// - [rawData]: If true, sends the body as raw data (default is false).
+  /// - [requestBodyType]: The type of request body (JSON, FormData, etc.). Defaults to JSON.
   /// - [onSendProgress]: A callback to track the progress of file uploads.
   ///
   /// Returns an [ApiResponse] of the requested type.
@@ -137,7 +143,7 @@ class NetworkHelper {
     HTTPMethod method = HTTPMethod.get,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
-    bool rawData = false,
+    RequestBodyType? requestBodyType,
     Function(int, int)? onSendProgress,
     Function(int, int)? onReceiveProgress,
     String? savePath,
@@ -154,7 +160,7 @@ class NetworkHelper {
         method: method,
         params: params,
         body: body,
-        rawData: rawData,
+        requestBodyType: requestBodyType,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
         savePath: savePath,
@@ -181,7 +187,7 @@ class NetworkHelper {
   /// - [method]: The HTTP method to use for the request.
   /// - [params]: Query parameters for the request.
   /// - [body]: The body of the request (used for methods like POST, PUT, etc.).
-  /// - [rawData]: If true, sends the body as raw data (default is false).
+  /// - [requestBodyType]: The type of request body (JSON, FormData, etc.). Defaults to JSON.
   /// - [onSendProgress]: A callback to track the progress of file uploads for all methods except DELETE.
   /// - [savePath]: The path to save the downloaded file (used for the DOWNLOAD method).
   /// - [onReceiveProgress]: A callback to track the progress of file downloads (used only for the DOWNLOAD method).
@@ -192,14 +198,14 @@ class NetworkHelper {
     required HTTPMethod method,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
-    bool rawData = false,
+    RequestBodyType? requestBodyType,
     Function(int, int)? onSendProgress,
     Function(int, int)? onReceiveProgress,
     String? savePath,
   }) async {
-    final data = rawData
-        ? jsonEncode(body)
-        : (body != null ? FormData.fromMap(body) : null);
+    final data = requestBodyType == RequestBodyType.formData
+        ? (body != null ? FormData.fromMap(body) : null)
+        : jsonEncode(body);
 
     switch (method) {
       case HTTPMethod.get:

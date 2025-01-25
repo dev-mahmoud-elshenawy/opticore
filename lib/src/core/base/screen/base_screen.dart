@@ -350,14 +350,17 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   /// Closes the keyboard if it's open.
   @override
   void closeKeyboard() {
-    FocusScope.of(baseContext).unfocus();
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus!.unfocus();
+    }
   }
 
   /// Shows a success toast with a message.
   @override
   void showSuccess({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.success);
+      ToastHelper.showToast(message!, type: ToastType.success);
     }
   }
 
@@ -365,7 +368,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void showError({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.error);
+      ToastHelper.showToast(message!, type: ToastType.error);
     }
   }
 
@@ -373,7 +376,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void showWarning({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.warning);
+      ToastHelper.showToast(message!, type: ToastType.warning);
     }
   }
 
@@ -381,7 +384,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void showInfo({String? message}) {
     if (message?.isNotEmpty ?? false) {
-      ToastHelper.instance.showToast(message!, type: ToastType.info);
+      ToastHelper.showToast(message!, type: ToastType.info);
     }
   }
 }

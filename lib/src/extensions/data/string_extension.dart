@@ -11,6 +11,19 @@ extension SafeString on String? {
   /// ```
   String get notNull => this ?? '';
 
+  /// Set another value if string is null or empty.
+  ///
+  /// If the string is not null and not empty, it returns the string itself.
+  /// Otherwise, it returns the provided value.
+  /// Example:
+  /// ```dart
+  /// String? nullableString = null;
+  /// print(nullableString.orSet('Mahmoud')); // Output: 'Mahmoud'
+  /// ```
+  String orSet(String value) {
+    return notNullOrEmpty ? this! : value;
+  }
+
   /// Checks if the string is not null and not empty.
   ///
   /// Returns `true` if the string has content, otherwise `false`.
@@ -154,6 +167,76 @@ extension SafeJsonDecode on String? {
       return jsonEncode(this);
     } catch (e) {
       Logger.error('Error encoding JSON: $e');
+      return null;
+    }
+  }
+}
+
+extension StringParsingExtensions on String? {
+  /// Returns the string parsed as an integer if possible, or `null` if it cannot be parsed.
+  ///
+  /// Example:
+  /// ```dart
+  /// String? number = '123';
+  /// int? parsedNumber = number.toIntOrNull;
+  /// print(parsedNumber); // Output: 123
+  /// ```
+  int? get toIntOrNull {
+    if (this == null) return null;
+    try {
+      return int.parse(this!);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Returns the string parsed as a double if possible, or `null` if it cannot be parsed.
+  ///
+  /// Example:
+  /// ```dart
+  /// String? number = '123.45';
+  /// double? parsedNumber = number.toDoubleOrNull;
+  /// print(parsedNumber); // Output: 123.45
+  /// ```
+  double? get toDoubleOrNull {
+    if (this == null) return null;
+    try {
+      return double.parse(this!);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Returns the string parsed as a Map if it's a valid JSON map, or `null` if it's invalid.
+  ///
+  /// Example:
+  /// ```dart
+  /// String? jsonMap = '{"name": "Mahmoud"}';
+  /// Map<String, dynamic>? parsedMap = jsonMap.toMapOrNull;
+  /// print(parsedMap); // Output: {name: Mahmoud}
+  /// ```
+  Map<String, dynamic>? get toMapOrNull {
+    if (this == null) return null;
+    try {
+      return jsonDecode(this!) as Map<String, dynamic>?;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Returns the string parsed as a List if it's a valid JSON list, or `null` if it's invalid.
+  ///
+  /// Example:
+  /// ```dart
+  /// String? jsonList = '["Mahmoud", "Ali"]';
+  /// List<String>? parsedList = jsonList.toListOrNull;
+  /// print(parsedList); // Output: [Mahmoud, Ali]
+  /// ```
+  List<dynamic>? get toListOrNull {
+    if (this == null) return null;
+    try {
+      return jsonDecode(this!) as List<dynamic>?;
+    } catch (e) {
       return null;
     }
   }

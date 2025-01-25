@@ -18,17 +18,19 @@ part of '../util_import.dart';
 ///
 /// ### Example Usage:
 /// ```dart
-/// ToastHelper.instance.showToast('Success message', type: ToastType.success);
+/// ToastHelper.showToast('Success message', type: ToastType.success);
 /// ```
 class ToastHelper {
-  /// Private constructor for singleton instance.
+  /// Private constructor to prevent instantiation of the class.
   ToastHelper._();
 
-  /// Singleton instance of [ToastHelper].
-  static final ToastHelper _instance = ToastHelper._();
-
-  /// Provides access to the singleton instance.
-  static ToastHelper get instance => _instance;
+  /// Factory constructor to return a new instance of the [ToastHelper] class.
+  factory ToastHelper({
+    String? customMessage,
+    int? customDuration,
+  }) {
+    return ToastHelper._();
+  }
 
   /// Default duration for toast messages, in seconds.
   static const int defaultDuration = 2;
@@ -38,7 +40,7 @@ class ToastHelper {
   /// [message]: The message to display. Ignored if null or empty.
   /// [type]: The type of toast to display. Determines icon and background color.
   /// [duration]: Duration of the toast in seconds. Defaults to [defaultDuration].
-  void showToast(
+  static void showToast(
     String? message, {
     required ToastType type,
     int? duration,
@@ -61,7 +63,7 @@ class ToastHelper {
   /// [icon]: The icon to show in the toast.
   /// [color]: The background color of the toast.
   /// [duration]: The duration of the toast in seconds.
-  void _displayToast({
+  static void _displayToast({
     required String message,
     required IconData icon,
     required Color color,
@@ -78,7 +80,7 @@ class ToastHelper {
   /// Determines the configuration for the specified [ToastType].
   ///
   /// Returns a [_ToastConfig] containing the icon and color for the toast.
-  _ToastConfig _getToastConfig(ToastType type) {
+  static _ToastConfig _getToastConfig(ToastType type) {
     switch (type) {
       case ToastType.success:
         return _ToastConfig(
@@ -108,7 +110,7 @@ class ToastHelper {
   /// [message]: The message to display.
   /// [icon]: The icon to display in the toast.
   /// [color]: The background color of the toast.
-  Widget _buildToast(String message, IconData icon, Color color) {
+  static Widget _buildToast(String message, IconData icon, Color color) {
     return Card(
       color: color,
       elevation: 2,

@@ -68,10 +68,10 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// 5. **No Internet Errors**: Navigates to a no-internet screen and retries the operation when requested.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response to handle.
-  /// - `onApiErrorAction`: Callback for specific API error handling actions.
-  /// - `errorType`: Optional string to categorize the error type.
-  /// - `retryFunc`: Function to retry the operation on certain errors (e.g., network or server errors).
+  /// - [apiResponse]: The API response to handle.
+  /// - [onApiErrorAction]: Callback for specific API error handling actions.
+  /// - [errorType]: Optional string to categorize the error type.
+  /// - [retryFunc]: Function to retry the operation on certain errors (e.g., network or server errors).
   ///
   /// #### Returns:
   /// - [BaseState]: The next state of the application.
@@ -162,9 +162,9 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Handles API and network-related errors, including unauthorized access.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response containing the error details.
-  /// - `onApiErrorAction`: Optional callback for specific API error handling.
-  /// - `errorType`: Optional string indicating the error type.
+  /// - [apiResponse]: The API response containing the error details.
+  /// - [onApiErrorAction]: Optional callback for specific API error handling.
+  /// - [errorType]: Optional string indicating the error type.
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.
@@ -219,9 +219,9 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Handles API errors, such as unauthorized access or server-side validation failures.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response containing the error details.
-  /// - `onApiErrorAction`: Optional callback for specific API error handling.
-  /// - `errorType`: Optional string indicating the error type.
+  /// - [apiResponse]: The API response containing the error details.
+  /// - [onApiErrorAction]: Optional callback for specific API error handling.
+  /// - [errorType]: Optional string indicating the error type.
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.
@@ -274,8 +274,8 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Handles network-related errors, such as connectivity issues or request failures.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response containing the error details.
-  /// - `errorType`: Optional string indicating the error type.
+  /// - [apiResponse]: The API response containing the error details.
+  /// - [errorType]: Optional string indicating the error type.
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.
@@ -311,9 +311,9 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Handles no internet connection errors.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response containing the error details.
-  /// - `errorType`: Optional string indicating the error type.
-  /// - `retryFunc`: Function to retry the operation on certain errors (e.g., network or server errors).
+  /// - [apiResponse]: The API response containing the error details.
+  /// - [errorType]: Optional string indicating the error type.
+  /// - [retryFunc]: Function to retry the operation on certain errors (e.g., network or server errors).
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.
@@ -351,9 +351,9 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Handles server errors, such as maintenance or server-side issues.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response containing the error details.
-  /// - `errorType`: Optional string indicating the error type.
-  /// - `retryFunc`: Function to retry the operation on certain errors (e.g., network or server errors).
+  /// - [apiResponse]: The API response containing the error details.
+  /// - [errorType]: Optional string indicating the error type.
+  /// - [retryFunc]: Function to retry the operation on certain errors (e.g., network or server errors).
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.
@@ -391,9 +391,9 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Handles unauthorized access errors.
   ///
   /// #### Parameters:
-  /// - `apiResponse`: The API response containing the error details.
-  /// - `errorType`: Optional string indicating the error type.
-  /// - `retryFunc`: Function to retry the operation on certain errors (e.g., network or server errors).
+  /// - [apiResponse]: The API response containing the error details.
+  /// - [errorType]: Optional string indicating the error type.
+  /// - [retryFunc]: Function to retry the operation on certain errors (e.g., network or server errors).
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.
@@ -423,10 +423,10 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// Returns an error state based on the error type and message.
   ///
   /// #### Parameters:
-  /// - `errorMsg`: The error message to display.
-  /// - `isException`: A boolean indicating if the error is an exception.
-  /// - `errorType`: The type of error to handle.
-  /// - `apiErrorType`: The type of API error to manage.
+  /// - [errorMsg]: The error message to display.
+  /// - [isException]: A boolean indicating if the error is an exception.
+  /// - [errorType]: The type of error to handle.
+  /// - [apiErrorType]: The type of API error to manage.
   ///
   /// #### Returns:
   /// - [BaseState]: The appropriate error state.

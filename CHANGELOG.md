@@ -1,3 +1,17 @@
+## [Beta 1.0.15]
+### New Features
+- **RequestBodyType Enum**:
+ - Added a new `RequestBodyType` enum to handle API request body types.
+ - Supports `formData` and `rawData` (JSON) formats.
+ - Default body type is set to `rawData` (JSON).
+- **Static ToastHelper**:
+ - Replaced the singleton instance of `ToastHelper` with a static implementation for better performance and global accessibility.
+### Improvements
+- **Unauthorized Handling**:
+ - Updated the mechanism for handling unauthorized scenarios.
+ - Ensures consistent behavior and improved error messaging.
+ - Dependency Updates and Code Refactoring for enhanced performance and stability.
+
 ## [Beta 1.0.14]
 ### New Features
 - **UnAuthenticatedConfig**: Added a new configuration class to handle unauthenticated scenarios more effectively.
