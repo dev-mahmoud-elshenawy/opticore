@@ -58,6 +58,7 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: (config?.hasBack ?? true)
           ? LeadingWidget(
               route: route,
+              onBack: config?.onBack,
               backIcon: config?.customIconBack,
               iconBackgroundColor: config?.iconBackgroundColor,
               iconColor: config?.iconColor,

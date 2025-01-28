@@ -16,6 +16,7 @@ part '../extensions/data/set_non_null_extension.dart';
 part '../extensions/data/string_extension.dart';
 part '../extensions/data/theme_extension.dart';
 part 'data/ui/align_extension.dart';
+part 'data/ui/directionality_extension.dart';
 part 'data/ui/flex_extension.dart';
 part 'data/ui/padding_extension.dart';
 part 'data/ui/positioned_extension.dart';

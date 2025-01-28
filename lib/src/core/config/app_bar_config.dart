@@ -37,6 +37,7 @@ part of '../base/import/base_import.dart';
 /// - [backgroundColor]: The background color of the `AppBar`. If not provided, the default color is used.
 /// - [surfaceTintColor]: A tint color applied to the surface of the `AppBar`. If not provided, the default color is used.
 /// - [shareAction]: A callback to execute when the share button is pressed. Default is `null`.
+/// - [onBack]: A callback to execute when the back button is pressed. Default is `null`.
 /// - [filterAction]: A callback to execute when the filter button is pressed. Default is `null`.
 /// - [searchAction]: A callback to execute when the search button is pressed. Default is `null`.
 /// - [customBack]: A custom widget to replace the default back button. Default is `null`.
@@ -144,6 +145,11 @@ class AppBarConfig extends Equatable {
   /// If null, no action will be performed. The default value is null.
   final Function()? shareAction;
 
+  /// A callback function to execute when the back button is pressed.
+  ///
+  /// If null, no action will be performed. The default value is null.
+  final Function()? onBack;
+
   /// A callback function to execute when the filter button is pressed.
   ///
   /// If null, no action will be performed. The default value is null.
@@ -222,6 +228,7 @@ class AppBarConfig extends Equatable {
     this.shareAction,
     this.filterAction,
     this.searchAction,
+    this.onBack,
     this.iconColor,
     this.iconBackgroundColor,
   });
@@ -241,6 +248,7 @@ class AppBarConfig extends Equatable {
         customShare,
         customFilter,
         customSearch,
+        onBack,
         actions,
         backgroundColor,
         surfaceTintColor,

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:opticore/opticore.dart';
 
 import 'dio_connectivity_request.dart';
@@ -52,19 +50,6 @@ class RetryConnection extends QueuedInterceptorsWrapper {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Log the request body if available
-    if (options.data is FormData) {
-      // Convert FormData to JSON
-      Map<String, dynamic> formDataMap = {};
-      options.data.fields.forEach((field) {
-        formDataMap[field.key] = field.value;
-      });
-      if (formDataMap.isNotEmpty) {
-        Logger.info("Request Body: ${jsonEncode(formDataMap)}");
-      }
-    } else if (options.data != null) {
-      Logger.info("Request Body: ${jsonEncode(options.data)}");
-    }
     // Optionally log or modify request here
     return handler.next(options); // Continue with the request
   }

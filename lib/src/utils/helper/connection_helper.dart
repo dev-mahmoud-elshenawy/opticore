@@ -25,6 +25,81 @@ class InternetConnectionHandler {
   /// Instance of the [InternetConnection] class used for checking actual internet access.
   static final InternetConnection _checker = InternetConnection();
 
+  /// Flag indicating whether the device is currently connected to the internet.
+  static bool _isConnected = false;
+
+  /// Stream that emits the internet connection status changes.
+  ///
+  /// This stream provides real-time updates on the internet connection status, emitting
+  /// [InternetStatus.connected] when the device is connected to the internet and
+  /// [InternetStatus.disconnected] when the device is disconnected.
+  /// The stream can be used to listen for changes in the internet connection status.
+  /// ```dart
+  /// InternetConnectionHandler.internetConnectionStatusStream.listen((status) {
+  ///  if (status == InternetStatus.connected) {
+  ///  // Handle internet connection
+  ///  } else {
+  ///  // Handle no internet connection
+  ///  }
+  ///  });
+  ///  ```
+  static final Stream<InternetStatus> _internetConnectionStream =
+      InternetConnection().onStatusChange;
+
+  /// Stream that emits the internet connection status changes.
+  ///
+  /// This stream provides real-time updates on the internet connection status, emitting
+  /// [InternetStatus.connected] when the device is connected to the internet and
+  /// [InternetStatus.disconnected] when the device is disconnected.
+  /// The stream can be used to listen for changes in the internet connection status.
+  ///
+  /// ### Example Usage:
+  /// ```dart
+  /// InternetConnectionHandler.internetConnectionStatusStream.listen((status) {
+  ///  if (status == InternetStatus.connected) {
+  ///  // Handle internet connection
+  ///  } else {
+  ///  // Handle no internet connection
+  ///  }
+  ///  });
+  ///  ```
+  static Stream<InternetStatus> get internetConnectionStatusStream {
+    return _internetConnectionStream;
+  }
+
+  /// Flag indicating whether the device is currently connected to the internet.
+  ///
+  /// This flag is updated based on the internet connection status changes.
+  /// It can be used to determine whether the device has internet access.
+  /// But you need to [startListeningToConnectivity] to start listening to the internet connection status changes.
+  ///
+  /// ### Example Usage:
+  /// ```dart
+  /// if (InternetConnectionHandler.isConnected) {
+  /// // Proceed with internet-dependent actions
+  /// } else {
+  /// // Handle no internet connection scenario
+  /// }
+  /// ```
+  ///
+  static bool get isConnected => _isConnected;
+
+  /// Starts listening to the internet connection status changes.
+  ///
+  /// This method listens to the internet connection status changes and updates the [isConnected] flag accordingly.
+  /// which determines whether the device is connected to the internet.
+  /// By subscribing to the stream [internetConnectionStatusStream], the class can track the internet connection status changes in real-time.
+  ///
+  /// ### Example Usage:
+  /// ```dart
+  /// InternetConnectionHandler.startListeningToConnectivity();
+  /// ```
+  static void startListeningToConnectivity() {
+    _internetConnectionStream.listen((isConnected) {
+      _isConnected = isConnected == InternetStatus.connected;
+    });
+  }
+
   /// Flag indicating whether the "No Internet Scene" has been displayed.
   /// This can be used to manage the UI state, ensuring that the "No Internet" message
   /// is not repeatedly shown while the device remains disconnected.

@@ -43,7 +43,7 @@ class FlexibleListView<T> extends StatelessWidget {
   /// Scroll direction of the list view.
   ///
   /// Determines whether the list scrolls horizontally or vertically. Defaults
-  /// to [ScrollDirection.horizontal].
+  /// to [ScrollDirection.vertical].
   final ScrollDirection scrollDirection;
 
   /// Optional physics for the scroll view.
@@ -82,7 +82,7 @@ class FlexibleListView<T> extends StatelessWidget {
     this.padding,
     this.itemPadding = const EdgeInsetsDirectional.only(end: 20.0),
     this.controller,
-    this.scrollDirection = ScrollDirection.horizontal,
+    this.scrollDirection = ScrollDirection.vertical,
     this.physics,
   });
 

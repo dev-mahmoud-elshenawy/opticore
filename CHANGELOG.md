@@ -1,16 +1,40 @@
+## [Beta 1.0.16]
+### New Features
+- **TextInputHelper**:
+  - Introduced `handleEgyptPhoneInput` to automatically remove the leading `0` when the country code is `+20`.
+- **New Text Formatters**:
+  - **EgyptPhoneNumberInputFormatter**: Provides the same functionality as `handleEgyptPhoneInput` but operates independently of controller listeners as a formatter.
+  - **ForceLTRInputFormatter**: Ensures input text is forced to display in a left-to-right (LTR) direction.
+- **Internet Connectivity Enhancements**:
+  - Added `Stream<InternetStatus>` as `internetConnectionStream` for real-time internet connection monitoring.
+  - Introduced `isConnected` variable that updates dynamically based on stream listening.
+  - Implemented `startListeningToConnectivity` for initializing global internet connectivity monitoring in the app's top-level widget.
+- **App Bar Configuration**:
+  - Added `onBack` callback to customize the behavior of the back button navigation.
+
+### Improvements
+- **FlexibleListView**:
+  - Default scroll direction updated to **vertical** for a more intuitive user experience.
+
+- **String Extensions**:
+  - Added `forceLTR` extension to handle foreign language strings when used alongside Arabic versions.
+
+- **Code Refactoring**:
+  - Separated text formatters into individual files for improved clarity and organization.
+
 ## [Beta 1.0.15]
 ### New Features
 - **RequestBodyType Enum**:
- - Added a new `RequestBodyType` enum to handle API request body types.
- - Supports `formData` and `rawData` (JSON) formats.
- - Default body type is set to `rawData` (JSON).
+  - Added a new `RequestBodyType` enum to handle API request body types.
+  - Supports `formData` and `rawData` (JSON) formats.
+  - Default body type is set to `rawData` (JSON).
 - **Static ToastHelper**:
- - Replaced the singleton instance of `ToastHelper` with a static implementation for better performance and global accessibility.
+  - Replaced the singleton instance of `ToastHelper` with a static implementation for better performance and global accessibility.
 ### Improvements
 - **Unauthorized Handling**:
- - Updated the mechanism for handling unauthorized scenarios.
- - Ensures consistent behavior and improved error messaging.
- - Dependency Updates and Code Refactoring for enhanced performance and stability.
+  - Updated the mechanism for handling unauthorized scenarios.
+  - Ensures consistent behavior and improved error messaging.
+  - Dependency Updates and Code Refactoring for enhanced performance and stability.
 
 ## [Beta 1.0.14]
 ### New Features

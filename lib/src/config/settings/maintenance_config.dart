@@ -89,7 +89,7 @@ class MaintenanceConfig extends Equatable {
   /// );
   /// MaintenanceConfig.instantiate(customConfig);
   /// ```
-  static void instantiate(MaintenanceConfig customConfig) {
+  static Future<void> instantiate(MaintenanceConfig customConfig) async {
     _message = customConfig.customMessage ?? _message;
     _messageButton = customConfig.customMessageButton ?? _messageButton;
     _messageRetryToast =

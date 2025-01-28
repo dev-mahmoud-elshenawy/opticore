@@ -124,6 +124,27 @@ extension FormatPriceExtension on String {
       return DateTime.now();
     }
   }
+
+  /// Adds a Left-To-Right Mark (LRM) to the string to force Left-To-Right text direction.
+  /// Returns the string with the LRM added at the beginning and end.
+  /// If the string contains only English letters and numbers, it returns the string unchanged.
+  ///
+  /// This method is useful when displaying text that contains both Left-To-Right and Right-To-Left characters.
+  ///
+  /// Example:
+  /// ```dart
+  /// 'Hello مرحبا'.forceLTR; // Output: 'Hello ‎مرحبا‎'
+  /// ```
+  String get forceLTR {
+    if (!notNullOrEmpty) return '';
+    // Check if the string contains only English letters and numbers
+    final RegExp englishRegExp = RegExp(r'^[A-Za-z0-9 ]+$');
+    if (englishRegExp.hasMatch(this)) {
+      const ltrMark = '\u200E'; // Left-To-Right Mark (LRM)
+      return '$ltrMark$this$ltrMark';
+    }
+    return this; // Return the text unchanged if it doesn't contain only English letters and numbers
+  }
 }
 
 extension SafeJsonDecode on String? {
