@@ -90,7 +90,7 @@ extension SafeJsonDecode on String? {
     }
   }
 
-  /// Safely decodes a JSON string into a Map<String, dynamic> object.
+  /// Safely decodes a JSON string.
   /// Returns the decoded JSON object if the string is non-null, non-empty, and can be successfully decoded.
   /// If the string is null, empty, or invalid, it returns `null`.
   ///
@@ -116,7 +116,7 @@ extension SafeJsonDecode on String? {
     }
   }
 
-  /// Safely decodes a JSON string into a List<dynamic> object.
+  /// Safely decodes a JSON string.
   /// Returns the decoded JSON object if the string is non-null, non-empty, and can be successfully decoded.
   List<dynamic>? get safeJsonDecodeAsList {
     if (this == null || this!.isEmpty) return null;

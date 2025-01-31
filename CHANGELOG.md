@@ -1,3 +1,10 @@
+## [Beta 1.0.18]
+### New Features
+- **Reusable Widget:**
+  - Added `FlexibleCheckbox` widget for customizable checkbox functionality.
+  - Introduced `DioLogger` for logging network requests and responses.
+- **Enhanced analyzer warnings** to ensure better detection of potential issues, improving code maintainability.
+
 ## [Beta 1.0.17]
 ### New Features
 - **Extended Context Utilities:**
