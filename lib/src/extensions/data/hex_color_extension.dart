@@ -42,4 +42,37 @@ extension HexColorExtension on String {
       return Colors.black;
     }
   }
+
+  /// Converts a hex color code string to a [Color] object with an alpha channel.
+  ///
+  /// This method is similar to [toColor], but it supports ARGB hex color codes
+  /// (8 characters) by parsing the alpha channel as well. If the hex code is
+  /// not in ARGB format, it falls back to RGB format.
+  ///
+  /// **Returns:**
+  /// - A [Color] object corresponding to the hex color code.
+  /// - If the hex code is invalid, it returns [Colors.black] and logs an error.
+  ///
+  /// **Example usage:**
+  /// ```dart
+  /// String hexColor = "FF5733";
+  /// Color color = hexColor.toColorWithAlpha;
+  /// print(color); // Output: Color(0xffff5733)
+  /// ```
+  Color get toColorWithAlpha {
+    String hexString = startsWith('#') ? substring(1) : this;
+
+    // If the hex code is 8 characters, it’s ARGB (Alpha, Red, Green, Blue)
+    if (hexString.length == 8) {
+      try {
+        return Color(int.parse(hexString, radix: 16));
+      } catch (e) {
+        Logger.error('Invalid ARGB hex color code: $this');
+        return Colors.black;
+      }
+    } else {
+      // If not ARGB, fallback to RGB
+      return toColor;
+    }
+  }
 }

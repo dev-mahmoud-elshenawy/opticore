@@ -11,6 +11,16 @@ extension SafeString on String? {
   /// ```
   String get notNull => this ?? '';
 
+  /// Checks if the string is not null and not empty.
+  ///
+  /// Returns `true` if the string has content, otherwise `false`.
+  /// Example:
+  /// ```dart
+  /// String? nullableString = 'Mahmoud';
+  /// print(nullableString.notNullOrEmpty); // Output: true
+  /// ```
+  bool get notNullOrEmpty => ((this ?? '').trim().isNotEmpty);
+
   /// Set another value if string is null or empty.
   ///
   /// If the string is not null and not empty, it returns the string itself.
@@ -23,19 +33,9 @@ extension SafeString on String? {
   String orSet(String value) {
     return notNullOrEmpty ? this! : value;
   }
-
-  /// Checks if the string is not null and not empty.
-  ///
-  /// Returns `true` if the string has content, otherwise `false`.
-  /// Example:
-  /// ```dart
-  /// String? nullableString = 'Mahmoud';
-  /// print(nullableString.notNullOrEmpty); // Output: true
-  /// ```
-  bool get notNullOrEmpty => ((this ?? '').trim().isNotEmpty);
 }
 
-extension FormatPriceExtension on String {
+extension FormatExtension on String {
   /// Formats a numeric string into a price format with commas and removes trailing zeroes.
   ///
   /// Handles international price formats and ensures a clean output.
@@ -44,30 +44,23 @@ extension FormatPriceExtension on String {
   /// '1234567.00'.formatPrice; // Output: '1,234,567'
   /// ```
   String get formatPrice {
-    if (isEmpty) {
-      return this;
-    }
+    if (isEmpty) return this;
 
     try {
       final List<String> parts = split('.');
-
       parts[0] = parts[0].replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
         (Match match) => '${match[1]},',
       );
 
-      String? result = parts.join('.');
+      String result = parts.join('.');
 
-      if (!result.contains('.')) {
-        return result;
-      }
+      if (!result.contains('.')) return result;
 
       result = result.replaceAll(RegExp(r'0*$'), '');
-      if (result.endsWith('.')) {
-        result = result.substring(0, result.length - 1);
-      }
-
-      return result;
+      return result.endsWith('.')
+          ? result.substring(0, result.length - 1)
+          : result;
     } catch (e) {
       Logger.debug('Error formatting price: $e');
       return this;
@@ -101,30 +94,6 @@ extension FormatPriceExtension on String {
     );
   }
 
-  /// Converts a string in the format `YYYY-MM-DD` to a [DateTime] object.
-  ///
-  /// Ensures that each part (year, month, day) is correctly padded for consistency.
-  /// If parsing fails, returns the current [DateTime].
-  /// Example:
-  /// ```dart
-  /// '2023-01-11'.formatDate; // Output: DateTime object for 2023-01-11
-  /// ```
-  DateTime get formatDate {
-    try {
-      final List<String> parts = split('-');
-
-      String year = parts[0];
-      String month = parts[1].padLeft(2, '0');
-      String day = parts[2].padLeft(2, '0');
-
-      String formattedDate = '$year-$month-$day';
-
-      return DateTime.tryParse(formattedDate) ?? DateTime.now();
-    } catch (_) {
-      return DateTime.now();
-    }
-  }
-
   /// Adds a Left-To-Right Mark (LRM) to the string to force Left-To-Right text direction.
   /// Returns the string with the LRM added at the beginning and end.
   /// If the string contains only English letters and numbers, it returns the string unchanged.
@@ -138,127 +107,60 @@ extension FormatPriceExtension on String {
   String get forceLTR {
     if (!notNullOrEmpty) return '';
     // Check if the string contains only English letters and numbers
-    final RegExp englishRegExp = RegExp(r'^[A-Za-z0-9 ]+$');
+    final RegExp englishRegExp = RegExp(r'^[A-Za-z0-9 \-/]+$');
     if (englishRegExp.hasMatch(this)) {
       const ltrMark = '\u200E'; // Left-To-Right Mark (LRM)
       return '$ltrMark$this$ltrMark';
     }
     return this; // Return the text unchanged if it doesn't contain only English letters and numbers
   }
-}
 
-extension SafeJsonDecode on String? {
-  /// Safely decodes a JSON string into a dynamic object
-  /// Returns the decoded JSON object if the string is non-null, non-empty, and can be successfully decoded.
-  /// If the string is null, empty, or invalid, it returns `null`.
+  /// Converts a string to **camelCase**.
   ///
-  /// Example:
+  /// **Example:**
   /// ```dart
-  /// String? jsonString = '{"name": "Mahmoud"}';
-  /// dynamic? decoded = jsonString.safeJsonDecode;
-  /// print(decoded); // Output: {name: Mahmoud}
+  /// 'hello world'.toCamelCase(); // Output: 'helloWorld'
   /// ```
-  T? safeJsonDecode<T>() {
-    if (this == null || this!.isEmpty) return null;
-    try {
-      final decoded = jsonDecode(this!);
-      if (decoded is T) {
-        return decoded;
-      } else {
-        Logger.error('Decoded JSON does not match the expected type: $T');
-        return null;
-      }
-    } catch (e) {
-      Logger.error('Error decoding JSON string: $e');
-      return null;
-    }
+  String get toCamelCase {
+    final words = trim().split(RegExp(r'\s+'));
+    if (words.isEmpty) return '';
+    return words.first.toLowerCase() +
+        words.skip(1).map((w) => w.capitalizeFirst).join();
   }
 
-  /// Safely encodes the object to a JSON string.
-  /// Returns `null` if the object cannot be encoded.
+  /// Masks sensitive information such as **emails and phone numbers**.
   ///
-  /// Example:
+  /// **Example:**
   /// ```dart
-  /// Map<String, dynamic> map = {'name': 'Mahmoud'};
-  /// String? jsonString = map.safeJsonEncode;
-  /// print(jsonString); // Output: {"name":"Mahmoud"}
+  /// 'user@example.com'.maskSensitiveInfo(); // Output: 'u***@example.com'
+  /// '+1234567890'.maskSensitiveInfo(); // Output: '+1******890'
   /// ```
-  String? get safeJsonEncode {
-    try {
-      return jsonEncode(this);
-    } catch (e) {
-      Logger.error('Error encoding JSON: $e');
-      return null;
+  String get maskSensitiveInfo {
+    if (contains('@')) {
+      final parts = split('@');
+      return '${parts[0][0]}***@${parts[1]}';
+    } else if (length >= 6) {
+      return '${substring(0, 2)}******${substring(length - 2)}';
     }
-  }
-}
-
-extension StringParsingExtensions on String? {
-  /// Returns the string parsed as an integer if possible, or `null` if it cannot be parsed.
-  ///
-  /// Example:
-  /// ```dart
-  /// String? number = '123';
-  /// int? parsedNumber = number.toIntOrNull;
-  /// print(parsedNumber); // Output: 123
-  /// ```
-  int? get toIntOrNull {
-    if (this == null) return null;
-    try {
-      return int.parse(this!);
-    } catch (e) {
-      return null;
-    }
+    return this;
   }
 
-  /// Returns the string parsed as a double if possible, or `null` if it cannot be parsed.
+  /// Trims the string to a maximum length, adding `...` if truncated.
   ///
-  /// Example:
+  /// **Example:**
   /// ```dart
-  /// String? number = '123.45';
-  /// double? parsedNumber = number.toDoubleOrNull;
-  /// print(parsedNumber); // Output: 123.45
+  /// 'Hello, this is a long text'.truncate(10); // Output: 'Hello, thi...'
   /// ```
-  double? get toDoubleOrNull {
-    if (this == null) return null;
-    try {
-      return double.parse(this!);
-    } catch (e) {
-      return null;
-    }
+  String truncate(int maxLength) {
+    if (length <= maxLength) return this;
+    return '${substring(0, maxLength)}...';
   }
 
-  /// Returns the string parsed as a Map if it's a valid JSON map, or `null` if it's invalid.
+  /// Removes **all whitespace** from the string.
   ///
-  /// Example:
+  /// **Example:**
   /// ```dart
-  /// String? jsonMap = '{"name": "Mahmoud"}';
-  /// Map<String, dynamic>? parsedMap = jsonMap.toMapOrNull;
-  /// print(parsedMap); // Output: {name: Mahmoud}
+  /// '  Hello World  '.removeWhitespace; // Output: 'HelloWorld'
   /// ```
-  Map<String, dynamic>? get toMapOrNull {
-    if (this == null) return null;
-    try {
-      return jsonDecode(this!) as Map<String, dynamic>?;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  /// Returns the string parsed as a List if it's a valid JSON list, or `null` if it's invalid.
-  ///
-  /// Example:
-  /// ```dart
-  /// String? jsonList = '["Mahmoud", "Ali"]';
-  /// List<String>? parsedList = jsonList.toListOrNull;
-  /// print(parsedList); // Output: [Mahmoud, Ali]
-  /// ```
-  List<dynamic>? get toListOrNull {
-    if (this == null) return null;
-    try {
-      return jsonDecode(this!) as List<dynamic>?;
-    } catch (e) {
-      return null;
-    }
-  }
+  String get removeWhitespace => replaceAll(RegExp(r'\s+'), '');
 }

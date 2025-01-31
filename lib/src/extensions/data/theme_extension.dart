@@ -44,6 +44,11 @@ extension ThemeExtension on BuildContext {
   /// Useful for widgets that need to match the app's primary branding color.
   Color get primaryColor => theme.primaryColor;
 
+  /// Returns the primary color of the current theme.
+  ///
+  /// Useful for widgets that need to match the app's primary branding color.
+  Color get secondaryColor => theme.colorScheme.secondary;
+
   /// Returns the secondary header color of the current theme.
   ///
   /// This color is often used for smaller or less prominent UI elements.
@@ -201,4 +206,15 @@ extension ThemeExtension on BuildContext {
   /// This property affects the touch target size of widgets.
   MaterialTapTargetSize get materialTapTargetSize =>
       theme.materialTapTargetSize;
+
+  /// Toggles between light and dark theme if a stateful theme manager is used.
+  ///
+  /// **Example Usage:**
+  /// ```dart
+  /// context.toggleTheme();
+  /// ```
+  void toggleTheme() {
+    final brightness = isDarkMode ? Brightness.light : Brightness.dark;
+    theme.copyWith(brightness: brightness);
+  }
 }

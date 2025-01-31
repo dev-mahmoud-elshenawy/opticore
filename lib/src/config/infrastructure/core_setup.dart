@@ -146,6 +146,6 @@ class _CoreSetupState extends State<CoreSetup> with AfterLayoutMixin {
   ///
   /// This function returns a route to the NotFoundScreen to handle missing pages or invalid routes.
   Route<dynamic> _defaultRouteGenerator(RouteSettings settings) {
-    return context.route(NotFoundScreen());
+    return context.routeBuilder(NotFoundScreen());
   }
 }

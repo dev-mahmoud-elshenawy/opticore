@@ -1,3 +1,78 @@
+## [Beta 1.0.17]
+### New Features
+- **Extended Context Utilities:**
+  - Added `textScaleFactor` for retrieving the text scale factor.
+  - Added `isLandscape` and `isPortrait` to determine screen orientation.
+  - Added `screenSize` for getting the device screen size.
+  - Added `devicePixelRatio` to access the screen's pixel density.
+  - Added `safeAreaInsets` to get safe area padding values.
+  - Added `isDarkMode` to check if the device is in dark mode.
+- **Enhanced DateTime Utilities:**
+  - Added `toDateTimeOrDefault` to safely parse a string into a `DateTime`, with a default fallback.
+  - Added `toDateTimeOrNull` to convert a string to `DateTime?`, returning `null` if parsing fails.
+- **Advanced Grouping Extensions:**
+  - Introduced `groupBy`, `groupByCount`, and `groupByWithDefault` for flexible list grouping.
+  - Added `groupBySum` and `groupByAverage` for numeric aggregations.
+  - Implemented `groupByCustomAggregation` to allow custom aggregation logic.
+  - Included `groupByAndMap`, `groupByMax`, and `groupByMin` for structured data grouping.
+  - Added `groupByToSet`, `groupByToMap`, and `groupByToValue` for different map structures.
+- **Hex Color Conversion:**
+  - Added `toColorWithAlpha` to convert a hex string to a `Color` with a custom alpha value.
+- **Enhanced JSON Parsing:**
+  - Added `isValidJson` to check if a string is valid JSON.
+  - Introduced `safeJsonDecodeWithDefault` for safely decoding JSON with a fallback.
+  - Added `safeJsonDecodeAsMap` and `safeJsonDecodeAsList` for parsing JSON into structured types.
+  - Implemented `prettyPrintJson` for formatted JSON output.
+  - Introduced `safeJsonDecodeToObject` for parsing JSON directly into objects.
+  - Added `safeJsonDecodeKey` and `safeJsonDecodeNested` for safely extracting specific values.
+  - Added `safeJsonDecodeToListObjects` for parsing lists of objects.
+- **Functional Programming Helpers:**
+  - Introduced `letOrElse`, `also`, and `takeIf` for functional-style data transformations.
+- **List Enhancements:**
+  - Added `filterNonNull` to remove `null` values from a list.
+  - Introduced `safeGet` to safely retrieve an item at a given index.
+  - Added `firstNonNull` to get the first non-null element.
+  - Implemented `mergeUnique` to merge lists while keeping only unique elements.
+  - Improved deduplication with `clean` and `cleanBy`.
+  - Added `sorted` for safely sorting lists without modifying the original.
+  - Introduced `reversedList` for reversing a list without mutation.
+- **Advanced Map Parsing:**
+  - Introduced `safeObject`, `safeList`, `safeInt`, `safeDouble`, `safeBool`, and `safeString` for structured JSON parsing.
+  - Improved `addIfNotNull` to conditionally add values to a map.
+  - Added `safeGetNested` for deep key lookups.
+  - Introduced `safeGet` for retrieving values with safety checks.
+  - Implemented `deepMerge` to merge two maps deeply.
+  - Added `toMap` for transforming objects into map structures.
+- **Navigation Enhancements:**
+  - Fully restructured the navigation extension for better usability.
+  - Renamed `route` to `routeBuilder` for clarity.
+- **Parsing Extensions:**
+  - Added `toIntOrNull` and `toIntOrDefault` for integer conversion.
+  - Introduced `toDoubleOrNull` and `toDoubleOrDefault` for safe double conversion.
+  - Added `toMapOrNull` and `toMapOrDefault` for structured map parsing.
+  - Implemented `toListOrNull` and `toListOrDefault` for safely handling lists.
+  - Added `toBoolOrNull` and `toBoolOrDefault` for boolean conversion.
+  - Included `isNumeric` to validate if a string contains numeric data.
+  - Added `capitalizeFirstOnly` and `capitalizeFirst` for text transformations.
+- **Precache Optimizations:**
+  - Added `precacheAsset` and `precacheNetwork` for caching assets and network images.
+  - Renamed `precacheSvgAsset` to `precacheSvg` for consistency.
+- **Safe Handling Utilities:**
+  - Introduced `orDefault` to provide default values for nullable types.
+  - Added `nullIfEquals` to replace specific values with `null`.
+  - Implemented `toSafeInt`, `toSafeBool`, and `toSafeDouble` for enhanced safety.
+- **String Manipulation:**
+  - Added `toCamelCase` for converting strings to camel case.
+  - Introduced `maskSensitiveInfo` for masking sensitive data.
+  - Added `truncate` for shortening text with ellipsis.
+  - Implemented `removeWhitespace` for trimming excessive spaces.
+- **Theme Enhancements:**
+  - Introduced `toggleTheme` to programmatically switch themes.
+  - Added `secondaryColor` to easily access secondary theme colors.
+### New Reusable Widgets:
+- **TruncatedText**: A widget that dynamically truncates overflowing text.
+- **DoubleBackExit**: A widget that handles double-tap to exit functionality.
+
 ## [Beta 1.0.16]
 ### New Features
 - **TextInputHelper**:

@@ -12,7 +12,6 @@ part of '../extensions_import.dart';
 /// "https://example.com/image.jpg".precacheNetwork();  // Precache network image
 /// "assets/svgs/logo.svg".precacheSvgAsset();  // Precache SVG asset
 /// ```
-
 extension PrecacheExtension on String {
   /// Pre-caches an image from the app's asset bundle.
   ///
@@ -25,9 +24,10 @@ extension PrecacheExtension on String {
   /// ```
   Future<void> get precacheAsset async {
     try {
+      final BuildContext context = RouteHelper.navigatorKey.currentContext!;
       await precacheImage(
         AssetImage(this),
-        RouteHelper.navigatorKey.currentContext!,
+        context,
       );
     } catch (e) {
       Logger.error('PrecacheAsset Error: $e');
@@ -45,9 +45,10 @@ extension PrecacheExtension on String {
   /// ```
   Future<void> get precacheNetwork async {
     try {
+      final BuildContext context = RouteHelper.navigatorKey.currentContext!;
       await precacheImage(
         CachedNetworkImageProvider(this),
-        RouteHelper.navigatorKey.currentContext!,
+        context,
       );
     } catch (e) {
       Logger.error('PrecacheNetwork Error: $e');
@@ -63,11 +64,14 @@ extension PrecacheExtension on String {
   /// ```dart
   /// "assets/svgs/logo.svg".precacheSvgAsset();
   /// ```
-  Future<void> get precacheSvgAsset async {
+  Future<void> get precacheSvg async {
     try {
       final SvgAssetLoader loader = SvgAssetLoader(this);
-      svg.cache
-          .putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
+      final SvgCacheKey keyCache = loader.cacheKey(null);
+      svg.cache.putIfAbsent(
+        keyCache,
+        () => loader.loadBytes(null),
+      );
     } catch (e) {
       Logger.error('PrecacheSVGAsset Error: $e');
     }

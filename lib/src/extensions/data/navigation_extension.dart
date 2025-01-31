@@ -13,6 +13,8 @@ part of '../extensions_import.dart';
 /// context.pushNamed('/myScreen');
 /// context.pushReplacement(MyScreen());
 /// context.pop();
+/// context.canPop();
+/// context.arguments<int>(defaultValue: 0);
 /// ```
 extension NavigationHelper on BuildContext {
   /// Push a new screen onto the stack.
@@ -21,14 +23,24 @@ extension NavigationHelper on BuildContext {
   /// to another screen within the app.
   ///
   /// **Parameters:**
-  /// - `screen`: The widget to be displayed.
-  /// - `maintainState`: Whether to maintain the state of the previous screen. Default is `true`.
+  /// - [screen]: The widget to be displayed.
+  /// - [maintainState]: Whether to maintain the state of the previous screen. Default is `true`.
   ///
   /// **Returns:**
   /// - A [Future] representing the result of the navigation.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.push(MyScreen());
+  /// ```
   Future<dynamic> push(Widget screen, {bool maintainState = true}) {
-    return Navigator.of(this).push(
-      route(screen, maintainState: maintainState),
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.push(
+      routeBuilder(
+        screen,
+        maintainState: maintainState,
+      ),
     );
   }
 
@@ -43,11 +55,15 @@ extension NavigationHelper on BuildContext {
   ///
   /// **Returns:**
   /// - A [Future] representing the result of the navigation.
-  Future<dynamic> pushNamed(String screenName, {Object? arguments}) {
-    return Navigator.of(this).pushNamed(
-      screenName,
-      arguments: arguments,
-    );
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pushNamed('/home', arguments: {'id': 1});
+  /// ```
+  Future<dynamic> pushNamed(String routeName, {Object? arguments}) {
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.pushNamed(routeName, arguments: arguments);
   }
 
   /// Replace the current screen with a new one.
@@ -60,9 +76,19 @@ extension NavigationHelper on BuildContext {
   ///
   /// **Returns:**
   /// - A [Future] representing the result of the navigation.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pushReplacement(MyScreen());
+  /// ```
   Future<dynamic> pushReplacement(Widget screen, {bool maintainState = true}) {
-    return Navigator.of(this).pushReplacement(
-      route(screen, maintainState: maintainState),
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.pushReplacement(
+      routeBuilder(
+        screen,
+        maintainState: maintainState,
+      ),
     );
   }
 
@@ -77,33 +103,70 @@ extension NavigationHelper on BuildContext {
   ///
   /// **Returns:**
   /// - A [Future] representing the result of the navigation.
-  Future<dynamic> pushReplacementNamed(String screenName, {Object? arguments}) {
-    return Navigator.of(this).pushReplacementNamed(
-      screenName,
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pushReplacementNamed('/home', arguments: {'id': 1});
+  /// ```
+  Future<dynamic> pushReplacementNamed(String routeName, {Object? arguments}) {
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.pushReplacementNamed(
+      routeName,
       arguments: arguments,
     );
   }
 
-  /// Push a new screen and remove all previous routes until the provided path.
+  /// Push a new screen onto the stack and remove all previous routes until the provided path.
   ///
-  /// This method pushes a new screen and removes all the previous screens in the
-  /// navigation stack up to the screen at the specified path.
+  /// This method pushes a new screen onto the navigation stack and removes all previous routes until the route with the specified name,
+  /// leaving only the new screen and the one at the provided path.
   ///
   /// **Parameters:**
-  /// - `screen`: The widget to be displayed.
-  /// - `path`: The route name to keep in the stack after pushing the new screen.
-  /// - `maintainState`: Whether to maintain the state of the new screen. Default is `true`.
+  /// - [screen]: The widget to be displayed.
   ///
   /// **Returns:**
   /// - A [Future] representing the result of the navigation.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pushAndRemoveUntil(MyScreen(), '/home');
+  /// ```
   Future<dynamic> pushAndRemoveUntil(
     Widget screen,
     String path, {
     bool maintainState = true,
   }) {
-    return Navigator.of(this).pushAndRemoveUntil(
-      route(screen, maintainState: maintainState),
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.pushAndRemoveUntil(
+      routeBuilder(screen, maintainState: maintainState),
       ModalRoute.withName(path),
+    );
+  }
+
+  /// Push a new screen onto the stack and remove all previous routes.
+  ///
+  /// This method pushes a new screen onto the navigation stack and removes all previous routes,
+  /// leaving only the new screen in the stack.
+  ///
+  /// **Parameters:**
+  /// - [screen]: The widget to be displayed.
+  /// - [maintainState]: Whether to maintain the state of the previous screen. Default is `true`.
+  ///
+  /// **Returns:**
+  /// - A [Future] representing the result of the navigation.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pushAndRemoveAll(MyScreen());
+  /// ```
+  Future<dynamic> pushAndRemoveAll(Widget screen, {bool maintainState = true}) {
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.pushAndRemoveUntil(
+      routeBuilder(screen, maintainState: maintainState),
+      (route) => false,
     );
   }
 
@@ -113,20 +176,43 @@ extension NavigationHelper on BuildContext {
   /// leaving only the new route and the one at the provided path.
   ///
   /// **Parameters:**
-  /// - `screenName`: The name of the route to be pushed.
-  /// - `arguments`: Optional arguments to pass to the destination screen.
+  /// - [screenName]: The name of the route to be pushed.
+  /// - [arguments]: Optional arguments to pass to the destination screen.
   ///
   /// **Returns:**
   /// - A [Future] representing the result of the navigation.
-  Future<dynamic> pushNamedAndRemoveUntil(
-    String screenName, {
-    Object? arguments,
-  }) {
-    return Navigator.of(this).pushNamedAndRemoveUntil(
-      screenName,
-      (route) => false,
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pushNamedAndRemoveUntil('/home', arguments: {'id': 1});
+  /// ```
+  Future<dynamic> pushNamedAndRemoveUntil(String routeName,
+      {Object? arguments}) {
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return Future.value();
+    return navigator.pushNamedAndRemoveUntil(
+      routeName,
+      ModalRoute.withName(routeName),
       arguments: arguments,
     );
+  }
+
+  /// Pop all routes in the stack until the provided path.
+  ///
+  /// This method removes all routes in the navigation stack until the route with the
+  /// specified name, leaving only the target route on the stack.
+  ///
+  /// **Parameters:**
+  /// - [routeName]: The name of the route to keep in the stack.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.popUntil('/home');
+  /// ```
+  void popUntil(String routeName) {
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null) return;
+    navigator.popUntil(ModalRoute.withName(routeName));
   }
 
   /// Pop the current route off the stack, optionally returning a result.
@@ -135,9 +221,16 @@ extension NavigationHelper on BuildContext {
   /// returns a result to the previous screen.
   ///
   /// **Parameters:**
-  /// - `result`: The result to return to the previous screen (optional).
+  /// - [result]: The result to return to the previous screen (optional).
+  ///
+  /// **Example:**
+  /// ```dart
+  /// context.pop('result');
+  /// ```
   void pop([Object? result]) {
-    Navigator.of(this).pop(result);
+    final navigator = Navigator.maybeOf(this);
+    if (navigator == null || !navigator.canPop()) return;
+    navigator.pop(result);
   }
 
   /// Can-pop check for the current route.
@@ -146,8 +239,16 @@ extension NavigationHelper on BuildContext {
   ///
   /// **Returns:**
   /// - A boolean value indicating if the current route can be popped.
+  ///
+  /// **Example:**
+  /// ```dart
+  ///  if (context.canPop()) {
+  ///  context.pop();
+  ///  }
+  /// ```
   bool canPop() {
-    return Navigator.of(this).canPop();
+    final navigator = Navigator.maybeOf(this);
+    return navigator?.canPop() ?? false;
   }
 
   /// Helper method to create a PageRoute with optional state maintenance.
@@ -161,15 +262,16 @@ extension NavigationHelper on BuildContext {
   ///
   /// **Returns:**
   /// - A [PageRoute] to navigate to the given screen.
-  PageRoute route(
-    Widget screen, {
-    bool maintainState = true,
-  }) {
-    return CupertinoPageRoute(
-      builder: (_) => screen,
-      maintainState: maintainState,
-    );
-  }
+  ///
+  /// **Example:**
+  /// ```dart
+  /// Navigator.of(context).push(routeBuilder(MyScreen()));
+  /// ```
+  PageRoute routeBuilder(Widget screen, {bool maintainState = true}) =>
+      CupertinoPageRoute(
+        builder: (_) => screen,
+        maintainState: maintainState,
+      );
 
   /// Returns the arguments passed to the route, with a default value in case of null.
   ///
@@ -181,12 +283,25 @@ extension NavigationHelper on BuildContext {
   ///
   /// **Returns:**
   /// - The arguments passed to the route, or the default value.
-  M arguments<M>({
-    required M defaultValue,
-  }) {
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final id = context.arguments<int>(defaultValue: 0);
+  /// ```
+  M arguments<M>({required M defaultValue}) {
     final settings = ModalRoute.of(this)?.settings;
-    return settings?.arguments != null
-        ? settings!.arguments as M
-        : defaultValue;
+    final args = settings?.arguments;
+
+    if (args is M) {
+      return args;
+    }
+
+    if (args != null) {
+      Logger.warning(
+        "Type mismatch for route arguments. Expected ${M.runtimeType}, found ${args.runtimeType}",
+      );
+    }
+
+    return defaultValue;
   }
 }
