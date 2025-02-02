@@ -295,7 +295,6 @@ extension SafeMapExtensions on Map<String, dynamic>? {
   }
 }
 
-/// Helper Extension to convert List<MapEntry<K, V>> into a Map<K, V>.
 extension MapEntryListHelper<K, V> on Iterable<MapEntry<K, V>> {
   /// Converts a list of `MapEntry<K, V>` into a `Map<K, V>`.
   ///

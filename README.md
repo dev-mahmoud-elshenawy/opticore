@@ -10,6 +10,13 @@ With **OptiCore**, you no longer need multiple external packages—everything yo
 [![creator](https://img.shields.io/badge/Creator-Mahmoud%20El%20Shenawy-blue)](https://www.linkedin.com/in/dev-mahmoud-elshenawy/)
 <a href="https://www.buymeacoffee.com/m.elshenawy" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="30" width="174" > </a>
 
+## Enhance Your Workflow with OptiKit CLI
+
+For an even more powerful development experience, use **OptiKit CLI**—a command-line tool built specifically to complement the **OptiCore** micro-framework. With OptiKit CLI, you can automate tasks, manage your project versions, and streamline your workflow seamlessly.
+
+- **NPM Package:** [optikit](https://www.npmjs.com/package/optikit)
+- **GitHub Repository:** [OptiKit CLI](https://github.com/dev-mahmoud-elshenawy/optikit)
+
 ## Importance
 
 OptiCore is a lightweight micro-framework for Flutter that simplifies and optimizes your app development. Built around the BLoC pattern, it includes various utility functions and shortcuts to save time, reduce boilerplate, and improve the structure of your code. The framework is designed to be minimal, yet powerful, making it a great foundation for scalable Flutter applications.

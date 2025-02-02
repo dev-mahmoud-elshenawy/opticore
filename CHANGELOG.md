@@ -1,3 +1,11 @@
+## [Beta 1.0.19]
+### New Features
+- **OptiKit CLI Integration:**
+  - Introduced **OptiKit CLI** to enhance the interaction between the OptiCore package and its command-line interface.
+  - The CLI now offers powerful commands to update version and build numbers, streamline builds, and automate common tasks, ensuring seamless integration with the package ecosystem.
+### Improvements
+- Optimized the overall workflow by synchronizing package updates with CLI operations, resulting in a more cohesive and efficient development experience.
+
 ## [Beta 1.0.18]
 ### New Features
 - **Reusable Widget:**
@@ -206,13 +214,13 @@
 ## [Beta 1.0.10]
 ### Enhancements and New Features
 - **LazyIndexedStack Widget**: Introduced `LazyIndexedStack` for optimized performance by deferring the loading of non-visible children.
-- **SizedBox Extension**: Added extensions for more flexible `SizedBox` creation with methods like `width()`, `height()`, `box()`, `expand()`, `alignedBox()`, `paddedBox()`, and `flexible()`.
+- **SizedBox Extension**: Added extensions for more flexible `SizedBox` creation with methods like `width`, `height`, `box`, `expand`, `alignedBox`, `paddedBox`, and `flexible`.
 - **SVG Widget Customization**: Enhanced the customization options for `SvgWidget`, allowing for more flexible and efficient use in applications.
 
 ## [Beta 1.0.9]
 ### Enhancements and New Features
 - **App Bar Logic**: Handle app bar selection based on `scaffoldConfig` and `appBarData`.
-- **ScaffoldConfig**: Added `copyWithz` method for easier object modification.
+- **ScaffoldConfig**: Added `copyWith` method for easier object modification.
 - **BlocProvider Fix**: Corrected baseContext issue.
 - **Widget Extensions**: Added `expanded` and `flexible` extensions for better layout handling.
 - **Content Builder**: Enhanced functionality.
