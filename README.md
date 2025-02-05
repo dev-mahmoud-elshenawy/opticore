@@ -12,7 +12,7 @@ With **OptiCore**, you no longer need multiple external packages—everything yo
 
 ## Enhance Your Workflow with OptiKit CLI
 
-For an even more powerful development experience, use **OptiKit CLI**—a command-line tool built specifically to complement the **OptiCore** micro-framework. With OptiKit CLI, you can automate tasks, manage your project versions, and streamline your workflow seamlessly.
+For an even more powerful development experience, use **OptiKit CLI**—a command-line tool built specifically to complement the **OptiCore** micro-framework. With **OptiKit CLI**—, you can automate tasks, manage your project versions, and streamline your workflow seamlessly.
 
 - **NPM Package:** [OptiKit NPM](https://www.npmjs.com/package/optikit)
 - **GitHub Repository:** [OptiKit Repo](https://github.com/dev-mahmoud-elshenawy/optikit)
