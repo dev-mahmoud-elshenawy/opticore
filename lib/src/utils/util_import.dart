@@ -9,6 +9,8 @@ import 'package:opticore/opticore.dart';
 
 import 'ui/core_colors.dart';
 
+part '../utils/general/async_value.dart';
+part '../utils/general/safe_call.dart';
 part '../utils/helper/async_helper.dart';
 part '../utils/helper/clipboard_helper.dart';
 part '../utils/helper/connection_helper.dart';

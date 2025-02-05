@@ -30,7 +30,7 @@ class NotFoundScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false, // Prevents the screen from being popped
+      canPop: NotFoundConfig.canPop,
       child: Scaffold(
         body: SafeArea(
           child: Center(

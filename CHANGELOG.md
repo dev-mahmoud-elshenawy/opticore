@@ -1,3 +1,23 @@
+## [Beta 1.0.20]
+### New Features
+- **Refactored Parsing Methods**:
+  - Renamed:
+    - `toDoubleOrDefault` → `toDouble`
+    - `toMapOrDefault` → `toMap`
+    - `toListOrDefault` → `toList`
+    - `toBoolOrDefault` → `toBool`
+- **Safe Execution Utility**:
+  - **`SafeCall.execute`**: Handles async operations safely with optional default values.
+  - **New Void Execution**: Runs operations without returning a value.
+- **Async State Management**:
+  - **`AsyncValue.guard`**: A structured way to handle async operations.
+  - **New Async States**:
+    - `AsyncInitial`, `AsyncLoading`, `AsyncData`, `AsyncError`
+  - **`AsyncBloc<T>`**: Streamlines async BLoC handling with built-in state management.
+- **Navigation Enhancements**:
+  - **`customCanPop`**: Customizable navigation pop behavior.
+  - **`NotFoundConfig`**: Centralized handling for missing routes.
+
 ## [Beta 1.0.19]
 ### New Features
 - **OptiKit CLI Integration:**

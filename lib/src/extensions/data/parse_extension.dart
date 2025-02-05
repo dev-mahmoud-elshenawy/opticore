@@ -25,10 +25,10 @@ extension StringParsingExtensions on String? {
   /// Example:
   /// ```dart
   /// String? number = '123';
-  /// int parsedNumber = number.toIntOrDefault();
+  /// int parsedNumber = number.toInt();
   /// print(parsedNumber); // Output: 123
   /// ```
-  int toIntOrDefault([int defaultValue = 0]) {
+  int toInt([int defaultValue = 0]) {
     return toIntOrNull ?? defaultValue;
   }
 
@@ -56,10 +56,10 @@ extension StringParsingExtensions on String? {
   /// Example:
   /// ```dart
   /// String? number = '123.45';
-  /// double parsedNumber = number.toDoubleOrDefault();
+  /// double parsedNumber = number.toDouble();
   /// print(parsedNumber); // Output: 123.45
   /// ```
-  double toDoubleOrDefault([double defaultValue = 0.0]) {
+  double toDouble([double defaultValue = 0.0]) {
     return toDoubleOrNull ?? defaultValue;
   }
 
@@ -85,10 +85,10 @@ extension StringParsingExtensions on String? {
   /// Example:
   /// ```dart
   /// String? jsonMap = '{"name": "Mahmoud"}';
-  /// Map<String, dynamic> parsedMap = jsonMap.toMapOrDefault;
+  /// Map<String, dynamic> parsedMap = jsonMap.toMap;
   /// print(parsedMap); // Output: {name: Mahmoud}
   /// ```
-  Map<String, dynamic> get toMapOrDefault {
+  Map<String, dynamic> get toMap {
     return toMapOrNull ?? {};
   }
 
@@ -114,10 +114,10 @@ extension StringParsingExtensions on String? {
   /// Example:
   /// ```dart
   /// String? jsonList = '["Mahmoud", "Ali"]';
-  /// List<String> parsedList = jsonList.toListOrDefault;
+  /// List<String> parsedList = jsonList.toList;
   /// print(parsedList); // Output: [Mahmoud, Ali]
   /// ```
-  List<dynamic> get toListOrDefault {
+  List<dynamic> get toList {
     return toListOrNull ?? [];
   }
 
@@ -153,10 +153,10 @@ extension StringParsingExtensions on String? {
   /// Example:
   /// ```dart
   /// String? boolString = 'true';
-  /// bool parsedBool = boolString.toBoolOrDefault();
+  /// bool parsedBool = boolString.toBool();
   /// print(parsedBool); // Output: true
   /// ```
-  bool toBoolOrDefault([bool defaultValue = false]) {
+  bool toBool([bool defaultValue = false]) {
     return toBoolOrNull ?? defaultValue;
   }
 

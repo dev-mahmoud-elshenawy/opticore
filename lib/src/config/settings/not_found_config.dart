@@ -8,7 +8,7 @@ part of '../config_import.dart';
 /// **Constructor Parameters:**
 /// - [customAnim]: A custom animation asset to be displayed when the "Page Not Found"
 ///   screen is shown. If no custom animation is provided, a default animation will be used.
-///
+/// - [canPop]: A flag that determines whether the "Page Not Found" screen can be popped
 /// **Key Features:**
 /// - Customize the animation shown on the "Page Not Found" screen, allowing for a tailored
 ///   user experience when a page cannot be found.
@@ -38,14 +38,27 @@ class NotFoundConfig extends Equatable {
   /// This is the animation that will be shown when a user navigates to a page that doesn't exist.
   static String _anim = CoreAssets.pageNotFoundAnim;
 
+  // Private static field for controlling the ability to pop the screen
+  /// A flag that determines whether the "Page Not Found" screen can be popped
+  /// from the navigation stack. If set to `false`, the screen will not be popped.
+  static bool _canPop = true;
+
   // Instance field for holding a custom animation (if provided)
   /// A custom animation asset to display on the "Page Not Found" screen.
   /// If no custom animation is provided, the default animation will be used.
   final String? customAnim;
 
+  // Instance field for controlling the ability to pop the screen
+  /// A flag that determines whether the "Page Not Found" screen can be popped
+  /// from the navigation stack. If set to `false`, the screen will not be popped.
+  final bool? customCanPop;
+
   // Private constructor to ensure instances are created only through the factory method
   /// Private constructor used by the factory method to create instances of `NotFoundConfig`.
-  const NotFoundConfig._({this.customAnim});
+  const NotFoundConfig._({
+    this.customAnim,
+    this.customCanPop,
+  });
 
   // Static method to set the global configuration with custom values
   /// This method allows you to initialize the global "Page Not Found" configuration
@@ -62,6 +75,7 @@ class NotFoundConfig extends Equatable {
   /// ```
   static void instantiate(NotFoundConfig customConfig) {
     _anim = customConfig.customAnim ?? _anim;
+    _canPop = customConfig.customCanPop ?? _canPop;
   }
 
   // Method to reset the configuration to default values
@@ -74,6 +88,7 @@ class NotFoundConfig extends Equatable {
   /// ```
   static void resetToDefaults() {
     _anim = CoreAssets.pageNotFoundAnim;
+    _canPop = true;
   }
 
   // Factory constructor to create an instance with optional custom values
@@ -89,8 +104,12 @@ class NotFoundConfig extends Equatable {
   /// ```
   factory NotFoundConfig({
     String? customAnim,
+    bool? customCanPop,
   }) {
-    return NotFoundConfig._(customAnim: customAnim);
+    return NotFoundConfig._(
+      customAnim: customAnim,
+      customCanPop: customCanPop,
+    );
   }
 
   // Public getter to retrieve the current animation configuration
@@ -103,7 +122,20 @@ class NotFoundConfig extends Equatable {
   /// ```
   static String get anim => _anim;
 
+  // Public getter to retrieve the current canPop configuration
+  /// Getter that provides access to the current value of `canPop` for the "Page Not Found" screen.
+  /// This will return either the custom value (if set) or the default value.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// bool canPopValue = NotFoundConfig.canPop;
+  /// ```
+  static bool get canPop => _canPop;
+
   // Override Equatable's props to enable value-based comparison of instances
   @override
-  List<Object?> get props => [customAnim];
+  List<Object?> get props => [
+        customAnim,
+        canPop,
+      ];
 }
