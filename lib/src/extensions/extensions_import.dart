@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:opticore/opticore.dart';
 
+import '../utils/ui/core_colors.dart';
+
 part '../extensions/data/context_extension.dart';
 part '../extensions/data/datetime_extension.dart';
 part '../extensions/data/group_extension.dart';
@@ -26,3 +28,4 @@ part 'data/ui/padding_extension.dart';
 part 'data/ui/positioned_extension.dart';
 part 'data/ui/sized_box_extension.dart';
 part 'data/ui/visibility_extension.dart';
+part 'data/ui/text_extension.dart';

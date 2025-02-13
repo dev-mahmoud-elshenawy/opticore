@@ -14,7 +14,7 @@ class RouteLog extends TalkerLog {
   AnsiPen get pen => AnsiPen()..cyan();
 
   @override
-  String get title => route.settings.name ?? 'Route';
+  String get title => 'Route';
 
   @override
   String generateTextMessage({

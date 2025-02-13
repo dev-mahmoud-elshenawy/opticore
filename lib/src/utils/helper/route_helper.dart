@@ -28,6 +28,8 @@ part of '../util_import.dart';
 /// - [pop]: Pops the current route off the stack, optionally returning a result to the previous screen.
 /// - [canPop]: Determines whether the current route can be popped from the navigation stack.
 /// - [navigatorKey]: A global key to access the navigator state of the application.
+/// - [previousRoute]: Holds the name of the previous route.
+/// - [builder]: Default route settings for the navigator.
 ///
 /// Example usage:
 /// ```dart
@@ -57,6 +59,34 @@ class RouteHelper {
   /// the app.
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
+
+  /// Holds the name of the previous route.
+  static String? previousRoute;
+
+  /// The default route settings for the navigator.
+  ///
+  /// This is used to provide default settings for the navigator when
+  /// navigating to a new screen. It includes the name of the route,
+  /// the arguments passed to the route, and any other settings that
+  /// are required for the navigation operation.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final routeSettings = RouteSettings(
+  ///  name: '/home',
+  ///  arguments: {'user': user},
+  ///  isInitialRoute: true,
+  ///  );
+  static builder(
+    Widget scene, {
+    bool maintainState = true,
+    RouteSettings? settings,
+  }) =>
+      navigatorKey.currentContext!.routeBuilder(
+        scene,
+        settings: settings,
+        maintainState: maintainState,
+      );
 
   /// Constructor to initialize the RouteHelper with a [BuildContext].
   /// The [BuildContext] is required to perform navigation operations.

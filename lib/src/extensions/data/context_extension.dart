@@ -57,6 +57,13 @@ extension BuildContextExtension on BuildContext {
   /// - A [EdgeInsets] object representing the safe area insets.
   EdgeInsets get safeAreaInsets => MediaQuery.of(this).padding;
 
+  /// A getter that returns the device's view insets, which are the parts of the screen
+  /// that are not covered by system UI elements (like the keyboard).
+  ///
+  /// **Returns:**
+  /// - A [EdgeInsets] object representing the view insets.
+  double get viewInsetsBottom => MediaQuery.of(this).viewInsets.bottom;
+
   /// A getter that returns the device's pixel density (devicePixelRatio) as retrieved from [MediaQuery].
   ///
   /// This can be helpful for creating responsive designs and handling different screen resolutions.

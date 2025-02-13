@@ -2,47 +2,8 @@ part of '../reusable_import.dart';
 
 /// A customizable button widget for Flutter that can be used throughout the application.
 ///
-/// The `CoreButton` provides flexibility in terms of design, behavior, and interaction. It allows you to customize various aspects such as the button's appearance, border, color, text, and click behavior. Additionally, it supports dimming functionality to disable interactions when needed.
-///
-/// ## Key Features:
-/// - **Customizable Appearance**: You can customize the button's height, background color, border color, border radius, and text style.
-/// - **Tap Handling**: The button supports an `onTap` callback function to trigger actions when the button is pressed.
-/// - **Dimming**: It includes a dimming effect when the button is disabled (using `ValueNotifier<bool>`).
-/// - **Border Handling**: Optionally, the button can have a border with customizable color and thickness.
-/// - **Margin and Padding**: The button supports custom margin and padding values for better layout control.
-///
-/// ## Constructor Parameters:
-/// - [marginHorizontal]: Horizontal margin for the button (default is 0).
-/// - [backgroundColor]: Background color for the button (uses the theme's primary color by default).
-/// - [borderColor]: Border color for the button (uses the theme's primary color by default).
-/// - [textColor]: Text color for the button label (default is white).
-/// - [title]: The text to display on the button.
-/// - [child]: A custom widget to display inside the button instead of text.
-/// - [onTap]: The callback function to execute when the button is tapped.
-/// - [isDimmed]: A `ValueNotifier<bool>` used to control whether the button is dimmed or not, making it disabled.
-/// - [withBorder]: A boolean value to specify whether the button should have a border.
-/// - [height]: Height of the button.
-/// - [width]: Width of the button.
-/// - [borderRadius]`: Border radius for the button to give rounded corners.
-/// - [textStyle]: Custom text style for the button's title.
-/// - [padding]: Padding inside the button for the text.
-/// - [margin]: The margin around the button.
-///
-/// ## How to Use:
-/// The `CoreButton` widget can be used wherever you need a customizable button in your app. It allows you to provide a callback for button presses, along with the ability to customize the appearance and behavior of the button.
-///
-/// Example usage:
-/// ```dart
-/// CoreButton(
-///   title: 'Click Me',
-///   onTap: () {
-///     print('Button tapped!');
-///   },
-///   backgroundColor: Colors.blue,
-///   textColor: Colors.white,
-///   borderRadius: 20.0,
-/// ),
-/// ```
+/// The `CoreButton` provides flexibility in terms of design, behavior, and interaction. It allows you to customize various aspects such as the button's appearance, border, color, text, and click behavior.
+/// Additionally, it supports dimming functionality to disable interactions when needed.
 class CoreButton extends StatelessWidget {
   final double? marginHorizontal;
   final Color? backgroundColor;
@@ -59,7 +20,53 @@ class CoreButton extends StatelessWidget {
   final TextStyle? textStyle;
   final EdgeInsets? padding;
   final EdgeInsetsDirectional? margin;
+  final Gradient? gradient;
 
+  /// A customizable button widget for Flutter that can be used throughout the application.
+  ///
+  /// The `CoreButton` provides flexibility in terms of design, behavior, and interaction. It allows you to customize various aspects such as the button's appearance, border, color, text, and click behavior.
+  /// Additionally, it supports dimming functionality to disable interactions when needed.
+  ///
+  /// ## Key Features:
+  /// - **Customizable Appearance**: You can customize the button's height, background color, border color, border radius, and text style.
+  /// - **Tap Handling**: The button supports an `onTap` callback function to trigger actions when the button is pressed.
+  /// - **Dimming**: It includes a dimming effect when the button is disabled (using `ValueNotifier<bool>`).
+  /// - **Border Handling**: Optionally, the button can have a border with customizable color and thickness.
+  /// - **Margin and Padding**: The button supports custom margin and padding values for better layout control.
+  ///
+  /// ## Constructor Parameters:
+  /// - [marginHorizontal]: Horizontal margin for the button (default is 0).
+  /// - [backgroundColor]: Background color for the button (uses the theme's primary color by default).
+  /// - [borderColor]: Border color for the button (uses the theme's primary color by default).
+  /// - [textColor]: Text color for the button label (default is white).
+  /// - [title]: The text to display on the button.
+  /// - [child]: A custom widget to display inside the button instead of text.
+  /// - [onTap]: The callback function to execute when the button is tapped.
+  /// - [isDimmed]: A `ValueNotifier<bool>` used to control whether the button is dimmed or not, making it disabled.
+  /// - [withBorder]: A boolean value to specify whether the button should have a border.
+  /// - [height]: Height of the button.
+  /// - [width]: Width of the button.
+  /// - [borderRadius]`: Border radius for the button to give rounded corners.
+  /// - [textStyle]: Custom text style for the button's title.
+  /// - [padding]: Padding inside the button for the text.
+  /// - [margin]: The margin around the button.
+  /// - [gradient]: A gradient to apply to the button's background.
+  ///
+  /// ## How to Use:
+  /// The `CoreButton` widget can be used wherever you need a customizable button in your app. It allows you to provide a callback for button presses, along with the ability to customize the appearance and behavior of the button.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// CoreButton(
+  ///   title: 'Click Me',
+  ///   onTap: () {
+  ///     print('Button tapped!');
+  ///   },
+  ///   backgroundColor: Colors.blue,
+  ///   textColor: Colors.white,
+  ///   borderRadius: 20.0,
+  /// ),
+  /// ```
   const CoreButton({
     super.key,
     this.marginHorizontal,
@@ -77,6 +84,7 @@ class CoreButton extends StatelessWidget {
     this.textStyle,
     this.padding,
     this.margin,
+    this.gradient,
   });
 
   @override
@@ -96,7 +104,9 @@ class CoreButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadius ?? 40),
               // Rounded corners
-              color: backgroundColor ??
+              color: (!dimmed
+                      ? backgroundColor
+                      : backgroundColor?.withValues(alpha: 0.5)) ??
                   (!dimmed
                       ? theme
                           .primaryColor // Default background color if not specified
@@ -111,6 +121,7 @@ class CoreButton extends StatelessWidget {
                               : theme.primaryColor.withValues(alpha: 0.5))),
                     )
                   : null,
+              gradient: gradient,
             ),
             padding: padding ?? const EdgeInsets.all(10),
             // Default padding

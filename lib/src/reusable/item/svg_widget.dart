@@ -80,8 +80,8 @@ class SvgWidget extends StatelessWidget {
   /// - Optional parameters include [color], [placeholder], [errorWidget], [width], [height], and [fit].
   const SvgWidget({
     super.key,
-    required this.type,
     required this.path,
+    required this.type,
     this.bytes,
     this.file,
     this.color,

@@ -40,6 +40,7 @@ extension NavigationHelper on BuildContext {
       routeBuilder(
         screen,
         maintainState: maintainState,
+        settings: RouteSettings(name: screen.runtimeType.toString()),
       ),
     );
   }
@@ -267,10 +268,15 @@ extension NavigationHelper on BuildContext {
   /// ```dart
   /// Navigator.of(context).push(routeBuilder(MyScreen()));
   /// ```
-  PageRoute routeBuilder(Widget screen, {bool maintainState = true}) =>
+  PageRoute routeBuilder(
+    Widget screen, {
+    bool maintainState = true,
+    RouteSettings? settings,
+  }) =>
       CupertinoPageRoute(
         builder: (_) => screen,
         maintainState: maintainState,
+        settings: settings,
       );
 
   /// Returns the arguments passed to the route, with a default value in case of null.
