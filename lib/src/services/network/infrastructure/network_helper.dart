@@ -60,8 +60,16 @@ class NetworkHelper {
       connectivity: Connectivity(),
       dio: dio,
     );
-    final RetryConnection retryInterceptor = RetryConnection(
-      request: request,
+    final RetryInterceptor retryInterceptor = RetryInterceptor(
+      dio: request.dio,
+      logPrint: Logger.info, // specify log function (optional)
+      retries: 3, // retry count (optional)
+      retryDelays: const [
+        // set delays between retries (optional)
+        Duration(seconds: 1), // wait 1 sec before first retry
+        Duration(seconds: 2), // wait 2 sec before second retry
+        Duration(seconds: 3),
+      ],
     );
 
     dio

@@ -27,6 +27,8 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   talker: ^4.6.11
   talker_dio_logger: ^4.6.11
+  dio_smart_retry: ^7.0.0
+
 
 dev_dependencies:
   flutter_test:
