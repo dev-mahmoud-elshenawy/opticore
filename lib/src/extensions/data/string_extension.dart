@@ -115,6 +115,29 @@ extension FormatExtension on String {
     return this; // Return the text unchanged if it doesn't contain only English letters and numbers
   }
 
+
+  /// Adds a Left-To-Right Mark (LRM) and a plus sign to the string to force Left-To-Right text direction.
+  /// Returns the string with the LRM added at the beginning and a plus sign.
+  /// If the string contains only English letters and numbers, it returns the string unchanged.
+  ///
+  /// This method is useful when displaying phone numbers or other strings that start with a plus sign.
+  ///
+  /// Example:
+  /// ```dart
+  /// '+1234567890'.forceLTRWithPlus; // Output: '‎+1234567890'
+  /// ```
+  String get forceLTRWithPlus {
+    if (trim().isEmpty) return '';
+    // Check if the string contains only English letters, numbers, spaces, dashes or slashes.
+    final RegExp englishRegExp = RegExp(r'^[A-Za-z0-9 \-/]+$');
+    const ltrMark = '\u200E';
+    if (englishRegExp.hasMatch(this)) {
+      // Prepend LTR mark and a plus sign, then the number.
+      return '$ltrMark+$this';
+    }
+    return '+$this';
+  }
+
   /// Converts a string to **camelCase**.
   ///
   /// **Example:**
