@@ -47,15 +47,17 @@ class CoreSheet {
   ///
   /// This method shows a bottom sheet with customizable options such as drag behavior, background color, and border radius. It also supports a dismiss callback to handle actions when the sheet is closed.
   ///
-  /// - `child`: The widget to display inside the bottom sheet.
-  /// - `enableDrag`: A boolean to enable dragging of the bottom sheet (default is `false`).
-  /// - `expand`: A boolean to control whether the bottom sheet should expand to full screen (default is `false`).
-  /// - `backgroundColor`: The background color of the bottom sheet (defaults to `CoreColors.backgroundColor`).
-  /// - `borderRadius`: The border radius for the top corners (defaults to `30.0`).
-  /// - `onDismiss`: Optional callback function that will be called when the bottom sheet is dismissed.
+  /// - [child]: The widget to display inside the bottom sheet.
+  /// - [enableDrag]: A boolean to enable dragging of the bottom sheet (default is `true`).
+  /// - [isDismissible]: A boolean to enable dismissing of the bottom sheet (default is `true`)
+  /// - [expand]: A boolean to control whether the bottom sheet should expand to full screen (default is `false`).
+  /// - [backgroundColor]: The background color of the bottom sheet (defaults to `CoreColors.backgroundColor`).
+  /// - [borderRadius]: The border radius for the top corners (defaults to `30.0`).
+  /// - [onDismiss]: Optional callback function that will be called when the bottom sheet is dismissed.
   static Future<void> showCupertino({
     required Widget child,
     bool? enableDrag,
+    bool? isDismissible,
     bool? expand,
     Color? backgroundColor,
     double? borderRadius,
@@ -66,34 +68,38 @@ class CoreSheet {
         expand: expand ?? false,
         topRadius: Radius.circular(borderRadius ?? 30),
         backgroundColor: backgroundColor ?? CoreColors.backgroundColor,
-        enableDrag: enableDrag ?? false,
-        isDismissible: enableDrag ?? false,
-        builder: (context) => SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                10.ph,
-                SvgWidget(
-                  path: CoreAssets.icDrag,
-                  type: SvgType.asset,
+        enableDrag: enableDrag ?? true,
+        isDismissible: isDismissible ?? true,
+        builder: (context) =>
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery
+                      .of(context)
+                      .viewInsets
+                      .bottom,
                 ),
-                25.ph,
-                Material(
-                  color: backgroundColor ?? CoreColors.backgroundColor,
-                  child: SafeArea(
-                    child: child,
-                  ),
-                )
-              ],
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    10.ph,
+                    SvgWidget(
+                      path: CoreAssets.icDrag,
+                      type: SvgType.asset,
+                    ),
+                    25.ph,
+                    Material(
+                      color: backgroundColor ?? CoreColors.backgroundColor,
+                      child: SafeArea(
+                        child: child,
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
       ).whenComplete(() {
         if (onDismiss != null) {
           onDismiss();
