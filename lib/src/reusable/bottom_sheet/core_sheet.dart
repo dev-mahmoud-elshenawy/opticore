@@ -70,36 +70,32 @@ class CoreSheet {
         backgroundColor: backgroundColor ?? CoreColors.backgroundColor,
         enableDrag: enableDrag ?? true,
         isDismissible: isDismissible ?? true,
-        builder: (context) =>
-            SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery
-                      .of(context)
-                      .viewInsets
-                      .bottom,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    10.ph,
-                    SvgWidget(
-                      path: CoreAssets.icDrag,
-                      type: SvgType.asset,
-                    ),
-                    25.ph,
-                    Material(
-                      color: backgroundColor ?? CoreColors.backgroundColor,
-                      child: SafeArea(
-                        child: child,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+        builder: (context) => SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                10.ph,
+                SvgWidget(
+                  path: CoreAssets.icDrag,
+                  type: SvgType.asset,
+                ),
+                25.ph,
+                Material(
+                  color: backgroundColor ?? CoreColors.backgroundColor,
+                  child: SafeArea(
+                    child: child,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ).whenComplete(() {
         if (onDismiss != null) {
           onDismiss();

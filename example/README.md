@@ -1,56 +1,53 @@
-# OptiCore Module Structure
+# OptiCore Module Structure 🚀
 
-This document outlines the structure of a typical OptiCore module generated for efficient development. The module follows a clear, scalable architecture that separates concerns and encourages maintainability.
+This document outlines the **OptiCore** module structure, designed for **scalability, maintainability, and efficiency**. The architecture ensures a **clean separation of concerns**, making development seamless.
 
-## Folder Structure
+## 📂 Folder Structure
 
-Each module follows this folder structure:
+Each module follows this structured hierarchy:
 
 ```
 lib/
   module/
     <ModuleName>/
-      bloc/
-        <module_name>_bloc.dart        # Manages the business logic for the module
-      event/
-        <module_name>_event.dart       # Contains events that trigger changes in the bloc
-      state/
-        <module_name>_state.dart       # Defines the state classes that represent the UI states
-      screen/
-        <module_name>_screen.dart      # UI Screen (Widgets) for the module
-      import/
-        <module_name>_import.dart     # Central import file for all module files
-      factory/
-        <module_name>_state_factory.dart  # State factory for managing state instantiation
+      📦 bloc/              # Business logic layer (BLoC)
+        ├── <module_name>_bloc.dart
+      ⚡ event/              # Events triggering BLoC updates
+        ├── <module_name>_event.dart
+      📊 state/              # UI state definitions
+        ├── <module_name>_state.dart
+      🖥️ screen/             # UI components (Widgets)
+        ├── <module_name>_screen.dart
+      🔗 import/             # Centralized module imports
+        ├── <module_name>_import.dart
+      🏭 factory/            # State factory management
+        ├── <module_name>_state_factory.dart
 ```
 
-### Example
-
-Let's consider an example module named `ExampleModule`.
-
-The structure will be:
+### ✨ Example: `ExampleModule`
 
 ```
 lib/
   module/
     ExampleModule/
-      bloc/
-        example_module_bloc.dart
-      event/
-        example_module_event.dart
-      state/
-        example_module_state.dart
-      screen/
-        example_module_screen.dart
-      import/
-        example_module_import.dart
-      factory/
-        example_module_state_factory.dart
+      📦 bloc/
+        ├── example_module_bloc.dart
+      ⚡ event/
+        ├── example_module_event.dart
+      📊 state/
+        ├── example_module_state.dart
+      🖥️ screen/
+        ├── example_module_screen.dart
+      🔗 import/
+        ├── example_module_import.dart
+      🏭 factory/
+        ├── example_module_state_factory.dart
 ```
 
-### Example Content
+## 🔍 File Overview
 
-**`example_module_bloc.dart`**:
+### 🏗️ **BLoC (`example_module_bloc.dart`)**
+Handles the business logic and state transitions.
 
 ```dart
 part of '../import/example_module_import.dart';
@@ -60,14 +57,15 @@ class ExampleModuleBloc extends BaseBloc {
       : super(
           ExampleModuleStateFactory(),
           initialState: ExampleModuleInitialState(),
-        ) {}
+        );
 
   @override
   void onDispose() {}
 }
 ```
 
-**`example_module_event.dart`**:
+### ⚡ **Event (`example_module_event.dart`)**
+Defines events that trigger state changes.
 
 ```dart
 part of '../import/example_module_import.dart';
@@ -75,7 +73,8 @@ part of '../import/example_module_import.dart';
 class ExampleModuleInitialEvent extends BaseEvent {}
 ```
 
-**`example_module_state.dart`**:
+### 📊 **State (`example_module_state.dart`)**
+Defines the UI state.
 
 ```dart
 part of '../import/example_module_import.dart';
@@ -85,7 +84,8 @@ class ExampleModuleInitialState extends RenderDataState {
 }
 ```
 
-**`example_module_screen.dart`**:
+### 🖥️ **Screen (`example_module_screen.dart`)**
+Handles the UI and interacts with the BLoC.
 
 ```dart
 part of '../import/example_module_import.dart';
@@ -93,10 +93,7 @@ part of '../import/example_module_import.dart';
 class ExampleModuleScreen extends StatefulWidget {
   final ExampleModuleBloc bloc;
 
-  const ExampleModuleScreen({
-    super.key,
-    required this.bloc,
-  });
+  const ExampleModuleScreen({super.key, required this.bloc});
 
   @override
   ExampleModuleScreenState createState() => ExampleModuleScreenState(bloc);
@@ -116,24 +113,22 @@ class ExampleModuleScreenState
 }
 ```
 
-**`example_module_import.dart`**:
+### 🔗 **Import (`example_module_import.dart`)**
+Manages centralized imports.
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:opticore/opticore.dart';
 
 part '../bloc/example_module_bloc.dart';
-
 part '../event/example_module_event.dart';
-
 part '../screen/example_module_screen.dart';
-
 part '../state/example_module_state.dart';
-
 part '../factory/example_module_state_factory.dart';
 ```
 
-**`example_module_state_factory.dart`**:
+### 🏭 **State Factory (`example_module_state_factory.dart`)**
+Creates and manages different states dynamically.
 
 ```dart
 part of '../import/example_module_import.dart';
@@ -146,15 +141,12 @@ class ExampleModuleStateFactory extends BaseFactory {
 }
 ```
 
-## File Breakdown
-
-1. **Bloc**: Contains the business logic of the module, managing the state transitions.
-2. **Event**: Defines the events that can trigger changes in the bloc.
-3. **State**: Defines different states that the UI can be in, based on the bloc's behavior.
-4. **Screen**: Contains the UI code and manages interactions with the bloc.
-5. **Import**: Imports all the necessary files for the module, providing a central location for module imports.
-6. **State Factory**: A class used to create different states based on data or logic.
-
 ---
 
-This structure provides a clean and scalable way to organize your Flutter modules, separating concerns and making it easy to maintain as your project grows.
+## 🎯 Key Benefits
+
+✅ **Modular & Scalable** – Ensures long-term maintainability  
+✅ **Separation of Concerns** – Organized into logical units  
+✅ **Optimized for BLoC** – Structured for predictable state management  
+
+Start building robust **OptiCore** modules with this **scalable structure** today! 🚀

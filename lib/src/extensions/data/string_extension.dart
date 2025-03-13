@@ -115,7 +115,6 @@ extension FormatExtension on String {
     return this; // Return the text unchanged if it doesn't contain only English letters and numbers
   }
 
-
   /// Adds a Left-To-Right Mark (LRM) and a plus sign to the string to force Left-To-Right text direction.
   /// Returns the string with the LRM added at the beginning and a plus sign.
   /// If the string contains only English letters and numbers, it returns the string unchanged.

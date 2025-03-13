@@ -27,5 +27,5 @@ part 'data/ui/flex_extension.dart';
 part 'data/ui/padding_extension.dart';
 part 'data/ui/positioned_extension.dart';
 part 'data/ui/sized_box_extension.dart';
-part 'data/ui/visibility_extension.dart';
 part 'data/ui/text_extension.dart';
+part 'data/ui/visibility_extension.dart';
