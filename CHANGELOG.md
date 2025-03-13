@@ -12,7 +12,9 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
-## 📜 Latest Release
+### 📝 [2.0.1] - Documentation Update
+
+- 📖 **Enhanced README.md**: Improved clarity, structure, and formatting for better readability.
 
 ### 🔹 [2.0.0] - Initial Stable Release
 

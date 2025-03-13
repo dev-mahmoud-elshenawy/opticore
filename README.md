@@ -41,11 +41,11 @@ OptiCore simplifies **state management** and **reduces boilerplate** by providin
 
 Get started with **OptiCore** using our **comprehensive documentation**:
 
-📌 **[Core](./CORE.md)** – Learn about BLoC integration, state handling, and essential utilities.  
-⚙️ **[Functionality](./FUNCTIONALITY.md)** – Explore built-in **utilities**, **helpers**, and **system-wide enhancements**.  
-🛠 **[Reusability](./REUSABILITY.md)** – Discover reusable **widgets**, **components**, and **UI utilities**.  
-🛡 **[Infrastructure](./INFRASTRUCTURE.md)** – Understand foundational **configurations**, **API handling**, and **global settings**.  
-✨ **[Extensions](./EXTENSIONS.md)** – Master **data manipulation**, **UI customization**, and **enhanced workflows** with built-in **extensions**.  
+📌 **[Core](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CORE.md)** – Learn about BLoC integration, state handling, and essential utilities.  
+⚙️ **[Functionality](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/FUNCTIONALITY.md)** – Explore built-in **utilities**, **helpers**, and **system-wide enhancements**.  
+🛠 **[Reusability](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/REUSABILITY.md)** – Discover reusable **widgets**, **components**, and **UI utilities**.  
+🛡 **[Infrastructure](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/INFRASTRUCTURE.md)** – Understand foundational **configurations**, **API handling**, and **global settings**.  
+✨ **[Extensions](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/EXTENSIONS.md)** – Master **data manipulation**, **UI customization**, and **enhanced workflows** with built-in **extensions**.  
 
 ---
 
@@ -67,7 +67,7 @@ We also welcome **contributions**! If you’d like to enhance OptiCore, check ou
 
 ## 🔄 Changelog & Updates
 
-📜 **[Beta History](./CHANGELOG-BETA.md)** – View historical updates and changes during **beta releases**.  
+📜 **[Beta History](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CHANGELOG-BETA.md)** – View historical updates and changes during **beta releases**.  
 📢 Stay updated on **new features, improvements, and bug fixes**!
 
 ---
