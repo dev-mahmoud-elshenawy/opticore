@@ -147,54 +147,46 @@ class _ExpandableTextState extends State<ExpandableText> {
             ? widget.text.substring(0, endPosition.offset)
             : widget.text;
 
-        return GestureDetector(
-          onTap: () {
-            if (widget.expandOnTextTap &&
-                (widget.allowCollapse || !_isExpanded)) {
-              _toggleExpanded();
-            }
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AnimatedCrossFade(
-                firstChild: _ExpandableTextSpan(
-                  showButton: showButton,
-                  text: truncatedText,
-                  style: widget.textStyle,
-                  buttonTextStyle: widget.buttonTextStyle,
-                  readMoreLessText: widget.readMoreText,
-                  isSuffixButton: true,
-                  // isSuffixButton: widget.isSuffixButton,
-                  onPressed: _toggleExpanded,
-                ),
-                secondChild: _ExpandableTextSpan(
-                  showButton: showButton,
-                  text: widget.text,
-                  style: widget.textStyle,
-                  buttonTextStyle: widget.buttonTextStyle,
-                  readMoreLessText: widget.readLessText,
-                  isSuffixButton: true,
-                  // isSuffixButton: widget.isSuffixButton && widget.allowCollapse,
-                  onPressed: _toggleExpanded,
-                ),
-                crossFadeState: _isExpanded
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
-                duration: widget.animationDuration,
-                sizeCurve: widget.animationCurve,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AnimatedCrossFade(
+              firstChild: _ExpandableTextSpan(
+                showButton: showButton,
+                text: truncatedText,
+                style: widget.textStyle,
+                buttonTextStyle: widget.buttonTextStyle,
+                readMoreLessText: widget.readMoreText,
+                isSuffixButton: true,
+                // isSuffixButton: widget.isSuffixButton,
+                onPressed: _toggleExpanded,
               ),
-              if (!widget.isSuffixButton &&
-                  (widget.allowCollapse || !_isExpanded) &&
-                  showButton)
-                ReadMoreButton(
-                  isExpanded: _isExpanded,
-                  readMoreText: widget.readMoreText,
-                  readLessText: widget.readLessText,
-                  onPressed: _toggleExpanded,
-                ),
-            ],
-          ),
+              secondChild: _ExpandableTextSpan(
+                showButton: showButton,
+                text: widget.text,
+                style: widget.textStyle,
+                buttonTextStyle: widget.buttonTextStyle,
+                readMoreLessText: widget.readLessText,
+                isSuffixButton: true,
+                // isSuffixButton: widget.isSuffixButton && widget.allowCollapse,
+                onPressed: _toggleExpanded,
+              ),
+              crossFadeState: _isExpanded
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              duration: widget.animationDuration,
+              sizeCurve: widget.animationCurve,
+            ),
+            if (!widget.isSuffixButton &&
+                (widget.allowCollapse || !_isExpanded) &&
+                showButton)
+              ReadMoreButton(
+                isExpanded: _isExpanded,
+                readMoreText: widget.readMoreText,
+                readLessText: widget.readLessText,
+                onPressed: _toggleExpanded,
+              ),
+          ],
         );
       },
     );

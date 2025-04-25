@@ -186,3 +186,18 @@ extension FormatExtension on String {
   /// ```
   String get removeWhitespace => replaceAll(RegExp(r'\s+'), '');
 }
+
+extension DoubleFormatter on double? {
+
+  /// Formats a double value into a string with a maximum of 2 decimal places.
+  ///
+  /// If the value is an integer, it returns the integer as a string.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// 3.14159.formatSmart; // Output: '3.14'
+  /// 3.0.formatSmart; // Output: '3'
+  /// ```
+  String get formatSmart =>
+      this == null ? '' : (this! % 1 == 0 ? this!.toInt().toString() : toString());
+}

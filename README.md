@@ -1,6 +1,6 @@
 # 🚀 OptiCore – The Ultimate Flutter Micro-Framework
 
-**OptiCore** is a lightweight **BLoC-based** micro-framework designed to **accelerate** Flutter app development. It provides **optimized state management, built-in API handling, and reusable utilities**—reducing dependency on multiple external packages.
+**OptiCore** is a lightweight **BLOC-based** micro-framework designed to **accelerate** Flutter app development. It provides **optimized state management, built-in API handling, and reusable utilities**—reducing dependency on multiple external packages.
 
 With **OptiCore**, you get a **scalable, maintainable**, and **efficient** development experience, enabling **faster** feature delivery and **cleaner** code architecture.
 
@@ -27,9 +27,9 @@ Take your workflow to the next level with **OptiKit CLI**—a command-line tool 
 
 ## 🔥 Why Choose OptiCore?
 
-OptiCore simplifies **state management** and **reduces boilerplate** by providing **built-in utilities** and a **structured architecture** for scalable Flutter applications.
+**OptiCore** simplifies **state management** and **reduces boilerplate** by providing **built-in utilities** and a **structured architecture** for scalable Flutter applications.
 
-✅ **BLoC-powered** – Built on top of **Flutter BLoC** for seamless state management.  
+✅ **BLOC-powered** – Built on top of **Flutter BLOC** for seamless state management.  
 ✅ **Optimized API Handling** – Integrated utilities for **network requests** and **error handling**.  
 ✅ **Reusable Components** – Prebuilt UI elements to **reduce development time**.  
 ✅ **Performance-Focused** – **Minimal overhead** and **efficient memory management**.  
@@ -41,7 +41,7 @@ OptiCore simplifies **state management** and **reduces boilerplate** by providin
 
 Get started with **OptiCore** using our **comprehensive documentation**:
 
-📌 **[Core](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CORE.md)** – Learn about BLoC integration, state handling, and essential utilities.  
+📌 **[Core](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CORE.md)** – Learn about BLOC integration, state handling, and essential utilities.  
 ⚙️ **[Functionality](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/FUNCTIONALITY.md)** – Explore built-in **utilities**, **helpers**, and **system-wide enhancements**.  
 🛠 **[Reusability](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/REUSABILITY.md)** – Discover reusable **widgets**, **components**, and **UI utilities**.  
 🛡 **[Infrastructure](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/INFRASTRUCTURE.md)** – Understand foundational **configurations**, **API handling**, and **global settings**.  

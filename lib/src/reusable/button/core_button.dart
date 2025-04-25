@@ -7,8 +7,10 @@ part of '../reusable_import.dart';
 class CoreButton extends StatelessWidget {
   final double? marginHorizontal;
   final Color? backgroundColor;
+  final Color? dimmedBackgroundColor;
   final Color? borderColor;
   final Color? textColor;
+  final Color? dimmedTextColor;
   final String? title;
   final Widget? child;
   final Function()? onTap;
@@ -37,8 +39,10 @@ class CoreButton extends StatelessWidget {
   /// ## Constructor Parameters:
   /// - [marginHorizontal]: Horizontal margin for the button (default is 0).
   /// - [backgroundColor]: Background color for the button (uses the theme's primary color by default).
+  /// - [dimmedBackgroundColor]: Background color when the button is dimmed (default is a lighter version of the background color).
   /// - [borderColor]: Border color for the button (uses the theme's primary color by default).
   /// - [textColor]: Text color for the button label (default is white).
+  /// - [dimmedTextColor]: Text color when the button is dimmed (default is a lighter version of the text color).
   /// - [title]: The text to display on the button.
   /// - [child]: A custom widget to display inside the button instead of text.
   /// - [onTap]: The callback function to execute when the button is tapped.
@@ -71,8 +75,10 @@ class CoreButton extends StatelessWidget {
     super.key,
     this.marginHorizontal,
     this.backgroundColor,
+    this.dimmedBackgroundColor,
     this.borderColor,
     this.textColor,
+    this.dimmedTextColor,
     this.title,
     this.child,
     this.onTap,
@@ -106,11 +112,13 @@ class CoreButton extends StatelessWidget {
               // Rounded corners
               color: (!dimmed
                       ? backgroundColor
-                      : backgroundColor?.withValues(alpha: 0.5)) ??
+                      : dimmedBackgroundColor ??
+                          backgroundColor?.withValues(alpha: 0.5)) ??
                   (!dimmed
                       ? theme
                           .primaryColor // Default background color if not specified
-                      : theme.primaryColor.withValues(alpha: 0.5)),
+                      : dimmedBackgroundColor ??
+                          theme.primaryColor.withValues(alpha: 0.5)),
               // Dimming effect
               border: (withBorder ?? false)
                   ? Border.all(
@@ -118,7 +126,8 @@ class CoreButton extends StatelessWidget {
                           (!dimmed
                               ? theme
                                   .primaryColor // Default border color if not specified
-                              : theme.primaryColor.withValues(alpha: 0.5))),
+                              : dimmedBackgroundColor ??
+                                  theme.primaryColor.withValues(alpha: 0.5))),
                     )
                   : null,
               gradient: gradient,
@@ -134,7 +143,10 @@ class CoreButton extends StatelessWidget {
                     title ?? "", // Text to display
                     style: textStyle ??
                         TextStyle(
-                          color: textColor ?? Colors.white,
+                          color: (!dimmed
+                                  ? textColor
+                                  : dimmedTextColor ?? textColor) ??
+                              Colors.white,
                           // Default text color is white
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
