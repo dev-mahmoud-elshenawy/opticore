@@ -137,7 +137,7 @@ class CoreButton extends StatelessWidget {
             margin: margin ??
                 EdgeInsets.symmetric(horizontal: marginHorizontal ?? 0),
             // Default margin
-            child: child ??
+            child: this.child ??
                 Center(
                   child: Text(
                     title ?? "", // Text to display
