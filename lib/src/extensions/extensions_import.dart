@@ -14,6 +14,7 @@ part '../extensions/data/hex_color_extension.dart';
 part '../extensions/data/json_extension.dart';
 part '../extensions/data/let_extension.dart';
 part '../extensions/data/list_extension.dart';
+part '../extensions/data/iterable_extension.dart';
 part '../extensions/data/map_extension.dart';
 part '../extensions/data/navigation_extension.dart';
 part '../extensions/data/parse_extension.dart';

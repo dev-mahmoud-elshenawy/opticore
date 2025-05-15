@@ -80,7 +80,7 @@ class FlexibleListView<T> extends StatelessWidget {
     required this.items,
     required this.itemBuilder,
     this.padding,
-    this.itemPadding = const EdgeInsetsDirectional.only(end: 20.0),
+    this.itemPadding = EdgeInsets.zero,
     this.controller,
     this.scrollDirection = ScrollDirection.vertical,
     this.physics,
