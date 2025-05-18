@@ -177,12 +177,16 @@ class ApiResponse<M> {
 
     ApiResponseType type = _getApiErrorType(dioError);
 
+    final responseData = dioError.response?.data;
+    final statusCode = dioError.response?.statusCode;
+
     return ApiResponse<M>(
       type: type,
-      statusCode: dioError.response?.statusCode,
+      statusCode: statusCode,
       exceptionMessage: errors.firstOrNull ?? ApiResponseConfig.errorMessage,
-      apiError: errors,
-      code: dioError.response?.data["code"] ?? 0,
+      code: (responseData is Map && responseData.containsKey('code'))
+          ? _parseCodeValue(responseData['code'])
+          : 0,
     );
   }
 
@@ -279,5 +283,27 @@ class ApiResponse<M> {
     } else {
       return ApiResponseType.apiError;
     }
+  }
+
+  /// Helper method to safely parse code values from various types to int
+  static int _parseCodeValue(dynamic codeValue) {
+    if (codeValue == null) {
+      return 0;
+    }
+
+    if (codeValue is int) {
+      return codeValue;
+    }
+
+    if (codeValue is String) {
+      try {
+        return int.parse(codeValue);
+      } catch (e) {
+        Logger.error('Error parsing code value: $e');
+        return 0;
+      }
+    }
+
+    return 0;
   }
 }
