@@ -54,6 +54,7 @@ class CoreSheet {
   /// - [backgroundColor]: The background color of the bottom sheet (defaults to `CoreColors.backgroundColor`).
   /// - [borderRadius]: The border radius for the top corners (defaults to `30.0`).
   /// - [onDismiss]: Optional callback function that will be called when the bottom sheet is dismissed.
+  /// - [enableScroll]: A boolean to enable or disable scrolling of the bottom sheet content (default is `true`).
   static Future<void> showCupertino({
     required Widget child,
     bool? enableDrag,
@@ -62,6 +63,7 @@ class CoreSheet {
     Color? backgroundColor,
     double? borderRadius,
     Function()? onDismiss,
+    bool enableScroll = true,
   }) async =>
       await showCupertinoModalBottomSheet(
         context: RouteHelper.navigatorKey.currentContext!,
@@ -70,8 +72,8 @@ class CoreSheet {
         backgroundColor: backgroundColor ?? CoreColors.backgroundColor,
         enableDrag: enableDrag ?? true,
         isDismissible: isDismissible ?? true,
-        builder: (context) => SingleChildScrollView(
-          child: Padding(
+        builder: (context) {
+          final content = Padding(
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
@@ -94,8 +96,14 @@ class CoreSheet {
                 )
               ],
             ),
-          ),
-        ),
+          );
+
+          return enableScroll
+              ? SingleChildScrollView(
+                  child: content,
+                )
+              : content;
+        },
       ).whenComplete(() {
         if (onDismiss != null) {
           onDismiss();

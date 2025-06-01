@@ -25,15 +25,15 @@ dependencies:
   connectivity_plus: ^6.1.4
   cached_network_image: ^3.4.1
   modal_bottom_sheet: ^3.0.0
-  talker: ^4.7.7
-  talker_dio_logger: ^4.7.7
+  talker: ^4.8.0
+  talker_dio_logger: ^4.8.0
   dio_smart_retry: ^7.0.1
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 
 flutter:
