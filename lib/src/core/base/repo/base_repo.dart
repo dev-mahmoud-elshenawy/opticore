@@ -92,7 +92,7 @@ abstract class BaseRepo {
   /// ```
   ///
   /// Note: The method both updates existing headers and adds new ones if they
-  /// don't already exist. If you need to remove a header, use the `remove` 
+  /// don't already exist. If you need to remove a header, use the `remove`
   /// method on the headers map as shown in Example 3.
   Future<bool> updateHeaders({
     HeaderUpdateCallback? onUpdate,

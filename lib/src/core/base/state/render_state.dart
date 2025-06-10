@@ -32,19 +32,19 @@ class RenderState extends BaseState {}
 class ComponentState extends BaseState {}
 
 /// State representing a partial data load with generic data.
-/// 
+///
 /// This state holds data that has been partially loaded and is ready to be
 /// rendered in the UI. The data is passed as a generic type [F],
 /// allowing flexibility to handle different data types.
-/// 
+///
 /// ### Properties
 /// - [data]: The loaded data to be rendered.
-/// /// ### Usage
-/// /// Use this state to represent the successful loading of any type of data:
-/// /// ```dart
-/// 
+///
+/// ### Usage
+/// Use this state to represent the successful loading of any type of data:
+/// ```dart
 /// ComponentDataState<String>('Partial data loaded');
-/// 
+/// ```
 class ComponentDataState<F> extends ComponentState {
   /// The loaded data to be rendered.
   final F data;
