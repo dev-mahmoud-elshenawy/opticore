@@ -78,6 +78,31 @@ class NetworkHelper {
     dio.interceptors.add(retryInterceptor);
   }
 
+  /// Updates the headers in the Dio instance.
+  ///
+  /// This method takes a map of headers and updates the Dio instance's headers.
+  /// It ensures that all headers are properly set for future requests.
+  ///
+  /// Parameters:
+  /// - [headers]: The headers to update or add to the existing headers.
+  ///
+  /// Returns a boolean indicating whether the headers were successfully updated.
+  bool updateHeaders(Map<String, String> headers) {
+    try {
+      if (headers.isNotEmpty) {
+        // Update Dio headers
+        headers.forEach((key, value) {
+          dio.options.headers[key] = value;
+        });
+        return true;
+      }
+      return false;
+    } catch (e) {
+      Logger.error("Failed to update Dio headers: $e");
+      return false;
+    }
+  }
+
   /// Makes a network request with the specified parameters.
   ///
   /// This method performs a connectivity check before sending the request.

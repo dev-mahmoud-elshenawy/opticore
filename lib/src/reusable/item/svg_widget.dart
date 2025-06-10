@@ -1,116 +1,108 @@
 part of '../reusable_import.dart';
 
-/// A widget that allows you to render SVG images from multiple sources, including assets, network, memory, file, and strings.
-/// This widget provides a convenient way to display SVGs dynamically based on the provided input type, without the need
-/// to handle the complexity of different SVG loading mechanisms.
+/// A smart widget for rendering SVG images from various sources.
 ///
-/// ## Key Features:
-/// - Supports multiple types of SVG sources: asset, network, string, file, and memory.
-/// - Provides an easy-to-use interface for rendering SVG images with just a few parameters.
-/// - Supports both local and remote SVG images, as well as in-memory SVG data.
-///
-/// ## How to Use:
-/// This widget can be used to display an SVG image from various sources such as an asset, a network URL,
-/// a string containing SVG data, a file, or in-memory byte data. You only need to specify the type of SVG source
-/// and the corresponding path, bytes, or file. Below is an example usage:
-///
-/// ```dart
-/// SvgWidget(
-///   type: SvgType.ASSET, // The source type (can be ASSET, NETWORK, STRING, FILE, or MEMORY)
-///   path: 'assets/images/logo.svg', // Path to the SVG in the assets
-/// ),
-/// ```
-///
-/// You can also display SVG images from a network URL, a byte array, or a file, like so:
-///
-/// ```dart
-/// SvgWidget(
-///   type: SvgType.NETWORK, // For displaying SVG from a URL
-///   path: 'https://example.com/image.svg',
-/// ),
-///
-/// SvgWidget(
-///   type: SvgType.MEMORY, // For displaying SVG from in-memory bytes
-///   bytes: someByteArray,
-/// ),
-/// ```
-///
-/// ## Constructor Parameters:
-/// - `type`: The type of SVG source. This determines how the SVG will be loaded (can be one of [SvgType.asset], [SvgType.network], [SvgType.string], [SvgType.file], or [SvgType.memory]).
-/// - `path`: The path to the SVG source. This can be the asset path, network URL, or string representation of the SVG (based on the selected [type]).
-/// - `bytes`: The raw byte data of the SVG image (used with [SvgType.memory]).
-/// - `file`: The file containing the SVG image (used with [SvgType.file]).
+/// This widget intelligently handles SVGs from assets, network, memory, files, and strings
+/// with automatic type detection and minimal configuration.
 class SvgWidget extends StatelessWidget {
-  /// Specifies the source type of the SVG (asset, network, string, file, or memory).
-  final SvgType? type;
-
-  /// The path or URL of the SVG image (used for [SvgType.asset], [SvgType.network], and [SvgType.string]).
+  /// The path or URL of the SVG image
   final String? path;
 
-  /// The byte data of the SVG image (used for [SvgType.memory]).
+  /// The SVG type (auto-detected if not provided)
+  final SvgType? type;
+
+  /// The byte data of the SVG image
   final Uint8List? bytes;
 
-  /// The file containing the SVG image (used for [SvgType.file]).
+  /// The file containing the SVG image
   final File? file;
 
-  /// The color to tint the SVG image.
-  ///
-  /// If null, the original colors of the SVG are used.
+  /// Color to tint the SVG
   final Color? color;
 
-  /// The placeholder widget to display while the SVG is loading (for [SvgType.network]).
+  /// Blend mode for the color filter
+  final BlendMode? blendMode;
+
+  /// Widget to display while loading
   final Widget? placeholder;
 
-  /// The widget to display if loading the SVG fails (e.g., network errors or invalid data).
+  /// Widget to display if loading fails
   final Widget? errorWidget;
 
-  /// The width of the SVG image.
+  /// Width of the SVG
   final double? width;
 
-  /// The height of the SVG image.
+  /// Height of the SVG
   final double? height;
 
-  /// Box fit for the SVG image (e.g., [BoxFit.contain], [BoxFit.cover]).
+  /// Box fit for the SVG
   final BoxFit fit;
 
-  /// Creates a [SvgWidget] to display SVG images from various sources with enhanced customization.
+  /// Creates a smart SVG widget that auto-detects source type.
   ///
-  /// - [type] is required and specifies the SVG source type.
-  /// - [path], [bytes], or [file] should be provided based on the selected [type].
-  /// - Optional parameters include [color], [placeholder], [errorWidget], [width], [height], and [fit].
+  /// Provide one of: [path], [bytes], or [file].
   const SvgWidget({
     super.key,
-    required this.path,
-    required this.type,
+    this.path,
+    this.type,
     this.bytes,
     this.file,
     this.color,
+    this.blendMode,
     this.placeholder,
     this.errorWidget,
     this.width,
     this.height,
     this.fit = BoxFit.contain,
-  });
+  }) : assert(
+          path != null || bytes != null || file != null,
+          'At least one source (path, bytes, or file) must be provided',
+        );
 
   @override
   Widget build(BuildContext context) {
-    return _buildSvg();
+    final SvgType sourceType = _detectType();
+    return _buildSvg(sourceType);
   }
 
-  /// A private method to build the appropriate SVG widget based on the provided [type].
-  Widget _buildSvg() {
-    ColorFilter? colorFilter = color != null
+  /// Auto-detects SVG source type based on provided parameters
+  SvgType _detectType() {
+    if (type != null) return type!;
+
+    if (bytes != null) return SvgType.memory;
+    if (file != null) return SvgType.file;
+
+    final source = path;
+    if (source == null) return SvgType.asset; // Default fallback
+
+    if (source.startsWith('http://') || source.startsWith('https://')) {
+      return SvgType.network;
+    }
+
+    if (source.contains('<svg') && source.contains('</svg>')) {
+      return SvgType.string;
+    }
+
+    return SvgType.asset;
+  }
+
+  /// Builds appropriate SVG widget based on detected type
+  Widget _buildSvg(SvgType sourceType) {
+    final colorFilter = color != null
         ? ColorFilter.mode(
             color!,
-            BlendMode.srcIn,
+            blendMode ?? BlendMode.srcIn,
           )
         : null;
-    Widget Function(BuildContext)? placeholderBuilder =
-        placeholder != null ? (_) => placeholder! : null;
+
+    final placeholderBuilder = placeholder != null ? (_) => placeholder! : null;
+
+    Widget errorWidget = this.errorWidget ??
+        const SizedBox.shrink(); // Default to empty widget if not provided
+
     try {
-      switch (type) {
+      switch (sourceType) {
         case SvgType.asset:
-          // Load SVG from asset path
           return SvgPicture.asset(
             path ?? '',
             colorFilter: colorFilter,
@@ -118,11 +110,10 @@ class SvgWidget extends StatelessWidget {
             height: height,
             fit: fit,
             placeholderBuilder: placeholderBuilder,
-            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+            errorBuilder: (_, __, ___) => errorWidget,
           );
 
         case SvgType.network:
-          // Load SVG from network URL with placeholder and error handling
           return SvgPicture.network(
             path ?? '',
             colorFilter: colorFilter,
@@ -130,11 +121,10 @@ class SvgWidget extends StatelessWidget {
             height: height,
             fit: fit,
             placeholderBuilder: placeholderBuilder,
-            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+            errorBuilder: (_, __, ___) => errorWidget,
           );
 
         case SvgType.string:
-          // Load SVG from a string containing SVG data
           return SvgPicture.string(
             path ?? '',
             colorFilter: colorFilter,
@@ -142,11 +132,10 @@ class SvgWidget extends StatelessWidget {
             height: height,
             fit: fit,
             placeholderBuilder: placeholderBuilder,
-            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+            errorBuilder: (_, __, ___) => errorWidget,
           );
 
         case SvgType.file:
-          // Load SVG from a file
           return SvgPicture.file(
             file ?? File(''),
             colorFilter: colorFilter,
@@ -154,11 +143,10 @@ class SvgWidget extends StatelessWidget {
             height: height,
             fit: fit,
             placeholderBuilder: placeholderBuilder,
-            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+            errorBuilder: (_, __, ___) => errorWidget,
           );
 
         case SvgType.memory:
-          // Load SVG from memory (Uint8List of byte data)
           return SvgPicture.memory(
             bytes ?? Uint8List(0),
             colorFilter: colorFilter,
@@ -166,20 +154,11 @@ class SvgWidget extends StatelessWidget {
             height: height,
             fit: fit,
             placeholderBuilder: placeholderBuilder,
-            errorBuilder: (_, __, ___) => _buildErrorWidget(),
+            errorBuilder: (_, __, ___) => errorWidget,
           );
-
-        default:
-          return _buildErrorWidget();
       }
     } catch (e) {
-      // Handle errors gracefully by displaying the error widget
-      return _buildErrorWidget();
+      return errorWidget;
     }
-  }
-
-  /// Returns the error widget if specified, or an empty widget by default.
-  Widget _buildErrorWidget() {
-    return errorWidget ?? const SizedBox.shrink();
   }
 }

@@ -29,7 +29,7 @@ class FlexibleCheckBox extends StatefulWidget {
   final double? size;
 
   ///Define Function that os executed when user tap on checkbox
-  ///If onTap is given a null callack, it will be disabled
+  ///If onTap is given a null callback, it will be disabled
   final Function(bool?)? onTap;
 
   ///Define the duration of the animation. If any

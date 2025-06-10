@@ -25,8 +25,8 @@ dependencies:
   connectivity_plus: ^6.1.4
   cached_network_image: ^3.4.1
   modal_bottom_sheet: ^3.0.0
-  talker: ^4.8.0
-  talker_dio_logger: ^4.8.0
+  talker: ^4.8.2
+  talker_dio_logger: ^4.8.2
   dio_smart_retry: ^7.0.1
 
 

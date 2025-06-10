@@ -22,6 +22,37 @@ part of '../import/base_import.dart';
 /// that do not involve UI updates.
 class RenderState extends BaseState {}
 
+/// A state type that allows partial UI updates without triggering full screen rebuilds.
+///
+/// Unlike [RenderState] which causes the entire screen to rebuild through ContentBuilder,
+/// and [NonRenderState] which doesn't affect the UI directly, [ComponentState] is designed
+/// to be picked up by [StateBuilder] widgets for selective rebuilding of UI components.
+///
+/// This provides a way to update specific parts of your UI without rebuilding the entire widget tree.
+class ComponentState extends BaseState {}
+
+/// State representing a partial data load with generic data.
+/// 
+/// This state holds data that has been partially loaded and is ready to be
+/// rendered in the UI. The data is passed as a generic type [F],
+/// allowing flexibility to handle different data types.
+/// 
+/// ### Properties
+/// - [data]: The loaded data to be rendered.
+/// /// ### Usage
+/// /// Use this state to represent the successful loading of any type of data:
+/// /// ```dart
+/// 
+/// ComponentDataState<String>('Partial data loaded');
+/// 
+class ComponentDataState<F> extends ComponentState {
+  /// The loaded data to be rendered.
+  final F data;
+
+  /// Creates a state with the provided data.
+  ComponentDataState(this.data);
+}
+
 /// State representing a successful data load with generic data.
 ///
 /// This state holds the data that has been successfully loaded and is

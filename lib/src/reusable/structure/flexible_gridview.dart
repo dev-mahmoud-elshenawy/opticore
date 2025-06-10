@@ -9,7 +9,7 @@ part of '../reusable_import.dart';
 class FlexibleGridView extends StatelessWidget {
   /// Creates a [FlexibleGridView].
   ///
-  /// [builder] is a function to build each grid item. It receives the context and index of the
+  /// [itemBuilder] is a function to build each grid item. It receives the context and index of the
   /// item and returns the corresponding widget.
   ///
   /// [itemCount] is the total number of items in the grid.
@@ -45,7 +45,7 @@ class FlexibleGridView extends StatelessWidget {
   /// ```
   const FlexibleGridView({
     super.key,
-    required this.builder,
+    required this.itemBuilder,
     required this.itemCount,
     required this.crossAxisCount,
     this.crossAxisSpacing = 8,
@@ -57,7 +57,7 @@ class FlexibleGridView extends StatelessWidget {
   });
 
   /// A function to build each grid item.
-  final IndexedWidgetBuilder builder;
+  final IndexedWidgetBuilder itemBuilder;
 
   /// The total number of items in the grid.
   final int itemCount;
@@ -97,7 +97,7 @@ class FlexibleGridView extends StatelessWidget {
       itemBuilder: (ctx, columnIndex) {
         return _GridRow(
           columnIndex: columnIndex,
-          builder: builder,
+          builder: itemBuilder,
           itemCount: itemCount,
           crossAxisCount: crossAxisCount,
           crossAxisSpacing: crossAxisSpacing,
@@ -134,7 +134,7 @@ class SliverFlexibleGridView extends StatelessWidget {
   /// All parameters are the same as in [FlexibleGridView].
   const SliverFlexibleGridView({
     super.key,
-    required this.builder,
+    required this.itemBuilder,
     required this.itemCount,
     required this.crossAxisCount,
     this.crossAxisSpacing = 8,
@@ -144,7 +144,7 @@ class SliverFlexibleGridView extends StatelessWidget {
   });
 
   /// A function to build each grid item.
-  final IndexedWidgetBuilder builder;
+  final IndexedWidgetBuilder itemBuilder;
 
   /// The total number of items in the grid.
   final int itemCount;
@@ -174,7 +174,7 @@ class SliverFlexibleGridView extends StatelessWidget {
         (ctx, columnIndex) {
           return _GridRow(
             columnIndex: columnIndex,
-            builder: builder,
+            builder: itemBuilder,
             itemCount: itemCount,
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: crossAxisSpacing,

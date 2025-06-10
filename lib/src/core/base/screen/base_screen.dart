@@ -137,7 +137,13 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   }
 
   /// Posts a [BaseEvent] to the BLoC associated with this scene.
-  void postEvent(BaseEvent event) => BlocProvider.of<M>(baseContext).add(event);
+  void postEvent(BaseEvent event) {
+    try {
+      BlocProvider.of<M>(baseContext).add(event);
+    } catch (e) {
+      Logger.error('Failed to post event: $e');
+    }
+  }
 
   /// Determines the icon brightness for the status bar.
   bool get isDarkStatusBarIcon => true;
@@ -176,7 +182,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   Widget? initialWidget() => SizedBox.fromSize();
 
   /// Listener [Optional Implementation](To keep from breaking Interface Segregation Principle)
-  listenToState(BuildContext context, BaseState state) {}
+  void listenToState(BuildContext context, BaseState state) {}
 
   @override
   void initState() {
@@ -299,7 +305,17 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
       } else if (state is LoadingStateRender) {
         return loadingWidget();
       } else if (state is RenderDataState) {
-        return buildWidget(baseContext, state as RenderDataState<F>);
+        try {
+          // Safer casting with an explicit check
+          if (state is RenderDataState<F>) {
+            return buildWidget(baseContext, state);
+          }
+          // If generic type doesn't match
+          return errorWidget('Incompatible state data format');
+        } catch (e) {
+          Logger.error('Error rendering data state: $e');
+          return errorWidget('Error displaying content');
+        }
       } else if (state is InitialState) {
         return initialWidget();
       } else if (state is ErrorStateRender) {
@@ -333,6 +349,11 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     closeKeyboard();
     _cancelFunc?.call();
     _cancelFunc = BotToast.showLoading();
+    Future.delayed(NetworkHelper.connectionTimeout, () {
+      if (_cancelFunc != null) {
+        hideLoading();
+      }
+    });
   }
 
   /// Hides the loading indicator if it's showing.

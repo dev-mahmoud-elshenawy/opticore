@@ -47,39 +47,80 @@ abstract class BaseRepo {
   /// modify the current headers.
   ///
   /// The callback function allows the headers to be modified dynamically
-  /// before they are applied globally in the `NetworkConfig`.
+  /// before they are applied globally in the `NetworkConfig` and in the
+  /// network helper's Dio instance.
   ///
   /// - [onUpdate]: A callback function that receives the current headers
   ///   and returns the updated headers as a `Map<String, String>`.
   ///   The callback is optional, and if not provided, the headers will
   ///   remain unchanged.
   ///
-  /// ### Example:
-  /// ```dart
-  ///   @override
-  ///   Future<void> updateHeaders({
-  ///     HeaderUpdateCallback? onUpdate,
-  ///   }) async {
-  ///     // Call the super implementation for default behavior
-  ///     await super.updateHeaders(onUpdate: (headers) async {
-  ///       headers['Authorization'] = 'Bearer my_new_token';
-  ///       return headers;
-  ///     });
+  /// Returns a boolean indicating whether the headers were successfully updated.
   ///
-  ///     // Additional logic for custom behavior (e.g., logging)
-  ///     print("Headers have been updated in CustomRepo.");
-  ///   }
+  /// ### Examples:
+  ///
+  /// **Example 1:** Adding an authorization token:
+  /// ```dart
+  /// await updateHeaders(
+  ///   onUpdate: (headers) async {
+  ///     // Add a new authorization header or update existing one
+  ///     headers['Authorization'] = 'Bearer $token';
+  ///     return headers;
+  ///   },
+  /// );
   /// ```
-  Future<void> updateHeaders({
+  ///
+  /// **Example 2:** Updating multiple headers:
+  /// ```dart
+  /// await updateHeaders(
+  ///   onUpdate: (headers) async {
+  ///     headers['Content-Type'] = 'application/json';
+  ///     headers['Accept-Language'] = 'en-US';
+  ///     return headers;
+  ///   },
+  /// );
+  /// ```
+  ///
+  /// **Example 3:** Removing a specific header:
+  /// ```dart
+  /// await updateHeaders(
+  ///   onUpdate: (headers) async {
+  ///     headers.remove('Authorization'); // Remove auth when logging out
+  ///     return headers;
+  ///   },
+  /// );
+  /// ```
+  ///
+  /// Note: The method both updates existing headers and adds new ones if they
+  /// don't already exist. If you need to remove a header, use the `remove` 
+  /// method on the headers map as shown in Example 3.
+  Future<bool> updateHeaders({
     HeaderUpdateCallback? onUpdate,
   }) async {
-    if (onUpdate != null) {
-      // Get the new headers from the callback
-      Map<String, String> updatedHeaders =
-          await onUpdate(NetworkConfig.headers);
+    try {
+      if (onUpdate != null) {
+        // Create a modifiable copy of the current headers
+        Map<String, String> headersCopy =
+            Map<String, String>.from(NetworkConfig.headers);
 
-      // Update the global headers in NetworkConfig
-      await NetworkConfig.updateHeaders(newHeaders: updatedHeaders);
+        // Get the updated headers from the callback
+        Map<String, String> updatedHeaders = await onUpdate(headersCopy);
+
+        // Update the global headers in NetworkConfig
+        await NetworkConfig.updateHeaders(newHeaders: updatedHeaders);
+
+        // Update the headers in the NetworkHelper
+        if (networkHelper != null) {
+          networkHelper!.updateHeaders(updatedHeaders);
+        }
+
+        Logger.info("Headers updated successfully");
+        return true;
+      }
+      return false;
+    } catch (e, stackTrace) {
+      Logger.error("Failed to update headers: $e\n$stackTrace");
+      return false;
     }
   }
 }

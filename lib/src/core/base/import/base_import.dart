@@ -30,3 +30,4 @@ part '../state/non_render_state.dart';
 part '../state/render_state.dart';
 part '../view/base_view.dart';
 part '../widget/appbar/core_app_bar.dart';
+part '../widget/state_builder.dart';

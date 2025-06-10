@@ -85,7 +85,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// retryFunc: retryFunc,
   /// );
   /// ```
-  handleApiResponse<M>(
+  dynamic handleApiResponse<M>(
     ApiResponse<M>? apiResponse, {
     BaseState? Function(int?, String?)? onApiErrorAction,
     String? errorType,
@@ -93,11 +93,20 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   }) {
     Logger.info(
         "BaseBloc | API RESPONSE: ${apiResponse?.type} - ${stateFactory.runtimeType}");
+
+    if (apiResponse == null) {
+      return returnErrorHandler(
+        errorMsg: "Invalid API response",
+        errorType: errorType,
+        apiErrorType: ApiResponseType.apiError,
+      );
+    }
+
     try {
       /// Success
-      if (apiResponse?.type == ApiResponseType.success) {
+      if (apiResponse.type == ApiResponseType.success) {
         if (stateFactory != null) {
-          return stateFactory!.getState(apiResponse?.data);
+          return stateFactory!.getState(apiResponse.data);
         } else {
           Logger.debug(
               "BaseBloc | stateFactory is null. Returning default state.");
@@ -106,10 +115,10 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// API Error
-      else if (apiResponse?.type == ApiResponseType.apiError ||
-          apiResponse?.type == ApiResponseType.unauthorizedError) {
+      else if (apiResponse.type == ApiResponseType.apiError ||
+          apiResponse.type == ApiResponseType.unauthorizedError) {
         Logger.debug(
-            "BaseBloc | API Error ${apiResponse?.apiError} - Type: $errorType");
+            "BaseBloc | API Error ${apiResponse.apiError} - Type: $errorType");
         return handleErrorAndException(
           apiResponse,
           onApiErrorAction: onApiErrorAction,
@@ -118,19 +127,18 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// Network || Parsing Error
-      else if (apiResponse?.type == ApiResponseType.networkError ||
-          apiResponse?.type == ApiResponseType.parsingError) {
-        Logger.debug("BaseBloc | Network Error ${apiResponse?.apiError}");
+      else if (apiResponse.type == ApiResponseType.networkError ||
+          apiResponse.type == ApiResponseType.parsingError) {
+        Logger.debug("BaseBloc | Network Error ${apiResponse.apiError}");
         return handleNetworkException(
           apiResponse,
           errorType: errorType,
         );
-      } else if (apiResponse?.type == ApiResponseType.unauthorizedError) {
       }
 
       /// Server Error
-      else if (apiResponse?.type == ApiResponseType.serverError) {
-        Logger.debug("BaseBloc | Server Error ${apiResponse?.apiError}");
+      else if (apiResponse.type == ApiResponseType.serverError) {
+        Logger.debug("BaseBloc | Server Error ${apiResponse.apiError}");
         return handleServerErrorException(
           apiResponse,
           errorType: errorType,
@@ -139,8 +147,8 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
       }
 
       /// No Internet Error
-      else if (apiResponse?.type == ApiResponseType.noInternetError) {
-        Logger.debug("BaseBloc | No Internet Error ${apiResponse?.apiError}");
+      else if (apiResponse.type == ApiResponseType.noInternetError) {
+        Logger.debug("BaseBloc | No Internet Error ${apiResponse.apiError}");
         return handleNoInternetException(
           apiResponse,
           errorType: errorType,
@@ -177,7 +185,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// errorType: errorType,
   /// );
   /// ```
-  handleErrorAndException<M>(
+  dynamic handleErrorAndException<M>(
     ApiResponse<M>? apiResponse, {
     BaseState? Function(int?, String?)? onApiErrorAction,
     String? errorType,
@@ -234,7 +242,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// errorType: errorType,
   /// );
   /// ```
-  handleApiError<M>(
+  dynamic handleApiError<M>(
     ApiResponse<M>? apiResponse, {
     BaseState? Function(int?, String?)? onApiErrorAction,
     String? errorType,
@@ -287,7 +295,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// errorType: errorType,
   /// );
   /// ```
-  handleNetworkException(
+  dynamic handleNetworkException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
   }) {
@@ -326,7 +334,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// retryFunc: retryFunc,
   /// );
   /// ```
-  handleNoInternetException(
+  dynamic handleNoInternetException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
     Function? retryFunc,
@@ -366,7 +374,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// retryFunc: retryFunc,
   /// );
   /// ```
-  handleServerErrorException(
+  dynamic handleServerErrorException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
     Function? retryFunc,
@@ -406,7 +414,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   ///  retryFunc: retryFunc,
   ///  );
   ///  ```
-  handleUnAuthorizedException(
+  dynamic handleUnAuthorizedException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
     Function? retryFunc,
@@ -418,6 +426,13 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
         apiErrorType: ApiResponseType.unauthorizedError,
       );
     }
+
+    // Add default return to prevent null returns
+    return returnErrorHandler(
+      errorMsg: "Unknown authorization error",
+      errorType: ErrorType.nonRender,
+      apiErrorType: ApiResponseType.unauthorizedError,
+    );
   }
 
   /// Returns an error state based on the error type and message.
