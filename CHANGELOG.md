@@ -12,6 +12,12 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🛠 [2.1.2] - API Enhancements
+
+- 🧰 **Improved Map Extensions**:
+  - Made `key` parameter optional in `safeList<T>()` for more flexible API usage
+  - Enhanced return behavior to provide empty list when key is not provided
+
 ### 🛠 [2.1.1] - Static Analysis Improvements
 
 - 📊 **Enhanced pub score** with improved static analysis compliance

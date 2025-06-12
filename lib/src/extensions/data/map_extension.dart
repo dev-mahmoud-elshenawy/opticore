@@ -101,12 +101,12 @@ extension SafeMapAccess on Map<String, dynamic> {
   ///
   /// Example usage:
   /// ```dart
-  /// List<String> tags = json.safeList<String>('tags', converter: (val) => val.toString());
-  /// List<int> ids = json.safeList<int>('ids', converter: (val) => int.tryParse(val));
-  /// List<Model> models = json.safeList<Model>('models', converter: (val) => Model.fromJson(val));
-  /// List<dynamic> items = json.safeList<dynamic>('items');
+  /// List<String> tags = json.safeList<String>(key: 'tags', converter: (val) => val.toString());
+  /// List<int> ids = json.safeList<int>(key: 'ids', converter: (val) => int.tryParse(val));
+  /// List<Model> models = json.safeList<Model>(key: 'models', converter: (val) => Model.fromJson(val));
+  /// List<dynamic> items = json.safeList<dynamic>(key:'items');
   /// ```
-  List<T> safeList<T>(String key, {T Function(dynamic)? parser}) {
+  List<T> safeList<T>({required String key, T Function(dynamic)? parser}) {
     return safeValue<List<T>>(
       key: key,
       parser: (val) {
