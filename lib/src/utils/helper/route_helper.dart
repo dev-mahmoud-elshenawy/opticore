@@ -77,7 +77,7 @@ class RouteHelper {
   ///  arguments: {'user': user},
   ///  isInitialRoute: true,
   ///  );
-  static builder(
+  static PageRoute builder(
     Widget scene, {
     bool maintainState = true,
     RouteSettings? settings,

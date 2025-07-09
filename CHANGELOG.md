@@ -12,6 +12,15 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🔧 [2.1.3] - Validation Toolkit & Dependency Updates
+
+- 📦 **Dependency Updates**:
+  - Upgraded internal packages to ensure stability and compatibility
+
+- ✅ **Validation Improvements**:
+  - Integrated [`auto_validate`](https://pub.dev/packages/auto_validate) package
+  - Centralized and enhanced validation capabilities across the micro-framework
+
 ### 🛠 [2.1.2] - API Enhancements
 
 - 🧰 **Improved Map Extensions**:

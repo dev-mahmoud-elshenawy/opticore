@@ -32,12 +32,25 @@ extension HexColorExtension on String {
   /// print(color); // Output: Color(0xffff5733)
   /// ```
   Color get toColor {
-    // Check if the hex code starts with '#'
-    String hexString = startsWith('#') ? substring(1) : this;
+    String hex = replaceFirst('#', '').trim();
+
+    // Expand 3-digit shorthand
+    if (hex.length == 3) {
+      hex = hex.split('').map((c) => c * 2).join();
+    }
+
+    // Prepend opaque alpha if only RGB supplied
+    if (hex.length == 6) hex = 'FF$hex';
+
+    // Expect 8-digit ARGB at this point
+    if (hex.length != 8) {
+      Logger.error('Invalid hex color code: $this');
+      return Colors.black;
+    }
 
     try {
-      return Color(int.parse(hexString, radix: 16));
-    } catch (e) {
+      return Color(int.parse(hex, radix: 16));
+    } catch (_) {
       Logger.error('Invalid hex color code: $this');
       return Colors.black;
     }
