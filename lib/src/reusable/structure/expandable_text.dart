@@ -56,6 +56,7 @@ class ExpandableText extends StatefulWidget {
     this.allowCollapse = true,
     this.expandOnTextTap = true,
     this.animationCurve = Curves.easeOutBack,
+    this.withUnderLine = false,
     this.animationDuration = const Duration(milliseconds: 300),
   })  : assert(maxLines > 1, 'maxLines must be greater than 1'),
         assert(text.length > 0, 'text cannot be empty'),
@@ -97,6 +98,9 @@ class ExpandableText extends StatefulWidget {
 
   /// The duration of the animation.
   final Duration animationDuration;
+
+  /// with underline
+  final bool withUnderLine;
 
   @override
   State<ExpandableText> createState() => _ExpandableTextState();
@@ -160,6 +164,7 @@ class _ExpandableTextState extends State<ExpandableText> {
                 isSuffixButton: true,
                 // isSuffixButton: widget.isSuffixButton,
                 onPressed: _toggleExpanded,
+                withUnderLine: widget.withUnderLine,
               ),
               secondChild: _ExpandableTextSpan(
                 showButton: showButton,
@@ -170,6 +175,7 @@ class _ExpandableTextState extends State<ExpandableText> {
                 isSuffixButton: true,
                 // isSuffixButton: widget.isSuffixButton && widget.allowCollapse,
                 onPressed: _toggleExpanded,
+                withUnderLine: widget.withUnderLine,
               ),
               crossFadeState: _isExpanded
                   ? CrossFadeState.showSecond
@@ -215,6 +221,7 @@ class _ExpandableTextSpan extends StatelessWidget {
     required this.text,
     this.style,
     this.buttonTextStyle,
+    this.withUnderLine = false,
     required this.readMoreLessText,
     required this.isSuffixButton,
     required this.onPressed,
@@ -241,6 +248,9 @@ class _ExpandableTextSpan extends StatelessWidget {
   /// The callback function executed when the button is tapped.
   final VoidCallback onPressed;
 
+  /// with underline
+  final bool withUnderLine;
+
   @override
   Widget build(BuildContext context) {
     return Text.rich(
@@ -259,15 +269,32 @@ class _ExpandableTextSpan extends StatelessWidget {
   ///
   /// This method constructs a [TextSpan] with the provided `text`, `buttonTextStyle`,
   /// and an [onPressed] action using a [TapGestureRecognizer].
-  TextSpan _buildExpandCollapseTextSpan(String text) {
-    return TextSpan(
-      text: text,
-      style: buttonTextStyle ??
-          const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-      recognizer: TapGestureRecognizer()..onTap = onPressed,
-    );
+  WidgetSpan _buildExpandCollapseTextSpan(String text) {
+    return withUnderLine
+        ? TextSpan(
+            text: text,
+            style: buttonTextStyle ??
+                const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+            recognizer: TapGestureRecognizer()..onTap = onPressed,
+          ).withUnderLine(
+            underLineColor: buttonTextStyle?.color ?? Color(0xFF000000),
+            onTap: () {
+              onPressed();
+            })
+        : WidgetSpan(
+            child: GestureDetector(
+              onTap: onPressed,
+              child: Text(
+                text,
+                style: buttonTextStyle ??
+                    const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+          );
   }
 }
 
