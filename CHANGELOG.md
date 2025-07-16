@@ -12,6 +12,14 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### ✨ [2.1.4] - UI & String Extension Enhancements
+
+- 📝 **ExpandableText**:
+  - Added `underline` support for enhanced text styling.
+
+- 🌐 **String Extension**:
+  - Introduced `.arabicNumbers` getter to convert English digits into Arabic numerals.
+
 ### 🔧 [2.1.3] - Validation Toolkit & Dependency Updates
 
 - 📦 **Dependency Updates**:
@@ -72,7 +80,7 @@ Each section lists the changes in **chronological order**, with the **most recen
 
 - 🎉 **First official stable release of OptiCore**.
 
-For a complete history of updates during the **beta phase**, refer to **[CHANGELOG-BETA.md](./CHANGELOG-BETA.md)**.
+For a complete history of updates during the **beta phase**, refer to **[Beta History](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CHANGELOG-BETA.md)**.
 
 ---
 Stay updated with the latest enhancements and fixes! 🚀

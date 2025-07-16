@@ -74,7 +74,7 @@ extension FormatExtension on String {
   /// '١٢٣٤٥٦'.englishNumbers; // Output: '123456'
   /// ```
   String get englishNumbers {
-    final Map<String, String> arabicToEnglishMap = {
+    final Map<String, String> englishNumbers = {
       '١': '1',
       '٢': '2',
       '٣': '3',
@@ -89,7 +89,34 @@ extension FormatExtension on String {
 
     return splitMapJoin(
       RegExp('[٠-٩]'),
-      onMatch: (Match match) => arabicToEnglishMap[match.group(0)]!,
+      onMatch: (Match match) => englishNumbers[match.group(0)]!,
+      onNonMatch: (String nonMatch) => nonMatch,
+    );
+  }
+
+  /// Converts English numeric characters to Arabic numeric characters.
+  ///
+  /// Example:
+  /// ```dart
+  /// '123456'.arabicNumbers; // Output: '١٢٣٤٥٦'
+  /// ```
+  String get arabicNumbers {
+    final Map<String, String> englishToArabicMap = {
+      '1': '١',
+      '2': '٢',
+      '3': '٣',
+      '4': '٤',
+      '5': '٥',
+      '6': '٦',
+      '7': '٧',
+      '8': '٨',
+      '9': '٩',
+      '0': '٠',
+    };
+
+    return splitMapJoin(
+      RegExp('[0-9]'),
+      onMatch: (Match match) => englishToArabicMap[match.group(0)]!,
       onNonMatch: (String nonMatch) => nonMatch,
     );
   }
