@@ -44,12 +44,13 @@ extension TextSpanUnderLine on TextSpan {
   /// TextSpan(text: "Hello").withUnderLine(); // Adds a default underline.
   /// TextSpan(text: "Mahmoud!").withUnderLine(width: 2.0, underLineColor: Colors.red); // Adds a red underline with a width of 2.0.
   /// ```
-  WidgetSpan withUnderLine({
-    double width = 1.0,
-    Color underLineColor = CoreColors.black,
-    void Function()? onTap,
-  }) {
+  WidgetSpan withUnderLine(
+      {double width = 1.0,
+      Color underLineColor = CoreColors.black,
+      void Function()? onTap,
+      PlaceholderAlignment? alignment}) {
     return WidgetSpan(
+      alignment: alignment ?? PlaceholderAlignment.middle,
       child: Container(
         decoration: BoxDecoration(
           border: Border(

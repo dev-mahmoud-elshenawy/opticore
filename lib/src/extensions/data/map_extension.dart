@@ -138,7 +138,15 @@ extension SafeMapAccess on Map<String, dynamic> {
   int safeInt(String key, {int defaultValue = 0}) {
     return safeValue<int>(
       key: key,
-      parser: (val) => int.tryParse(val.toString()) ?? defaultValue,
+      parser: (val) {
+        if (val is int) return val;
+        if (val is double) return val.toInt(); // Convert double to int
+        if (val is String) {
+          final parsed = double.tryParse(val); // Try parsing as double first
+          return parsed != null ? parsed.toInt() : defaultValue;
+        }
+        return defaultValue;
+      },
       defaultValue: defaultValue,
     );
   }

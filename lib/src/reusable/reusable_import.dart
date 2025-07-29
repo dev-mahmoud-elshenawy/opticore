@@ -32,5 +32,6 @@ part '../reusable/structure/index_scroller.dart';
 part '../reusable/structure/lazy_indexed_stack.dart';
 part '../reusable/structure/refresh_view.dart';
 part '../reusable/structure/top_scroller.dart';
+part '../reusable/structure/scroll_status_bar_overlay.dart';
 part 'fallback_screen/no_internet_screen.dart';
 part 'mixin/after_layout_mixin.dart';

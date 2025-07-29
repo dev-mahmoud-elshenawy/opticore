@@ -93,6 +93,7 @@ class FlexibleGridView extends StatelessWidget {
       shrinkWrap: shrinkWrap,
       physics: physics,
       itemCount: columnLength,
+      padding: EdgeInsets.zero,
       // Number of rows
       itemBuilder: (ctx, columnIndex) {
         return _GridRow(
