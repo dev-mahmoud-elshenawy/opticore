@@ -12,6 +12,21 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🆕 [2.1.5] - Scroll Overlay & Usability Improvements
+
+- 🧩 **New Widget**:
+  - `ScrollStatusBarOverlay`: Wraps a scrollable and paints an overlay behind the status bar to improve visual experience in scrollable UIs.
+
+- 🎨 **UI Enhancements**:
+  - Added `PlaceholderAlignment` support to `withUnderline` inside `WidgetSpan` for more control over inline widget alignment.
+  - Introduced zero `itemPadding` default to `FlexibleGridView` for tighter and more compact grid spacing.
+
+- 🔐 **Extensions**:
+  - Enhanced `safeInt` extension for better default handling and fallback precision.
+
+- 📦 **Dependency Updates**:
+  - Updated internal dependencies for performance, compatibility, and future-proofing.
+
 ### ✨ [2.1.4] - UI & String Extension Enhancements
 
 - 📝 **ExpandableText**:
