@@ -14,6 +14,9 @@ class CoreButton extends StatelessWidget {
   final String? title;
   final Widget? child;
   final Function()? onTap;
+  final Function()? onTapCancel;
+  final Function(TapDownDetails)? onTapDown;
+  final Function(TapUpDetails)? onTapUp;
   final ValueNotifier<bool>? isDimmed;
   final bool? withBorder;
   final double? height;
@@ -46,6 +49,9 @@ class CoreButton extends StatelessWidget {
   /// - [title]: The text to display on the button.
   /// - [child]: A custom widget to display inside the button instead of text.
   /// - [onTap]: The callback function to execute when the button is tapped.
+  /// - [onTapDown]: The callback function to execute when the button is pressed down.
+  /// - [onTapCancel]: The callback function to execute when the button tap is canceled.
+  /// - [onTapUp]: The callback function to execute when the button tap is released.
   /// - [isDimmed]: A `ValueNotifier<bool>` used to control whether the button is dimmed or not, making it disabled.
   /// - [withBorder]: A boolean value to specify whether the button should have a border.
   /// - [height]: Height of the button.
@@ -82,6 +88,9 @@ class CoreButton extends StatelessWidget {
     this.title,
     this.child,
     this.onTap,
+    this.onTapDown,
+    this.onTapCancel,
+    this.onTapUp,
     this.isDimmed,
     this.withBorder,
     this.height,
@@ -103,6 +112,9 @@ class CoreButton extends StatelessWidget {
           splashColor: Colors.transparent,
           onTap: !dimmed ? onTap : null,
           // Only triggers onTap if the button is not dimmed
+          onTapDown: !dimmed ? onTapDown : null,
+          onTapCancel: !dimmed ? onTapCancel : null,
+          onTapUp: !dimmed ? onTapUp : null,
           child: Container(
             height: height ?? 48,
             // Default height if not specified
