@@ -15,6 +15,7 @@ part of '../reusable_import.dart';
 /// - `enableDrag`: A boolean to enable or disable drag functionality. Defaults to `false`.
 /// - `expand`: A boolean to control whether the bottom sheet should expand. Defaults to `false`.
 /// - `backgroundColor`: The background color of the bottom sheet. Defaults to `CoreColors.backgroundColor`.
+/// - `barrierColor`: The color of the barrier that darkens the background when the bottom sheet is displayed. Defaults to `Colors.black54`.
 /// - `borderRadius`: The border radius for the top corners of the bottom sheet. Defaults to `30.0`.
 /// - `onDismiss`: An optional callback function that is triggered when the bottom sheet is dismissed.
 ///
@@ -52,6 +53,7 @@ class CoreSheet {
   /// - [isDismissible]: A boolean to enable dismissing of the bottom sheet (default is `true`)
   /// - [expand]: A boolean to control whether the bottom sheet should expand to full screen (default is `false`).
   /// - [backgroundColor]: The background color of the bottom sheet (defaults to `CoreColors.backgroundColor`).
+  /// - [barrierColor]: The color of the barrier that darkens the background (defaults to `Colors.black54`).
   /// - [borderRadius]: The border radius for the top corners (defaults to `30.0`).
   /// - [onDismiss]: Optional callback function that will be called when the bottom sheet is dismissed.
   /// - [enableScroll]: A boolean to enable or disable scrolling of the bottom sheet content (default is `true`).
@@ -61,6 +63,7 @@ class CoreSheet {
     bool? isDismissible,
     bool? expand,
     Color? backgroundColor,
+    Color? barrierColor,
     double? borderRadius,
     Function()? onDismiss,
     bool enableScroll = true,
@@ -70,6 +73,7 @@ class CoreSheet {
         expand: expand ?? false,
         topRadius: Radius.circular(borderRadius ?? 30),
         backgroundColor: backgroundColor ?? CoreColors.backgroundColor,
+        barrierColor: barrierColor ?? Colors.black12,
         enableDrag: enableDrag ?? true,
         isDismissible: isDismissible ?? true,
         builder: (context) {
