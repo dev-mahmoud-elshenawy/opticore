@@ -225,10 +225,19 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   void _refreshStatusBar() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarIconBrightness:
-              isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
-        ));
+        if (isDarkStatusBarIcon) {
+          // Dark icons (for light backgrounds)
+          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light, // iOS
+          ));
+        } else {
+          // Light icons (for dark backgrounds)
+          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark, // iOS
+          ));
+        }
       }
     });
   }
@@ -239,6 +248,8 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
       value: SystemUiOverlayStyle(
         statusBarIconBrightness:
             isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
+        statusBarBrightness:
+            isDarkStatusBarIcon ? Brightness.light : Brightness.dark,
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
