@@ -189,6 +189,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     super.initState();
     if (mounted) {
       init();
+      _refreshStatusBar();
       _builder = ContentBuilder<M>(
         create: (context) => _bloc,
         stateListener: _handleStateListener,
@@ -211,12 +212,25 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   void didChangeDependencies() {
     super.didChangeDependencies();
     changeDependencies();
+    _refreshStatusBar();
   }
 
   @override
   void didUpdateWidget(covariant T oldWidget) {
     super.didUpdateWidget(oldWidget);
     updateWidget(oldWidget);
+    _refreshStatusBar();
+  }
+
+  void _refreshStatusBar() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          statusBarIconBrightness:
+              isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
+        ));
+      }
+    });
   }
 
   @override
