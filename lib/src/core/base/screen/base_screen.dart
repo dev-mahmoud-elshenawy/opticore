@@ -248,8 +248,9 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
       value: SystemUiOverlayStyle(
         statusBarIconBrightness:
             isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
-        statusBarBrightness:
-            isDarkStatusBarIcon ? Brightness.light : Brightness.dark,
+        statusBarBrightness: Platform.isIOS
+            ? (isDarkStatusBarIcon ? Brightness.light : Brightness.dark)
+            : (isDarkStatusBarIcon ? Brightness.dark : Brightness.light),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
