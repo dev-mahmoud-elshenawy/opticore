@@ -12,6 +12,22 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🚀 [2.1.6] - Event Transformers & UI Enhancements
+
+- 🎯 **New Features**:
+  - Added **Event Transformers** for BLoC pattern with debounce and sequential processing
+  - Introduced `debounce()` transformer with customizable duration for delayed event processing
+  - Added predefined transformers: `fastDebounce()`, `standardDebounce()`, `slowDebounce()`, `verySlowDebounce()`
+  - Implemented `sequential()` transformer for one-by-one event processing
+
+- 🎨 **UI Improvements**:
+  - Enhanced `CoreButton` with additional tap gesture support
+  - Added `barrierColor` property to `CoreSheet` for better customization
+
+- 🐛 **Bug Fixes**:
+  - Fixed status bar icon color issues across different themes
+  - Resolved type compatibility issues in theme extensions (`AppBarThemeData`, `InputDecorationThemeData`)
+
 ### 🆕 [2.1.5] - Scroll Overlay & Usability Improvements
 
 - 🧩 **New Widget**:

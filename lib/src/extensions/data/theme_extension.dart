@@ -102,12 +102,12 @@ extension ThemeExtension on BuildContext {
   /// Returns the app bar theme of the current theme.
   ///
   /// Use this property to style app bars consistently across the app.
-  AppBarTheme get appBarTheme => theme.appBarTheme;
+  AppBarThemeData get appBarTheme => theme.appBarTheme;
 
   /// Returns the input decoration theme of the current theme.
   ///
   /// Use this property to style input fields consistently.
-  InputDecorationTheme get inputDecorationTheme => theme.inputDecorationTheme;
+  InputDecorationThemeData get inputDecorationTheme => theme.inputDecorationTheme;
 
   /// Returns the bottom navigation bar theme of the current theme.
   ///
