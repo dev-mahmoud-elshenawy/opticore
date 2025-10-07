@@ -12,6 +12,24 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🛠 [2.1.7] - Status Bar Navigation Fix
+
+- 🐛 **Bug Fixes**:
+  - Fixed status bar icon color not updating when navigating back to previous screen
+  - Implemented `RouteAware` mixin in `BaseScreen` to properly track navigation lifecycle
+  - Added global `RouteObserver` to `RouteHelper` for navigation event monitoring
+  - Status bar icons now correctly switch between dark/light when popping back from another screen
+  - Added `sized: true` to `AnnotatedRegion` for better status bar overlay coverage
+
+- ⚡ **Performance Improvements**:
+  - Optimized `_refreshStatusBar()` calls to only fire on actual navigation events (push/pop)
+  - Removed redundant status bar updates from `initState`, `didChangeDependencies`, and `didUpdateWidget`
+  - Reduced unnecessary rebuilds and system UI overlay updates
+
+- 🏗 **Infrastructure**:
+  - Enhanced `CoreSetup` to include `RouteObserver` in navigator observers
+  - Improved navigation lifecycle handling across all screens using `BaseScreen`
+
 ### 🚀 [2.1.6] - Event Transformers & UI Enhancements
 
 - 🎯 **New Features**:

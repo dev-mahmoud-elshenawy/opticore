@@ -125,7 +125,8 @@ class _CoreSetupState extends State<CoreSetup> with AfterLayoutMixin {
         navigatorKey: RouteHelper.navigatorKey,
         navigatorObservers: [
           ...?widget.appConfig.navigatorObservers,
-          // Include custom observers like BotToastNavigatorObserver and LoggerRouterObserver.
+          // Include custom observers like RouteObserver, BotToastNavigatorObserver and LoggerRouterObserver.
+          RouteHelper.routeObserver,
           BotToastNavigatorObserver(),
           LoggerRouterObserver(),
         ],

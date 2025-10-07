@@ -107,7 +107,8 @@ extension ThemeExtension on BuildContext {
   /// Returns the input decoration theme of the current theme.
   ///
   /// Use this property to style input fields consistently.
-  InputDecorationThemeData get inputDecorationTheme => theme.inputDecorationTheme;
+  InputDecorationThemeData get inputDecorationTheme =>
+      theme.inputDecorationTheme;
 
   /// Returns the bottom navigation bar theme of the current theme.
   ///

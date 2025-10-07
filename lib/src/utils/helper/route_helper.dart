@@ -60,6 +60,33 @@ class RouteHelper {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
+  /// A global RouteObserver to track route lifecycle events.
+  ///
+  /// This observer allows widgets to be notified when they are pushed, popped,
+  /// or when another route is pushed on top of them or popped from above them.
+  ///
+  /// It's used in conjunction with the RouteAware mixin to handle status bar
+  /// and other UI state updates during navigation.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// class MyScreen extends State<MyWidget> with RouteAware {
+  ///   @override
+  ///   void didChangeDependencies() {
+  ///     super.didChangeDependencies();
+  ///     RouteHelper.routeObserver.subscribe(this, ModalRoute.of(context)!);
+  ///   }
+  ///
+  ///   @override
+  ///   void dispose() {
+  ///     RouteHelper.routeObserver.unsubscribe(this);
+  ///     super.dispose();
+  ///   }
+  /// }
+  /// ```
+  static final RouteObserver<ModalRoute<dynamic>> routeObserver =
+      RouteObserver<ModalRoute<dynamic>>();
+
   /// Holds the name of the previous route.
   static String? previousRoute;
 

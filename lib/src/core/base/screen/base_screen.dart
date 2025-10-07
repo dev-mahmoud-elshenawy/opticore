@@ -77,7 +77,7 @@ typedef BlocCreator<M extends BaseBloc> = M Function();
 /// - Utility methods for showing toasts, handling safe areas, and managing scaffolds.
 /// - Customizable app bar and scaffold configurations.
 abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
-    extends State<T> with ViewStateHandler {
+    extends State<T> with ViewStateHandler, RouteAware {
   /// The BLoC instance associated with the screen.
   final M _bloc;
 
@@ -189,7 +189,6 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
     super.initState();
     if (mounted) {
       init();
-      _refreshStatusBar();
       _builder = ContentBuilder<M>(
         create: (context) => _bloc,
         stateListener: _handleStateListener,
@@ -204,6 +203,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
 
   @override
   void dispose() {
+    RouteHelper.routeObserver.unsubscribe(this);
     disposeData();
     super.dispose();
   }
@@ -212,14 +212,43 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   void didChangeDependencies() {
     super.didChangeDependencies();
     changeDependencies();
-    _refreshStatusBar();
+
+    // Subscribe to route observer to track navigation events
+    final modalRoute = ModalRoute.of(context);
+    if (modalRoute != null) {
+      RouteHelper.routeObserver.subscribe(this, modalRoute);
+    }
   }
 
   @override
   void didUpdateWidget(covariant T oldWidget) {
     super.didUpdateWidget(oldWidget);
     updateWidget(oldWidget);
+  }
+
+  // RouteAware callbacks
+
+  @override
+  void didPush() {
+    // Called when this screen is pushed onto the navigation stack
     _refreshStatusBar();
+  }
+
+  @override
+  void didPopNext() {
+    // Called when another screen is popped and this screen becomes visible again
+    _refreshStatusBar();
+  }
+
+  @override
+  void didPushNext() {
+    // Called when another screen is pushed on top of this screen
+  }
+
+  @override
+  void didPop() {
+    // Called when this screen is popped
+    // No need to do anything here
   }
 
   void _refreshStatusBar() {
@@ -252,6 +281,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
             ? (isDarkStatusBarIcon ? Brightness.light : Brightness.dark)
             : (isDarkStatusBarIcon ? Brightness.dark : Brightness.light),
       ),
+      sized: true, // Ensures AnnotatedRegion covers the full screen area
       child: LayoutBuilder(
         builder: (context, constraints) {
           screenContext = context;
