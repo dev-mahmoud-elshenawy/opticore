@@ -89,30 +89,50 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
   /// It is used to manage the state of the widget and emit new states.
   final M Function(BuildContext) create;
 
+  /// Controls whether the BLoC should be disposed when the widget is removed.
+  ///
+  /// Defaults to `true`, meaning the BLoC will be automatically disposed when
+  /// the widget is removed from the tree. Set to `false` to keep the BLoC alive.
+  final bool disposeBloc;
+
   /// Creates a [ContentBuilder] instance.
   ///
   /// - [stateListener]: The callback to handle non-render state changes.
   /// - [widgetRenderer]: The callback to render widgets based on the render state.
+  /// - [create]: The factory function to create the BLoC instance.
+  /// - [disposeBloc]: Controls BLoC disposal (defaults to `true`).
   const ContentBuilder({
     super.key,
     required this.stateListener,
     required this.widgetRenderer,
     required this.create,
+    this.disposeBloc = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    final consumer = BlocConsumer<M, BaseState>(
+      // Rebuilds UI only for states that implement RenderState.
+      buildWhen: (previous, current) => current is RenderState,
+      // Listens only for states that implement NonRenderState.
+      listenWhen: (previous, current) => current is NonRenderState,
+      listener: (context, state) => stateListener(context, state),
+      builder: (context, state) => widgetRenderer(context, state),
+    );
+
+    // If disposeBloc is false, use BlocProvider.value to prevent disposal
+    if (!disposeBloc) {
+      return BlocProvider<M>.value(
+        value: create(context),
+        child: consumer,
+      );
+    }
+
+    // Otherwise, use regular BlocProvider which will auto-dispose
+    return BlocProvider<M>(
       lazy: false,
       create: create,
-      child: BlocConsumer<M, BaseState>(
-        // Rebuilds UI only for states that implement RenderState.
-        buildWhen: (previous, current) => current is RenderState,
-        // Listens only for states that implement NonRenderState.
-        listenWhen: (previous, current) => current is NonRenderState,
-        listener: (context, state) => stateListener(context, state),
-        builder: (context, state) => widgetRenderer(context, state),
-      ),
+      child: consumer,
     );
   }
 }

@@ -10,6 +10,7 @@ part of '../config_import.dart';
 /// - Modify the button label for retrying the operation during maintenance.
 /// - Customize the retry toast message shown to users.
 /// - Option to change the animation displayed during maintenance periods.
+/// - Option to provide a custom app bar widget for the maintenance screen.
 /// - Easily instantiate with custom configuration values or use the default settings.
 ///
 /// **Constructor Parameters:**
@@ -17,14 +18,24 @@ part of '../config_import.dart';
 /// - `customMessageButton`: A custom label for the button allowing users to retry during maintenance.
 /// - `customMessageRetryToast`: A custom toast message displayed during retry attempts after maintenance.
 /// - `customAnim`: A custom animation asset displayed during maintenance mode. By default, a predefined animation is used.
+/// - `customAppBarWidget`: An optional custom widget to display in the app bar area of the maintenance screen.
 ///
 /// **Usage Example:**
 /// ```dart
-/// // Create a custom MaintenanceConfig instance
+/// // Create a custom MaintenanceConfig instance with text customization
 /// var customConfig = MaintenanceConfig(
 ///   customMessage: 'The app is temporarily unavailable, please try again later.',
 ///   customMessageButton: 'Try Again',
 ///   customMessageRetryToast: 'Retrying...',
+/// );
+///
+/// // Or provide a custom app bar widget
+/// var customAppBarConfig = MaintenanceConfig(
+///   customAppBarWidget: AppBar(
+///     title: Text('System Maintenance'),
+///     centerTitle: true,
+///     backgroundColor: Colors.orange,
+///   ),
 /// );
 ///
 /// // Initialize global settings with custom values
@@ -52,6 +63,11 @@ class MaintenanceConfig extends Equatable {
   /// Custom animation can be set via the `instantiate` method.
   static String _anim = CoreAssets.maintenanceAnim;
 
+  /// An optional custom app bar widget for the maintenance screen.
+  /// Must be a PreferredSizeWidget (e.g., AppBar).
+  /// When null, no app bar is displayed (default behavior).
+  static PreferredSizeWidget? _appBarWidget;
+
   // Instance fields for optional custom configuration values
   /// A custom message that is shown when the app is in maintenance mode.
   final String? customMessage;
@@ -65,6 +81,10 @@ class MaintenanceConfig extends Equatable {
   /// A custom animation asset shown during maintenance mode.
   final String? customAnim;
 
+  /// An optional custom app bar widget for the maintenance screen.
+  /// Must be a PreferredSizeWidget (e.g., AppBar).
+  final PreferredSizeWidget? customAppBarWidget;
+
   // Private constructor to prevent direct instantiation
   /// The private constructor is used by the factory method to create instances
   /// of `MaintenanceConfig` with optional custom values.
@@ -73,6 +93,7 @@ class MaintenanceConfig extends Equatable {
     this.customMessageButton,
     this.customMessageRetryToast,
     this.customAnim,
+    this.customAppBarWidget,
   });
 
   // Static method to initialize the global configuration with custom values
@@ -95,6 +116,7 @@ class MaintenanceConfig extends Equatable {
     _messageRetryToast =
         customConfig.customMessageRetryToast ?? _messageRetryToast;
     _anim = customConfig.customAnim ?? _anim;
+    _appBarWidget = customConfig.customAppBarWidget ?? _appBarWidget;
   }
 
   // Static method to reset the configuration to default values
@@ -108,22 +130,28 @@ class MaintenanceConfig extends Equatable {
     _messageButton = 'Retry';
     _messageRetryToast = 'Wait for retry';
     _anim = CoreAssets.maintenanceAnim;
+    _appBarWidget = null;
   }
 
   // Factory constructor to create an instance with custom values
   /// A factory constructor that creates a `MaintenanceConfig` instance with the option
-  /// to customize the maintenance message, button label, retry toast, and animation.
+  /// to customize the maintenance message, button label, retry toast, animation, and app bar widget.
   ///
   /// **Parameters:**
   /// - `customMessage`: Custom message to show during maintenance.
   /// - `customMessageButton`: Custom label for the retry button.
   /// - `customMessageRetryToast`: Custom message shown during retry attempts.
   /// - `customAnim`: Custom animation asset shown during maintenance.
+  /// - `customAppBarWidget`: Optional custom app bar widget (must be a PreferredSizeWidget like AppBar).
   ///
   /// **Example:**
   /// ```dart
   /// var config = MaintenanceConfig(
   ///   customMessage: 'App is temporarily down for maintenance.',
+  ///   customAppBarWidget: AppBar(
+  ///     title: Text('System Maintenance'),
+  ///     backgroundColor: Colors.red,
+  ///   ),
   /// );
   /// ```
   factory MaintenanceConfig({
@@ -131,12 +159,14 @@ class MaintenanceConfig extends Equatable {
     String? customMessageButton,
     String? customMessageRetryToast,
     String? customAnim,
+    PreferredSizeWidget? customAppBarWidget,
   }) {
     return MaintenanceConfig._(
       customMessage: customMessage,
       customMessageButton: customMessageButton,
       customMessageRetryToast: customMessageRetryToast,
       customAnim: customAnim,
+      customAppBarWidget: customAppBarWidget,
     );
   }
 
@@ -153,6 +183,10 @@ class MaintenanceConfig extends Equatable {
   /// A getter that returns the animation asset used during maintenance.
   static String get anim => _anim;
 
+  /// A getter that returns the optional app bar widget for maintenance screen.
+  /// Returns null if no custom app bar is configured.
+  static PreferredSizeWidget? get appBarWidget => _appBarWidget;
+
   // Override props to include the instance fields you want to compare
   /// This method is used for equality checks in tests or comparison operations.
   /// It ensures that the state of the configuration instance is considered during comparisons.
@@ -162,5 +196,6 @@ class MaintenanceConfig extends Equatable {
         customMessageButton,
         customMessageRetryToast,
         customAnim,
+        customAppBarWidget,
       ];
 }

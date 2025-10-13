@@ -8,8 +8,10 @@ part of '../reusable_import.dart';
 /// ## Key Features:
 /// - Displays a "Maintenance Mode" screen with a custom Lottie animation and message.
 /// - Includes a refresh button that triggers the provided `refreshCallBack` when tapped.
-/// - Prevents navigation pop using `PopScope` by setting `canPop` to `false`.
-/// - Customizable message, button text, toast message, and animation via configuration (via `MaintenanceConfig`).
+/// - Prevents navigation pop using `PopScope` when no custom app bar is configured (`canPop` is `false` by default).
+/// - When a custom app bar is configured via `MaintenanceConfig.appBarWidget`, back navigation is enabled (`canPop` becomes `true`).
+/// - Customizable message, button text, toast message, animation, and app bar via configuration (via `MaintenanceConfig`).
+/// - Optional custom app bar widget can be configured through `MaintenanceConfig.appBarWidget`.
 /// - Includes a retry mechanism that prevents retries too frequently, showing a toast notification when retrying too quickly.
 ///
 /// ## Constructor Parameters:
@@ -19,14 +21,23 @@ part of '../reusable_import.dart';
 ///
 /// ## How to Use:
 /// Use this screen to notify users that the application is currently under maintenance. You can customize
-/// the message, animation, and button text via the `MaintenanceConfig` class, or use the default configuration.
+/// the message, animation, button text, and app bar via the `MaintenanceConfig` class, or use the default configuration.
 ///
 /// Example usage:
 /// ```dart
+/// // Basic usage
 /// Navigator.push(
 ///   context,
 ///   MaterialPageRoute(builder: (_) => const MaintenanceScreen()),
 /// );
+///
+/// // With custom app bar configuration
+/// MaintenanceConfig.instantiate(MaintenanceConfig(
+///   customAppBarWidget: AppBar(
+///     title: Text('Under Maintenance'),
+///     backgroundColor: Colors.orange,
+///   ),
+/// ));
 /// ```
 ///
 /// ### Constructor:
@@ -72,10 +83,14 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    // Allow pop if custom app bar is configured and navigation can pop, otherwise prevent back navigation
+    final bool allowPop = MaintenanceConfig.appBarWidget != null && Navigator.canPop(context);
+
     return PopScope(
-      canPop: false, // Prevents the user from popping the screen
+      canPop: allowPop,
       child: Scaffold(
         backgroundColor: CoreColors.backgroundColor,
+        appBar: MaintenanceConfig.appBarWidget,
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(20.0),
@@ -115,7 +130,9 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
                           stopRepeating(action: () {
                             widget
                                 .refreshCallBack!(); // Calls the refresh callback
-                            Navigator.pop(context); // Pops the screen
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context); // Pops the screen
+                            }
                           });
                         });
                       },

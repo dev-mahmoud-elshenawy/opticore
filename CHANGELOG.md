@@ -12,6 +12,13 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🎯 [2.1.8] - BLoC Lifecycle Control
+
+- 🆕 **New Features**:
+  - Added `disposeBloc` parameter to `BaseScreen` for controlling BLoC disposal behavior
+  - Added `customAppBarWidget` parameter to `MaintenanceConfig` for custom app bar support
+  - `MaintenanceScreen` now conditionally allows back navigation when custom app bar is configured
+
 ### 🛠 [2.1.7] - Status Bar Navigation Fix
 
 - 🐛 **Bug Fixes**:

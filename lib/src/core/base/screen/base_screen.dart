@@ -81,8 +81,20 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   /// The BLoC instance associated with the screen.
   final M _bloc;
 
+  /// Controls whether the BLoC should be disposed when the screen is disposed.
+  ///
+  /// Defaults to `true`, meaning the BLoC will be automatically disposed when
+  /// the screen is removed from the widget tree. Set to `false` to keep the
+  /// BLoC alive (useful for shared BLoCs across multiple screens).
+  bool get disposeBloc => true;
+
   /// Constructor to initialize the [BaseScreen] with a BLoC instance.
-  BaseScreen(M bloc) : _bloc = bloc;
+  ///
+  /// - [bloc]: The BLoC instance to manage state for this screen.
+  /// - [disposeBloc]: Controls BLoC disposal on screen removal (defaults to `true`).
+  BaseScreen(
+    M bloc,
+  ) : _bloc = bloc;
 
   /// The base context of the widget. This is updated during the widget's lifecycle.
   late BuildContext baseContext;
@@ -191,6 +203,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
       init();
       _builder = ContentBuilder<M>(
         create: (context) => _bloc,
+        disposeBloc: disposeBloc,
         stateListener: _handleStateListener,
         widgetRenderer: (context, state) {
           baseContext = context;
