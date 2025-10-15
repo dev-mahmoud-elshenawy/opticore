@@ -84,9 +84,15 @@ class ToolsHelper {
   /// ```dart
   /// ToolsHelper.triggerWithInternet(() => fetchDataFromServer());
   /// ```
-  static Future<void> triggerWithInternet(Function() action) async {
+  static Future<void> triggerWithInternet(
+      Function() action, {bool? isGoogleInternetCheck}) async {
     // Check if the device has internet connectivity
-    bool isConnected = await InternetConnectionHandler.isInternetConnected();
+    bool isConnected;
+    if (isGoogleInternetCheck??false) {
+      isConnected = await InternetConnectionHandler.isGoogleInternetConnected();
+    } else {
+      isConnected = await InternetConnectionHandler.isInternetConnected();
+    }
 
     if (isConnected) {
       // If connected, trigger the provided action

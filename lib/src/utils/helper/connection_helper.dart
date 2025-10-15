@@ -126,6 +126,39 @@ class InternetConnectionHandler {
   /// ### Returns:
   /// A [Future<bool>] that resolves to `true` if the device is connected to the internet, or `false` otherwise.
   static Future<bool> isInternetConnected() async {
+    // Return cached connection status if available
+    if (_cachedIsConnected) {
+      Logger.verbose(
+          'Using cached internet connection status: $_cachedIsConnected');
+      return _cachedIsConnected;
+    }
+
+    Logger.verbose('Checking internet connectivity status...');
+
+    try {
+      // Check for network connectivity (Wi-Fi or mobile)
+      final List<ConnectivityResult> connectivityResult =
+          await Connectivity().checkConnectivity();
+      if (connectivityResult.contains(ConnectivityResult.mobile) ||
+          connectivityResult.contains(ConnectivityResult.wifi)) {
+        Logger.verbose(
+            'Network connection detected (Mobile or Wi-Fi), checking actual internet access...');
+        // Check for actual internet access using the external checker
+        _cachedIsConnected = await _checkInternetWithChecker();
+        return _cachedIsConnected;
+      } else {
+        Logger.error('No network connection (Mobile or Wi-Fi) detected.');
+        _cachedIsConnected = false;
+        return _cachedIsConnected;
+      }
+    } catch (e) {
+      Logger.error('Error occurred while checking connectivity: $e');
+      _cachedIsConnected = false;
+      return _cachedIsConnected;
+    }
+  }
+
+  static Future<bool> isGoogleInternetConnected() async {
     Logger.verbose('Checking internet connectivity status...');
 
     try {
@@ -143,6 +176,7 @@ class InternetConnectionHandler {
       }
     }
   }
+
   /// Verifies the actual internet access by using the [InternetConnection] instance.
   ///
   /// This method checks if the device has internet access by pinging an external service
