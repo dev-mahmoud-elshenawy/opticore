@@ -35,11 +35,13 @@ part of '../reusable_import.dart';
 class NoInternetScreen extends StatelessWidget {
   final Function? refreshCallBack;
   final bool? withPop;
+  final bool? isGoogleCheck;
 
   const NoInternetScreen({
     super.key,
     this.refreshCallBack,
     this.withPop,
+    this.isGoogleCheck,
   });
 
   @override
@@ -99,6 +101,7 @@ class NoInternetScreen extends StatelessWidget {
                           }
                         }
                       },
+                      isGoogleInternetCheck: isGoogleCheck ?? false,
                     );
                   },
                 ),

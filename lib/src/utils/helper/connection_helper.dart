@@ -158,6 +158,25 @@ class InternetConnectionHandler {
     }
   }
 
+  static Future<bool> isGoogleInternetConnected() async {
+    Logger.verbose('Checking internet connectivity status...');
+
+    try {
+      final result = await InternetAddress.lookup('google.com')
+          .timeout(const Duration(seconds: 10));
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } catch (_) {
+      try {
+        final result = await InternetAddress.lookup('amazon.com')
+            .timeout(const Duration(seconds: 10));
+        return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+      } catch (_) {
+        Logger.error('No internet connection detected.');
+        return false;
+      }
+    }
+  }
+
   /// Verifies the actual internet access by using the [InternetConnection] instance.
   ///
   /// This method checks if the device has internet access by pinging an external service
