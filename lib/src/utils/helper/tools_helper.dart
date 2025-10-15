@@ -85,14 +85,13 @@ class ToolsHelper {
   /// ToolsHelper.triggerWithInternet(() => fetchDataFromServer());
   /// ```
   static Future<void> triggerWithInternet(
-      Function() action, {bool? isGoogleInternetCheck}) async {
+    Function() action, {
+    bool? isGoogleInternetCheck,
+  }) async {
     // Check if the device has internet connectivity
-    bool isConnected;
-    if (isGoogleInternetCheck??false) {
-      isConnected = await InternetConnectionHandler.isGoogleInternetConnected();
-    } else {
-      isConnected = await InternetConnectionHandler.isInternetConnected();
-    }
+    bool isConnected = await InternetConnectionHandler.checkInternetConnection(
+      isGoogleInternetCheck ?? true,
+    );
 
     if (isConnected) {
       // If connected, trigger the provided action

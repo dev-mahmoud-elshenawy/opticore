@@ -131,8 +131,13 @@ class NetworkHelper {
     Map<String, dynamic>? body,
     RequestBodyType? requestBodyType,
     Function(int, int)? onSendProgress,
+    Function(int, int)? onReceiveProgress,
+    bool? isGoogleCheck,
   }) async {
-    bool connected = await InternetConnectionHandler.isInternetConnected();
+    bool connected = await InternetConnectionHandler.checkInternetConnection(
+      isGoogleCheck ?? true,
+    );
+
     requestBodyType ??= RequestBodyType.json;
 
     if (connected) {
@@ -144,6 +149,7 @@ class NetworkHelper {
         body: body,
         requestBodyType: requestBodyType,
         onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
       );
     } else {
       Exception exception = Exception(487);

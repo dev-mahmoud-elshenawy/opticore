@@ -177,6 +177,14 @@ class InternetConnectionHandler {
     }
   }
 
+  static Future<bool> checkInternetConnection(bool isGoogle) {
+    if (isGoogle) {
+      return isGoogleInternetConnected();
+    } else {
+      return isInternetConnected();
+    }
+  }
+
   /// Verifies the actual internet access by using the [InternetConnection] instance.
   ///
   /// This method checks if the device has internet access by pinging an external service
