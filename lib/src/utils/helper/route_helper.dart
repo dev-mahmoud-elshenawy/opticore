@@ -90,6 +90,24 @@ class RouteHelper {
   /// Holds the name of the previous route.
   static String? previousRoute;
 
+  /// Gets the name of the current route.
+  ///
+  /// Returns the name of the current route from the navigation stack.
+  /// If no route is active or the navigator is not available, returns null.
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final currentRouteName = RouteHelper.currentRoute;
+  /// print('Current route: $currentRouteName');
+  /// ```
+  static String? get currentRoute {
+    final route = navigatorKey.currentState?.overlay?.context;
+    if (route != null) {
+      return ModalRoute.of(route)?.settings.name;
+    }
+    return null;
+  }
+
   /// The default route settings for the navigator.
   ///
   /// This is used to provide default settings for the navigator when
