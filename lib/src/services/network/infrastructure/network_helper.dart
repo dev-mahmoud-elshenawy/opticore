@@ -21,6 +21,8 @@ class NetworkHelper {
   late Dio dio;
   final Connectivity connectivity = Connectivity();
 
+  static SecurityContext? secureContext;
+
   static const Duration receiveTimeout = Duration(seconds: 300);
   static const Duration connectionTimeout = Duration(seconds: 300);
 
@@ -34,6 +36,21 @@ class NetworkHelper {
   NetworkHelper() {
     dio = Dio();
     dio.options = BaseOptions(headers: NetworkConfig.headers);
+
+    // Load certificate pinning
+    loadPinningCertificate();
+
+    // Configure SSL pinning with IOHttpClientAdapter (Dio 5.x syntax)
+    dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        final HttpClient httpClient = HttpClient(context: secureContext);
+        httpClient.badCertificateCallback = (cert, host, port) {
+          Logger.error("Bad Certificate");
+          return false;
+        };
+        return httpClient;
+      },
+    );
 
     if (kDebugMode) {
       dio.interceptors.add(
@@ -76,6 +93,30 @@ class NetworkHelper {
       ..options.receiveTimeout = receiveTimeout;
 
     dio.interceptors.add(retryInterceptor);
+  }
+  static Future<void> loadPinningCertificate() async {
+    try {
+      final ByteData data = await rootBundle.load(
+          'assets/certificate/certificate.pem');
+      SecurityContext securityContext = SecurityContext(withTrustedRoots: false);
+
+      // Fixed typo: asUnit8List() -> asUint8List()
+      securityContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
+
+      // Fixed: Can't use 'this' in static method
+      NetworkHelper.secureContext = securityContext;
+
+      if (kDebugMode) {
+        Logger.info("SSL Certificate loaded successfully");
+      }
+    } catch (e) {
+      // Certificate file not found or failed to load
+      // This is not critical - app will work without certificate pinning
+      if (kDebugMode) {
+        Logger.warning("SSL Certificate not found or failed to load. App will continue without certificate pinning: $e");
+      }
+      NetworkHelper.secureContext = null;
+    }
   }
 
   /// Updates the headers in the Dio instance.
@@ -123,17 +164,16 @@ class NetworkHelper {
   /// - [onSendProgress]: A callback to track the progress of file uploads.
   ///
   /// Returns an [ApiResponse] of the requested type.
-  Future<ApiResponse<T?>> request<T>(
-    String url,
-    Function(Map<String, dynamic>?) create, {
-    HTTPMethod method = HTTPMethod.none,
-    Map<String, dynamic>? params,
-    Map<String, dynamic>? body,
-    RequestBodyType? requestBodyType,
-    Function(int, int)? onSendProgress,
-    Function(int, int)? onReceiveProgress,
-    bool? isGoogleCheck,
-  }) async {
+  Future<ApiResponse<T?>> request<T>(String url,
+      Function(Map<String, dynamic>?) create, {
+        HTTPMethod method = HTTPMethod.none,
+        Map<String, dynamic>? params,
+        Map<String, dynamic>? body,
+        RequestBodyType? requestBodyType,
+        Function(int, int)? onSendProgress,
+        Function(int, int)? onReceiveProgress,
+        bool? isGoogleCheck,
+      }) async {
     bool connected = await InternetConnectionHandler.checkInternetConnection(
       isGoogleCheck ?? true,
     );
@@ -175,17 +215,16 @@ class NetworkHelper {
   /// - [onSendProgress]: A callback to track the progress of file uploads.
   ///
   /// Returns an [ApiResponse] of the requested type.
-  Future<ApiResponse<T>> _request<T>(
-    String url,
-    Function(Map<String, dynamic>?) create, {
-    HTTPMethod method = HTTPMethod.get,
-    Map<String, dynamic>? params,
-    Map<String, dynamic>? body,
-    RequestBodyType? requestBodyType,
-    Function(int, int)? onSendProgress,
-    Function(int, int)? onReceiveProgress,
-    String? savePath,
-  }) async {
+  Future<ApiResponse<T>> _request<T>(String url,
+      Function(Map<String, dynamic>?) create, {
+        HTTPMethod method = HTTPMethod.get,
+        Map<String, dynamic>? params,
+        Map<String, dynamic>? body,
+        RequestBodyType? requestBodyType,
+        Function(int, int)? onSendProgress,
+        Function(int, int)? onReceiveProgress,
+        String? savePath,
+      }) async {
     params ??= {};
     body ??= {};
 
@@ -231,8 +270,7 @@ class NetworkHelper {
   /// - [onReceiveProgress]: A callback to track the progress of file downloads (used only for the DOWNLOAD method).
   ///
   /// Returns a [Response] from Dio containing the server's response.
-  Future<Response> _makeRequest(
-    String url, {
+  Future<Response> _makeRequest(String url, {
     required HTTPMethod method,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,
