@@ -84,7 +84,8 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     // Allow pop if custom app bar is configured and navigation can pop, otherwise prevent back navigation
-    final bool allowPop = MaintenanceConfig.appBarWidget != null && Navigator.canPop(context);
+    final bool allowPop =
+        MaintenanceConfig.appBarWidget != null && Navigator.canPop(context);
 
     return PopScope(
       canPop: allowPop,

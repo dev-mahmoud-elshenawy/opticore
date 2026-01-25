@@ -96,9 +96,10 @@ class NetworkHelper {
   }
   static Future<void> loadPinningCertificate() async {
     try {
-      final ByteData data = await rootBundle.load(
-          'assets/certificate/certificate.pem');
-      SecurityContext securityContext = SecurityContext(withTrustedRoots: false);
+      final ByteData data =
+          await rootBundle.load('assets/certificate/certificate.pem');
+      SecurityContext securityContext =
+          SecurityContext(withTrustedRoots: false);
 
       // Fixed typo: asUnit8List() -> asUint8List()
       securityContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
@@ -113,7 +114,8 @@ class NetworkHelper {
       // Certificate file not found or failed to load
       // This is not critical - app will work without certificate pinning
       if (kDebugMode) {
-        Logger.warning("SSL Certificate not found or failed to load. App will continue without certificate pinning: $e");
+        Logger.warning(
+            "SSL Certificate not found or failed to load. App will continue without certificate pinning: $e");
       }
       NetworkHelper.secureContext = null;
     }
@@ -164,16 +166,17 @@ class NetworkHelper {
   /// - [onSendProgress]: A callback to track the progress of file uploads.
   ///
   /// Returns an [ApiResponse] of the requested type.
-  Future<ApiResponse<T?>> request<T>(String url,
-      Function(Map<String, dynamic>?) create, {
-        HTTPMethod method = HTTPMethod.none,
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? body,
-        RequestBodyType? requestBodyType,
-        Function(int, int)? onSendProgress,
-        Function(int, int)? onReceiveProgress,
-        bool? isGoogleCheck,
-      }) async {
+  Future<ApiResponse<T?>> request<T>(
+    String url,
+    Function(Map<String, dynamic>?) create, {
+    HTTPMethod method = HTTPMethod.none,
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? body,
+    RequestBodyType? requestBodyType,
+    Function(int, int)? onSendProgress,
+    Function(int, int)? onReceiveProgress,
+    bool? isGoogleCheck,
+  }) async {
     bool connected = await InternetConnectionHandler.checkInternetConnection(
       isGoogleCheck ?? true,
     );
@@ -215,16 +218,17 @@ class NetworkHelper {
   /// - [onSendProgress]: A callback to track the progress of file uploads.
   ///
   /// Returns an [ApiResponse] of the requested type.
-  Future<ApiResponse<T>> _request<T>(String url,
-      Function(Map<String, dynamic>?) create, {
-        HTTPMethod method = HTTPMethod.get,
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? body,
-        RequestBodyType? requestBodyType,
-        Function(int, int)? onSendProgress,
-        Function(int, int)? onReceiveProgress,
-        String? savePath,
-      }) async {
+  Future<ApiResponse<T>> _request<T>(
+    String url,
+    Function(Map<String, dynamic>?) create, {
+    HTTPMethod method = HTTPMethod.get,
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? body,
+    RequestBodyType? requestBodyType,
+    Function(int, int)? onSendProgress,
+    Function(int, int)? onReceiveProgress,
+    String? savePath,
+  }) async {
     params ??= {};
     body ??= {};
 
@@ -270,7 +274,8 @@ class NetworkHelper {
   /// - [onReceiveProgress]: A callback to track the progress of file downloads (used only for the DOWNLOAD method).
   ///
   /// Returns a [Response] from Dio containing the server's response.
-  Future<Response> _makeRequest(String url, {
+  Future<Response> _makeRequest(
+    String url, {
     required HTTPMethod method,
     Map<String, dynamic>? params,
     Map<String, dynamic>? body,

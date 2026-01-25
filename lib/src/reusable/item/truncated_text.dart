@@ -227,7 +227,8 @@ class TruncatedText extends StatelessWidget {
     return data.replaceRange(start, start + 1, '…\n');
   }
 
-  List<dynamic> _loadData(BoxConstraints constraints, TextStyle style, double? textScale, int? max) {
+  List<dynamic> _loadData(BoxConstraints constraints, TextStyle style,
+      double? textScale, int? max) {
     final textPainter = TextPainter(
       text: TextSpan(text: data, style: style),
       textDirection: TextDirection.ltr,
