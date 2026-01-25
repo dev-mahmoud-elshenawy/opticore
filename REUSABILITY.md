@@ -202,6 +202,228 @@ This document provides a **detailed overview** of the **utilities, reusable comp
     - Useful for performing actions that depend on the widget's initial layout.
     - Ensures the callback is only called once after the initial layout.
 
+### ⚡ Reactive State Management
+
+A lightweight reactive state management system similar to Flutter's `ValueNotifier`/`ValueListenableBuilder` pattern - simple, familiar, and use only what you need.
+
+#### 🔹 ReactiveNotifier
+
+- **`ReactiveNotifier<T>`**: A reactive value holder that notifies listeners when its value changes.
+  - **Features**:
+    - Simple API like `ValueNotifier` - extends `ChangeNotifier`
+    - `value` getter/setter with automatic change detection
+    - `update(fn)` - update value based on current value
+    - `silent(value)` - update without notifying listeners
+    - `refresh()` - force notify all listeners
+
+**Example:**
+
+```dart
+final counter = ReactiveNotifier<int>(0);
+
+// Update value (notifies listeners)
+counter.value = 10;
+
+// Update based on current value
+counter.update((current) => current + 1);
+
+// Silent update (no notification)
+counter.silent(5);
+counter.refresh();  // Manual notification
+```
+
+#### 🔹 Reactive Widget
+
+- **`Reactive<T>`**: A single unified widget that rebuilds when a `ReactiveNotifier` changes.
+  - **Features**:
+    - Simple like `ValueListenableBuilder` - just pass notifier and builder
+    - Optional `buildWhen` - control when to rebuild
+    - Optional `listener` - side effects without rebuilding (snackbar, navigation)
+    - Optional `listenWhen` - control when listener is called
+    - Optional `child` - optimization for static widgets
+    - Auto-dispose enabled by default
+
+**Basic Example:**
+
+```dart
+Reactive<int>(
+  notifier: counter,
+  builder: (context, value, child) => Text('Count: $value'),
+)
+```
+
+**With Conditional Rebuild:**
+
+```dart
+Reactive<int>(
+  notifier: counter,
+  buildWhen: (previous, current) => current > previous,
+  builder: (context, value, child) => Text('$value'),
+)
+```
+
+**With Side Effects (Listener):**
+
+```dart
+Reactive<int>(
+  notifier: counter,
+  listener: (context, value) {
+    if (value >= 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Reached $value!')),
+      );
+    }
+  },
+  builder: (context, value, child) => Text('$value'),
+)
+```
+
+**With Child Optimization:**
+
+```dart
+Reactive<int>(
+  notifier: counter,
+  builder: (context, value, child) => Column(
+    children: [
+      child!,  // Static widget, never rebuilds
+      Text('$value'),  // Only this rebuilds
+    ],
+  ),
+  child: const Icon(Icons.star, size: 50),  // Built once
+)
+```
+
+#### 🔹 Reactive.multi
+
+- **`Reactive.multi`**: Listen to multiple notifiers at once.
+
+**Example:**
+
+```dart
+Reactive.multi(
+  notifiers: [firstName, lastName],
+  builder: (context, child) => Text(
+    '${firstName.value} ${lastName.value}',
+  ),
+)
+```
+
+#### 🔹 Reactive.select
+
+- **`Reactive.select`**: Rebuild only when a specific property changes.
+
+**Example:**
+
+```dart
+// Only rebuilds when user.name changes, not when age changes
+Reactive<User>.select(
+  notifier: userNotifier,
+  selector: (user) => user.name,
+  builder: (context, name, child) => Text(name),
+)
+```
+
+#### 🔹 AsyncReactiveNotifier
+
+- **`AsyncReactiveNotifier<T>`**: For async operations with built-in loading/error/data states.
+  - **Features**:
+    - `execute(fn)` - execute async function with automatic state management
+    - `isLoading`, `hasError`, `hasData` - state checks
+    - `valueOrNull`, `error` - safe data access
+    - `setLoading()`, `setData()`, `setError()`, `reset()` - manual state control
+    - `updateData(fn)` - update existing data
+
+**Example:**
+
+```dart
+final users = AsyncReactiveNotifier<List<User>>();
+
+// Execute async operation
+await users.execute(() => api.fetchUsers());
+
+// Check states
+if (users.isLoading) print('Loading...');
+if (users.hasError) print('Error: ${users.error}');
+if (users.hasData) print('Users: ${users.valueOrNull}');
+```
+
+#### 🔹 Reactive.async
+
+- **`Reactive.async`**: Handle async states with separate builders.
+
+**Example:**
+
+```dart
+Reactive<List<User>>.async(
+  notifier: usersNotifier,
+  loading: (context) => const CircularProgressIndicator(),
+  error: (context, error, stackTrace) => Text('Error: $error'),
+  data: (context, users) => ListView.builder(
+    itemCount: users.length,
+    itemBuilder: (context, index) => Text(users[index].name),
+  ),
+)
+```
+
+#### 🔹 ReactiveProvider
+
+- **`ReactiveProvider<T>`**: Share notifiers across the widget tree using InheritedWidget.
+  - **Features**:
+    - Provides notifier to all descendants
+    - Auto-dispose enabled by default
+    - Static `of<T>()` and `maybeOf<T>()` methods
+    - Context extension: `context.reactive<T>()`
+
+**Example:**
+
+```dart
+// Provide at top of widget tree
+ReactiveProvider<ReactiveNotifier<int>>(
+  notifier: counter,
+  child: const MyApp(),
+)
+
+// Access anywhere in subtree
+final counter = context.reactive<ReactiveNotifier<int>>();
+print(counter.value);
+```
+
+#### 🔹 Using with BaseScreen
+
+- **Integration**: Use `Reactive` widget inside `buildWidget()` for partial UI updates.
+
+**Example:**
+
+```dart
+class MyScreenState extends BaseScreen<MyBloc, MyScreen, MyData> {
+  final counter = ReactiveNotifier<int>(0);
+
+  @override
+  Widget buildWidget(BuildContext context, MyData data) {
+    return Column(
+      children: [
+        // This rebuilds only when counter changes
+        Reactive<int>(
+          notifier: counter,
+          autoDispose: false,  // Manage manually since not at root
+          builder: (context, value, child) => Text('Count: $value'),
+        ),
+        ElevatedButton(
+          onPressed: () => counter.value++,
+          child: const Text('Increment'),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    counter.dispose();
+    super.dispose();
+  }
+}
+```
+
 ### 🎨 Custom Painting
 
 #### ➖ Advanced Line

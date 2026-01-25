@@ -12,6 +12,21 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🎯 [2.1.9] - Reactive State Management
+
+- 🆕 **New Features**:
+  - Added `ReactiveNotifier<T>` - A lightweight reactive value holder similar to `ValueNotifier` with extra convenience methods (`update`, `silent`, `refresh`)
+  - Added `AsyncReactiveNotifier<T>` - For async operations with built-in loading/error/data states
+  - Added `Reactive<T>` widget - A single unified widget for reactive UI rebuilds with optional features:
+    - `buildWhen` - Control when to rebuild
+    - `listener` - Side effects without rebuilding
+    - `autoDispose` - Automatically dispose notifier when widget is removed
+    - `Reactive.multi` - Listen to multiple notifiers
+    - `Reactive.select` - Rebuild only when selected property changes
+    - `Reactive.async` - Handle async states with loading/error/data builders
+  - Added `ReactiveProvider<T>` - Share notifiers across the widget tree using InheritedWidget
+  - Added `context.reactive<T>()` extension for easy notifier access
+
 ### 🎯 [2.1.8] - BLoC Lifecycle Control
 
 - 🆕 **New Features**:

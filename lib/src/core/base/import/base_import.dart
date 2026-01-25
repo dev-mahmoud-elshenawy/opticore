@@ -33,3 +33,7 @@ part '../transformer/event_transformers.dart';
 part '../view/base_view.dart';
 part '../widget/appbar/core_app_bar.dart';
 part '../widget/state_builder.dart';
+part '../reactive/reactive_notifier.dart';
+part '../reactive/async_reactive_notifier.dart';
+part '../reactive/reactive.dart';
+part '../reactive/reactive_provider.dart';
