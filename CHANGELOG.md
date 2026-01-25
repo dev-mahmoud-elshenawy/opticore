@@ -12,7 +12,7 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
-### 🎯 [2.1.9] - Reactive State Management
+### 🎯 [2.2.0] - Reactive State Management
 
 - 🆕 **New Features**:
   - Added `ReactiveNotifier<T>` - A lightweight reactive value holder similar to `ValueNotifier` with extra convenience methods (`update`, `silent`, `refresh`)
