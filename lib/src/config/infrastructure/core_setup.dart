@@ -95,12 +95,17 @@ class _CoreSetupState extends State<CoreSetup> with AfterLayoutMixin {
         builder: (context, child) {
           // Apply the BotToast builder for toast notifications, if provided.
           child = defaultBotToastBuilder(context, child);
-          return MediaQuery(
+          child = MediaQuery(
             data: MediaQuery.of(context).copyWith(
               textScaler: const TextScaler.linear(1.0),
             ),
             child: child!,
           );
+          // Apply the custom builder on top of the internal setup, if provided.
+          if (widget.appConfig.builder != null) {
+            child = widget.appConfig.builder!(context, child);
+          }
+          return child;
         },
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [

@@ -101,6 +101,11 @@ class AppConfig extends Equatable {
   /// This locale determines the language and region settings for the app.
   final Locale? locale;
 
+  /// An optional builder that wraps the widget tree after the internal BotToast
+  /// and MediaQuery setup. Use this to inject root-level wrappers such as
+  /// providers, overlays, or custom themes.
+  final TransitionBuilder? builder;
+
   /// Constructor for the [AppConfig] class. Initializes the configuration properties.
   const AppConfig({
     this.theme,
@@ -119,6 +124,7 @@ class AppConfig extends Equatable {
     this.scrollBehavior,
     this.scaffoldMessengerKey,
     this.locale,
+    this.builder,
   });
 
   @override
@@ -139,5 +145,6 @@ class AppConfig extends Equatable {
         scrollBehavior,
         scaffoldMessengerKey,
         locale,
+        builder,
       ];
 }

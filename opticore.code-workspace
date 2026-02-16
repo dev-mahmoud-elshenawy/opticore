@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+    {
+      "path": "../congora-mv-app",
+    },
+    {
+      "path": "../reusable",
+    },
+  ],
+}

@@ -12,6 +12,11 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🛠 [2.2.1] - CoreSetup Builder Support
+
+- 🆕 **New Features**:
+  - Added `builder` parameter (`TransitionBuilder?`) to `AppConfig` for injecting custom root-level widget wrappers (e.g., providers, overlays) on top of the internal BotToast and MediaQuery setup in `CoreSetup`
+
 ### 🎯 [2.2.0] - Reactive State Management
 
 - 🆕 **New Features**:
