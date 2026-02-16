@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:opticore/opticore.dart';
 
-import 'ui/core_colors.dart';
-
 part '../utils/general/async_value.dart';
 part '../utils/general/safe_call.dart';
 part '../utils/helper/async_helper.dart';
