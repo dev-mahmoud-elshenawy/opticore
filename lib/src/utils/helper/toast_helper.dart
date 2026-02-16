@@ -85,22 +85,22 @@ class ToastHelper {
       case ToastType.success:
         return _ToastConfig(
           icon: FontAwesomeIcons.solidCircleCheck,
-          color: CoreColors.success,
+          color: ToastConfig.successColorValue,
         );
       case ToastType.error:
         return _ToastConfig(
           icon: FontAwesomeIcons.triangleExclamation,
-          color: CoreColors.error,
+          color: ToastConfig.errorColorValue,
         );
       case ToastType.info:
         return _ToastConfig(
           icon: FontAwesomeIcons.circleInfo,
-          color: CoreColors.info,
+          color: ToastConfig.infoColorValue,
         );
       case ToastType.warning:
         return _ToastConfig(
           icon: FontAwesomeIcons.triangleExclamation,
-          color: CoreColors.warning,
+          color: ToastConfig.warningColorValue,
         );
     }
   }
@@ -126,7 +126,7 @@ class ToastHelper {
           children: [
             FaIcon(
               icon,
-              color: CoreColors.backgroundColor,
+              color: ToastConfig.iconColorValue,
             ),
             const SizedBox(width: 10),
             Flexible(
@@ -134,9 +134,9 @@ class ToastHelper {
                 message,
                 textAlign: TextAlign.center,
                 softWrap: true,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
-                  color: CoreColors.backgroundColor,
+                  color: ToastConfig.textColorValue,
                   fontWeight: FontWeight.normal,
                 ),
               ),
