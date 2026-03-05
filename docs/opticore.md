@@ -690,6 +690,41 @@ The framework implements exponential backoff for transient failures:
 
 After three failures, the error propagates to the calling layer.
 
+### SSL Certificate Pinning
+
+NetworkHelper supports optional SSL certificate pinning as a reusable package feature. Pinning is **off by default** — consumer apps opt in explicitly.
+
+**How it works:**
+- `NetworkHelper.secureContext` is `null` by default → all certificates trusted
+- Calling `NetworkHelper.loadPinningCertificate()` loads a PEM certificate and sets `secureContext`
+- Once set, only the pinned certificate is trusted; bad certificates are rejected and logged
+
+**Usage:**
+
+```dart
+// Enable SSL pinning — call in main() before creating any repos
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Default path: 'assets/certificate/certificate.pem'
+  await NetworkHelper.loadPinningCertificate();
+
+  // Or with a custom asset path:
+  // await NetworkHelper.loadPinningCertificate(assetPath: 'assets/certs/my_cert.pem');
+
+  runApp(MyApp());
+}
+
+// Disable SSL pinning — simply don't call loadPinningCertificate()
+// All certificates will be trusted (development-friendly default)
+```
+
+| Scenario | `secureContext` | Behavior |
+|----------|----------------|----------|
+| `loadPinningCertificate()` called | Set | Only pinned cert trusted, bad certs rejected |
+| Not called (default) | `null` | All certificates trusted |
+| Certificate file missing/invalid | `null` (fallback) | Warning logged, continues without pinning |
+
 ### Response Handling Flow
 
 ```

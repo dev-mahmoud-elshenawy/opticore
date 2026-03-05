@@ -37,16 +37,14 @@ class NetworkHelper {
     dio = Dio();
     dio.options = BaseOptions(headers: NetworkConfig.headers);
 
-    // Load certificate pinning
-    loadPinningCertificate();
-
-    // Configure SSL pinning with IOHttpClientAdapter (Dio 5.x syntax)
+    // SSL pinning: if secureContext is set, pin certificates and reject bad ones.
+    // If secureContext is null, trust all certificates (no pinning).
     dio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
-        final HttpClient httpClient = HttpClient(context: secureContext);
+        final httpClient = HttpClient(context: secureContext);
         if (secureContext != null) {
           httpClient.badCertificateCallback = (cert, host, port) {
-            Logger.error("Bad Certificate");
+            Logger.error("Bad Certificate for $host");
             return false;
           };
         } else {
@@ -98,10 +96,32 @@ class NetworkHelper {
 
     dio.interceptors.add(retryInterceptor);
   }
-  static Future<void> loadPinningCertificate() async {
+
+  /// Loads a PEM certificate from assets and enables SSL certificate pinning.
+  ///
+  /// Call this in your `main()` before `runApp()` and before creating any
+  /// repositories or [NetworkHelper] instances. If not called, all certificates
+  /// are trusted (no pinning).
+  ///
+  /// [assetPath] is the asset path to the PEM certificate file.
+  /// Defaults to `'assets/certificate/certificate.pem'`.
+  ///
+  /// If the certificate fails to load, a warning is logged and the app
+  /// continues without pinning.
+  ///
+  /// Example:
+  /// ```dart
+  /// void main() async {
+  ///   WidgetsFlutterBinding.ensureInitialized();
+  ///   await NetworkHelper.loadPinningCertificate();
+  ///   runApp(MyApp());
+  /// }
+  /// ```
+  static Future<void> loadPinningCertificate({
+    String assetPath = 'assets/certificate/certificate.pem',
+  }) async {
     try {
-      final ByteData data =
-          await rootBundle.load('assets/certificate/certificate.pem');
+      final ByteData data = await rootBundle.load(assetPath);
       SecurityContext securityContext =
           SecurityContext(withTrustedRoots: false);
 
