@@ -44,10 +44,14 @@ class NetworkHelper {
     dio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
         final HttpClient httpClient = HttpClient(context: secureContext);
-        httpClient.badCertificateCallback = (cert, host, port) {
-          Logger.error("Bad Certificate");
-          return false;
-        };
+        if (secureContext != null) {
+          httpClient.badCertificateCallback = (cert, host, port) {
+            Logger.error("Bad Certificate");
+            return false;
+          };
+        } else {
+          httpClient.badCertificateCallback = (cert, host, port) => true;
+        }
         return httpClient;
       },
     );
