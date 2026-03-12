@@ -1,0 +1,27 @@
+# Files not needed in the published package
+
+# IDE and editor files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Git and CI
+.github/
+.gitignore
+
+# Flutter/Dart tooling
+.fvm/
+.fvmrc
+.dart_tool/
+build/
+
+# Project-specific files not needed by consumers
+CLAUDE.md
+doc/REVIEW_REPORT.md
+devtools_options.yaml
+
+# OS files
+.DS_Store
+Thumbs.db

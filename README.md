@@ -57,25 +57,25 @@ Get started with **OptiCore** using our **comprehensive documentation**:
 
 | Document | Description |
 |----------|-------------|
-| 🏗 **[Architecture](./docs/ARCHITECTURE.md)** | Complete architectural overview, philosophy, and design principles |
-| 📌 **[Core](./docs/CORE.md)** | BLoC integration, state handling, and essential utilities |
-| ⚙️ **[Functionality](./docs/FUNCTIONALITY.md)** | Built-in utilities, helpers, and system-wide enhancements |
-| 🛠 **[Reusability](./docs/REUSABILITY.md)** | Reusable widgets, components, and UI utilities |
-| 🛡 **[Infrastructure](./docs/INFRASTRUCTURE.md)** | Foundational configurations, API handling, and global settings |
-| ✨ **[Extensions](./docs/EXTENSIONS.md)** | Data manipulation, UI customization, and enhanced workflows |
+| 🏗 **[Architecture](./doc/ARCHITECTURE.md)** | Complete architectural overview, philosophy, and design principles |
+| 📌 **[Core](./doc/CORE.md)** | BLoC integration, state handling, and essential utilities |
+| ⚙️ **[Functionality](./doc/FUNCTIONALITY.md)** | Built-in utilities, helpers, and system-wide enhancements |
+| 🛠 **[Reusability](./doc/REUSABILITY.md)** | Reusable widgets, components, and UI utilities |
+| 🛡 **[Infrastructure](./doc/INFRASTRUCTURE.md)** | Foundational configurations, API handling, and global settings |
+| ✨ **[Extensions](./doc/EXTENSIONS.md)** | Data manipulation, UI customization, and enhanced workflows |
 
 ### Implementation Patterns
 
 | Pattern | Description |
 |---------|-------------|
-| 🧩 **[BLoC Patterns](./docs/patterns/BLOC_PATTERNS.md)** | Initialization, skeleton data, loading flags, fetch handlers |
-| 📊 **[State Patterns](./docs/patterns/STATE_PATTERNS.md)** | Initial states, success/fail pairs, loading/loaded pairs |
-| ⚡ **[Event Patterns](./docs/patterns/EVENT_PATTERNS.md)** | Event definitions, transformers, naming conventions |
-| 🏭 **[Factory Patterns](./docs/patterns/FACTORY_PATTERNS.md)** | State factories, multi-model, transformations |
-| 📱 **[Screen Patterns](./docs/patterns/SCREEN_PATTERNS.md)** | Screen setup, configuration, lifecycle hooks |
-| 🗄 **[Repository Patterns](./docs/patterns/REPOSITORY_PATTERNS.md)** | Simple fetch, query params, mutations |
-| 📦 **[Model Patterns](./docs/patterns/MODEL_PATTERNS.md)** | JSON parsing, serialization, copyWith |
-| ⚛️ **[Reactive Patterns](./docs/patterns/REACTIVE_PATTERNS.md)** | ReactiveNotifier, AsyncReactiveNotifier, Reactive widgets |  
+| 🧩 **[BLoC Patterns](./doc/patterns/BLOC_PATTERNS.md)** | Initialization, skeleton data, loading flags, fetch handlers |
+| 📊 **[State Patterns](./doc/patterns/STATE_PATTERNS.md)** | Initial states, success/fail pairs, loading/loaded pairs |
+| ⚡ **[Event Patterns](./doc/patterns/EVENT_PATTERNS.md)** | Event definitions, transformers, naming conventions |
+| 🏭 **[Factory Patterns](./doc/patterns/FACTORY_PATTERNS.md)** | State factories, multi-model, transformations |
+| 📱 **[Screen Patterns](./doc/patterns/SCREEN_PATTERNS.md)** | Screen setup, configuration, lifecycle hooks |
+| 🗄 **[Repository Patterns](./doc/patterns/REPOSITORY_PATTERNS.md)** | Simple fetch, query params, mutations |
+| 📦 **[Model Patterns](./doc/patterns/MODEL_PATTERNS.md)** | JSON parsing, serialization, copyWith |
+| ⚛️ **[Reactive Patterns](./doc/patterns/REACTIVE_PATTERNS.md)** | ReactiveNotifier, AsyncReactiveNotifier, Reactive widgets |  
 
 ---
 

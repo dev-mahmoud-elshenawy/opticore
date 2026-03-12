@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' if (dart.library.js_interop) 'platform/file_stub.dart';
 import 'dart:math' as math;
 import 'dart:ui';
 

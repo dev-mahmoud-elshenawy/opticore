@@ -270,7 +270,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     }
 
     /// Un-Authorized
-    if (apiResponse.statusCode == HttpStatus.unauthorized) {
+    if (apiResponse.statusCode == 401) {
       /// Error (Non Render)
       // No need to handle Render Case because it always navigates to Splash Screen and remove User Cache
       return ErrorStateNonRender(
@@ -294,8 +294,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
 
     /// Default error handling
     return returnErrorHandler(
-      errorMsg:
-          (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
+      errorMsg: (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
       errorType: errorType,
       apiErrorType: ApiResponseType.apiError,
     );

@@ -21,7 +21,7 @@ class NetworkHelper {
   late Dio dio;
   final Connectivity connectivity = Connectivity();
 
-  static SecurityContext? secureContext;
+  static dynamic secureContext;
 
   static const Duration receiveTimeout = Duration(seconds: 300);
   static const Duration connectionTimeout = Duration(seconds: 300);
@@ -49,20 +49,8 @@ class NetworkHelper {
 
     // SSL pinning: if secureContext is set, pin certificates and reject bad ones.
     // If secureContext is null, trust all certificates (no pinning).
-    dio.httpClientAdapter = IOHttpClientAdapter(
-      createHttpClient: () {
-        final httpClient = HttpClient(context: secureContext);
-        if (secureContext != null) {
-          httpClient.badCertificateCallback = (cert, host, port) {
-            Logger.error("Bad Certificate for $host");
-            return false;
-          };
-        } else {
-          httpClient.badCertificateCallback = (cert, host, port) => true;
-        }
-        return httpClient;
-      },
-    );
+    // Uses platform-specific adapter (IO on native, no-op on web).
+    configureDioAdapter(dio, secureContext);
 
     if (kDebugMode) {
       dio.interceptors.add(
@@ -132,14 +120,7 @@ class NetworkHelper {
   }) async {
     try {
       final ByteData data = await rootBundle.load(assetPath);
-      SecurityContext securityContext =
-          SecurityContext(withTrustedRoots: false);
-
-      // Fixed typo: asUnit8List() -> asUint8List()
-      securityContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
-
-      // Fixed: Can't use 'this' in static method
-      NetworkHelper.secureContext = securityContext;
+      NetworkHelper.secureContext = await createSecurityContext(data);
 
       if (kDebugMode) {
         Logger.info("SSL Certificate loaded successfully");

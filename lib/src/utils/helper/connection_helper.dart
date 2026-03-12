@@ -102,8 +102,7 @@ class InternetConnectionHandler {
   /// ```
   static void startListeningToConnectivity() {
     _connectivitySubscription?.cancel();
-    _connectivitySubscription =
-        _internetConnectionStream.listen((status) {
+    _connectivitySubscription = _internetConnectionStream.listen((status) {
       final connected = status == InternetStatus.connected;
       _isConnected = connected;
       _cachedIsConnected = connected;
@@ -180,18 +179,17 @@ class InternetConnectionHandler {
     Logger.verbose('Checking internet connectivity status...');
 
     try {
-      final result = await InternetAddress.lookup('google.com')
-          .timeout(const Duration(seconds: 10));
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } catch (_) {
-      try {
-        final result = await InternetAddress.lookup('amazon.com')
-            .timeout(const Duration(seconds: 10));
-        return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-      } catch (_) {
+      final result = await _checker.hasInternetAccess;
+      if (result) {
+        Logger.verbose('Internet access is available.');
+        return true;
+      } else {
         Logger.error('No internet connection detected.');
         return false;
       }
+    } catch (_) {
+      Logger.error('No internet connection detected.');
+      return false;
     }
   }
 

@@ -168,8 +168,7 @@ class _ReactiveBuilderState<T> extends State<ReactiveBuilder<T>> {
 
   void _onChanged() {
     final current = widget.valueListenable.value;
-    final shouldBuild =
-        widget.buildWhen?.call(_previousValue, current) ?? true;
+    final shouldBuild = widget.buildWhen?.call(_previousValue, current) ?? true;
     _previousValue = current;
     if (shouldBuild) {
       setState(() {});

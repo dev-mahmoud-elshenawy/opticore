@@ -69,8 +69,7 @@ class ReactiveSelector<T, S> extends StatefulWidget {
   });
 
   @override
-  State<ReactiveSelector<T, S>> createState() =>
-      _ReactiveSelectorState<T, S>();
+  State<ReactiveSelector<T, S>> createState() => _ReactiveSelectorState<T, S>();
 }
 
 class _ReactiveSelectorState<T, S> extends State<ReactiveSelector<T, S>> {

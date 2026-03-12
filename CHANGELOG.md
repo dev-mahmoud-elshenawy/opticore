@@ -26,6 +26,7 @@ Each section lists the changes in **chronological order**, with the **most recen
   - Added SSL certificate pinning support via `NetworkHelper.loadPinningCertificate()`
   - Added `builder` parameter to `AppConfig` for custom root-level widget wrappers
   - Added `ToastConfig` for global toast color customization
+  - Added full WASM/web platform support via conditional imports and platform stubs
 
 - 🐛 **Bug Fixes**:
   - Fixed `NetworkHelper` creating new Dio instance per repository (now singleton)

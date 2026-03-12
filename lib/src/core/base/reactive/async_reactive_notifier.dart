@@ -87,7 +87,9 @@ class AsyncReactiveNotifier<T> extends ChangeNotifier {
   ///
   /// By default, starts in [AsyncInitial] state. You can optionally
   /// provide initial data using [AsyncReactiveNotifier.withData].
-  AsyncReactiveNotifier() : _state = AsyncInitial<T>(), _operationId = 0;
+  AsyncReactiveNotifier()
+      : _state = AsyncInitial<T>(),
+        _operationId = 0;
 
   /// Creates an [AsyncReactiveNotifier] with initial data.
   ///
