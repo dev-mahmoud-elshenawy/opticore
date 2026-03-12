@@ -1,7 +1,7 @@
 #  Created By: Mahmoud El Shenawy (Dev.M.ElShenawy@Icloud.com)
 name: opticore
 description: OptiCore is a lightweight micro-framework for Flutter that simplifies and optimizes your app development
-version: 2.2.1
+version: 2.3.0
 homepage: https://github.com/dev-mahmoud-elshenawy/opticore
 repository: https://github.com/dev-mahmoud-elshenawy/opticore
 issue_tracker: https://github.com/dev-mahmoud-elshenawy/opticore/issues
@@ -25,18 +25,18 @@ dependencies:
     sdk: flutter
 
   flutter_bloc: ^9.1.1
-  dio: ^5.9.0
+  dio: ^5.9.2
   bot_toast: ^4.1.3
-  font_awesome_flutter: ^10.12.0
+  font_awesome_flutter: ^11.0.0
   lottie: ^3.3.2
   equatable: ^2.0.8
-  flutter_svg: ^2.2.3
+  flutter_svg: ^2.2.4
   internet_connection_checker_plus: ^2.9.1+2
   connectivity_plus: ^7.0.0
   cached_network_image: ^3.4.1
   modal_bottom_sheet: ^3.0.0
-  talker: ^5.1.12
-  talker_dio_logger: ^5.1.12
+  talker: ^5.1.15
+  talker_dio_logger: ^5.1.15
   dio_smart_retry: ^7.0.1
   auto_validate: ^3.0.8
 

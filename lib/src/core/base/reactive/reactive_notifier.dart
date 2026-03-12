@@ -90,7 +90,8 @@ part of '../import/base_import.dart';
 /// - [Reactive] for building UI that responds to value changes
 /// - [AsyncReactiveNotifier] for async operations with loading/error states
 /// - [ReactiveProvider] for sharing notifiers across the widget tree
-class ReactiveNotifier<T> extends ChangeNotifier {
+class ReactiveNotifier<T> extends ChangeNotifier
+    implements ValueListenable<T> {
   /// Creates a [ReactiveNotifier] with an initial value.
   ReactiveNotifier(this._value);
 

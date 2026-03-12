@@ -1,15 +1,23 @@
-# 🚀 OptiCore – The Ultimate Flutter Micro-Framework
+<h1 align="center">🚀 OptiCore – The Ultimate Flutter Micro-Framework</h1>
 
-**OptiCore** is a lightweight **BLOC-based** micro-framework designed to **accelerate** Flutter app development. It provides **optimized state management, built-in API handling, and reusable utilities**—reducing dependency on multiple external packages.
+<p align="center">
+  <strong>A lightweight BLoC-based micro-framework designed to accelerate Flutter app development.</strong><br/>
+  Optimized state management · Built-in API handling · Reusable utilities · Reactive state
+</p>
 
-With **OptiCore**, you get a **scalable, maintainable**, and **efficient** development experience, enabling **faster** feature delivery and **cleaner** code architecture.
+<p align="center">
+  <a href="https://pub.dev/packages/opticore"><img src="https://img.shields.io/badge/Pub%20get-OptiCore-yellow?style=flat-square" alt="Pub Package"/></a>
+  <img src="https://img.shields.io/badge/Build-Passing-teal?style=flat-square" alt="Build Status"/>
+  <img src="https://img.shields.io/badge/Unit%20Test-Passing-red?style=flat-square" alt="Unit Test"/>
+  <a href="https://www.linkedin.com/in/dev-mahmoud-elshenawy/"><img src="https://img.shields.io/badge/Creator-Mahmoud%20El%20Shenawy-blue?style=flat-square" alt="Creator"/></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License"/></a>
+</p>
 
-[![Pub Package](https://img.shields.io/badge/Pub%20get-OptiCore-yellow)](https://pub.dev/packages/opticore)
-![Build Status](https://img.shields.io/badge/Build-Passing-teal)
-![Unit Test](https://img.shields.io/badge/Unit%20Test-Passing-red)
-[![Creator](https://img.shields.io/badge/Creator-Mahmoud%20El%20Shenawy-blue)](https://www.linkedin.com/in/dev-mahmoud-elshenawy/)
-
-<a href="https://www.buymeacoffee.com/m.elshenawy" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="40" width="175" > </a>
+<p align="center">
+  <a href="https://www.buymeacoffee.com/m.elshenawy">
+    <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support%20My%20Work-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=0D1117" alt="Buy Me A Coffee"/>
+  </a>
+</p>
 
 ---
 
@@ -29,11 +37,15 @@ Take your workflow to the next level with **OptiKit CLI**—a command-line tool 
 
 **OptiCore** simplifies **state management** and **reduces boilerplate** by providing **built-in utilities** and a **structured architecture** for scalable Flutter applications.
 
-✅ **BLOC-powered** – Built on top of **Flutter BLOC** for seamless state management.  
-✅ **Optimized API Handling** – Integrated utilities for **network requests** and **error handling**.  
-✅ **Reusable Components** – Prebuilt UI elements to **reduce development time**.  
-✅ **Performance-Focused** – **Minimal overhead** and **efficient memory management**.  
-✅ **Extensible & Flexible** – Works with both **small** and **large-scale** projects.  
+| Feature | Description |
+|---------|-------------|
+| ✅ **BLoC-Powered** | Built on top of **Flutter BLoC** for seamless state management |
+| ✅ **Reactive State** | Lightweight `ReactiveNotifier` & `AsyncReactiveNotifier` for simple state |
+| ✅ **Optimized API Handling** | Integrated utilities for **network requests** and **error handling** |
+| ✅ **Reusable Components** | Prebuilt UI elements to **reduce development time** |
+| ✅ **Performance-Focused** | **Minimal overhead** and **efficient memory management** |
+| ✅ **70+ Extensions** | Data manipulation, UI customization, and enhanced workflows |
+| ✅ **Extensible & Flexible** | Works with both **small** and **large-scale** projects |  
 
 ---
 
@@ -41,11 +53,29 @@ Take your workflow to the next level with **OptiKit CLI**—a command-line tool 
 
 Get started with **OptiCore** using our **comprehensive documentation**:
 
-📌 **[Core](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CORE.md)** – Learn about BLOC integration, state handling, and essential utilities.  
-⚙️ **[Functionality](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/FUNCTIONALITY.md)** – Explore built-in **utilities**, **helpers**, and **system-wide enhancements**.  
-🛠 **[Reusability](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/REUSABILITY.md)** – Discover reusable **widgets**, **components**, and **UI utilities**.  
-🛡 **[Infrastructure](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/INFRASTRUCTURE.md)** – Understand foundational **configurations**, **API handling**, and **global settings**.  
-✨ **[Extensions](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/EXTENSIONS.md)** – Master **data manipulation**, **UI customization**, and **enhanced workflows** with built-in **extensions**.  
+### Architecture & Concepts
+
+| Document | Description |
+|----------|-------------|
+| 🏗 **[Architecture](./docs/ARCHITECTURE.md)** | Complete architectural overview, philosophy, and design principles |
+| 📌 **[Core](./docs/CORE.md)** | BLoC integration, state handling, and essential utilities |
+| ⚙️ **[Functionality](./docs/FUNCTIONALITY.md)** | Built-in utilities, helpers, and system-wide enhancements |
+| 🛠 **[Reusability](./docs/REUSABILITY.md)** | Reusable widgets, components, and UI utilities |
+| 🛡 **[Infrastructure](./docs/INFRASTRUCTURE.md)** | Foundational configurations, API handling, and global settings |
+| ✨ **[Extensions](./docs/EXTENSIONS.md)** | Data manipulation, UI customization, and enhanced workflows |
+
+### Implementation Patterns
+
+| Pattern | Description |
+|---------|-------------|
+| 🧩 **[BLoC Patterns](./docs/patterns/BLOC_PATTERNS.md)** | Initialization, skeleton data, loading flags, fetch handlers |
+| 📊 **[State Patterns](./docs/patterns/STATE_PATTERNS.md)** | Initial states, success/fail pairs, loading/loaded pairs |
+| ⚡ **[Event Patterns](./docs/patterns/EVENT_PATTERNS.md)** | Event definitions, transformers, naming conventions |
+| 🏭 **[Factory Patterns](./docs/patterns/FACTORY_PATTERNS.md)** | State factories, multi-model, transformations |
+| 📱 **[Screen Patterns](./docs/patterns/SCREEN_PATTERNS.md)** | Screen setup, configuration, lifecycle hooks |
+| 🗄 **[Repository Patterns](./docs/patterns/REPOSITORY_PATTERNS.md)** | Simple fetch, query params, mutations |
+| 📦 **[Model Patterns](./docs/patterns/MODEL_PATTERNS.md)** | JSON parsing, serialization, copyWith |
+| ⚛️ **[Reactive Patterns](./docs/patterns/REACTIVE_PATTERNS.md)** | ReactiveNotifier, AsyncReactiveNotifier, Reactive widgets |  
 
 ---
 
@@ -67,17 +97,29 @@ We also welcome **contributions**! If you’d like to enhance OptiCore, check ou
 
 ## 🔄 Changelog & Updates
 
-📜 **[Beta History](https://github.com/dev-mahmoud-elshenawy/opticore/blob/main/CHANGELOG-BETA.md)** – View historical updates and changes during **beta releases**.  
-📢 Stay updated on **new features, improvements, and bug fixes**!
+📜 **[Changelog](./CHANGELOG.md)** – View all releases, new features, improvements, and bug fixes.
+📜 **[Beta History](./CHANGELOG-BETA.md)** – View historical updates and changes during **beta releases**.
 
 ---
 
 ## 👤 Created By
 
-Made with ❤️ by **Mahmoud El Shenawy**  
-🔗 **[LinkedIn](https://www.linkedin.com/in/dev-mahmoud-elshenawy)**  
-🐦 **[Medium](https://medium.com/@dev-mahmoud-elshenawy)**  
-💻 **[GitHub](https://github.com/dev-mahmoud-elshenawy)**  
-📘 **[Facebook](https://www.facebook.com/dev.m.elshenawy)**  
+<div align="center">
 
-📜 **License:** MIT – See **[LICENSE](https://github.com/dev-mahmoud-elshenawy/OptiCore/blob/master/LICENSE)**.
+### Built with ❤️ by [Mahmoud El Shenawy](https://github.com/dev-mahmoud-elshenawy)
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white&style=for-the-badge)](https://www.linkedin.com/in/dev-mahmoud-elshenawy)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge)](https://github.com/dev-mahmoud-elshenawy)
+[![Medium](https://img.shields.io/badge/Medium-000000?logo=medium&logoColor=white&style=for-the-badge)](https://medium.com/@dev-mahmoud-elshenawy)
+
+</div>
+
+---
+
+## 📜 License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
+
+**OptiCore** is open-source software released under the **[MIT License](./LICENSE)**.
+
+Free to use, modify, and distribute — in personal and commercial projects.

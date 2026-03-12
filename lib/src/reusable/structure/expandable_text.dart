@@ -131,7 +131,7 @@ class _ExpandableTextState extends State<ExpandableText> {
         final textPainter = TextPainter(
           text: textSpan,
           maxLines: widget.maxLines,
-          textDirection: TextDirection.ltr,
+          textDirection: Directionality.of(context),
         )..layout(maxWidth: constraints.maxWidth);
 
         final bool showButton = textPainter.didExceedMaxLines &&

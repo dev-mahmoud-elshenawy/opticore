@@ -65,7 +65,7 @@ class ToastHelper {
   /// [duration]: The duration of the toast in seconds.
   static void _displayToast({
     required String message,
-    required IconData icon,
+    required FaIconData icon,
     required Color color,
     required int duration,
   }) {
@@ -110,7 +110,7 @@ class ToastHelper {
   /// [message]: The message to display.
   /// [icon]: The icon to display in the toast.
   /// [color]: The background color of the toast.
-  static Widget _buildToast(String message, IconData icon, Color color) {
+  static Widget _buildToast(String message, FaIconData icon, Color color) {
     return Card(
       color: color,
       elevation: 2,
@@ -150,7 +150,7 @@ class ToastHelper {
 
 /// A private class to encapsulate toast configuration.
 class _ToastConfig {
-  final IconData icon;
+  final FaIconData icon;
   final Color color;
 
   _ToastConfig({required this.icon, required this.color});

@@ -36,12 +36,15 @@ typedef HeaderUpdateCallback = Future<Map<String, String>> Function(
 /// - [updateHeaders]: Updates global headers with the provided callback function,
 ///   allowing dynamic customization of the headers.
 abstract class BaseRepo {
-  NetworkHelper? networkHelper;
+  final NetworkHelper networkHelper;
 
   /// Constructor that initializes the `networkHelper` instance.
-  BaseRepo() {
-    networkHelper = NetworkHelper();
-  }
+  ///
+  /// Uses the shared [NetworkHelper.instance] singleton by default, ensuring
+  /// all repositories share a single Dio instance, connection pool, and
+  /// interceptors. A custom instance can be passed for testing or isolation.
+  BaseRepo({NetworkHelper? networkHelper})
+      : networkHelper = networkHelper ?? NetworkHelper.instance;
 
   /// Updates global headers by calling a custom callback function to
   /// modify the current headers.
@@ -110,9 +113,7 @@ abstract class BaseRepo {
         await NetworkConfig.updateHeaders(newHeaders: updatedHeaders);
 
         // Update the headers in the NetworkHelper
-        if (networkHelper != null) {
-          networkHelper!.updateHeaders(updatedHeaders);
-        }
+        networkHelper.updateHeaders(updatedHeaders);
 
         Logger.info("Headers updated successfully");
         return true;

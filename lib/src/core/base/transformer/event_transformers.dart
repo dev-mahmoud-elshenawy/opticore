@@ -27,7 +27,9 @@ class _DebounceStreamTransformer<T> extends StreamTransformerBase<T, T> {
           (T data) {
             timer?.cancel();
             timer = Timer(duration, () {
-              controller.add(data);
+              if (!controller.isClosed) {
+                controller.add(data);
+              }
             });
           },
           onError: controller.addError,

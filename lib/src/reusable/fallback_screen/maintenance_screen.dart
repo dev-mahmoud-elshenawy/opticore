@@ -129,8 +129,8 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
                         ToolsHelper.triggerWithInternet(() {
                           // Trigger refresh action
                           stopRepeating(action: () {
-                            widget
-                                .refreshCallBack!(); // Calls the refresh callback
+                            widget.refreshCallBack
+                                ?.call(); // Calls the refresh callback
                             if (Navigator.canPop(context)) {
                               Navigator.pop(context); // Pops the screen
                             }

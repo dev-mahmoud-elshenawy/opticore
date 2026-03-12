@@ -21,6 +21,7 @@ part '../reusable/fallback_screen/restart_widget.dart';
 part '../reusable/item/flexible_check_box.dart';
 part '../reusable/item/svg_widget.dart';
 part '../reusable/item/truncated_text.dart';
+part '../reusable/item/show_if_has_value.dart';
 part '../reusable/paint/dashed_line_vertical_widget.dart';
 part '../reusable/paint/gradient_outlined_button.dart';
 part '../reusable/structure/auto_scroll_when_focused.dart';

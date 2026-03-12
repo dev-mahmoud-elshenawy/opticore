@@ -116,6 +116,6 @@ Enhance your Flutter development workflow with **OptiCore** – a lightweight mi
 
 📌 **More details available in:**  
 
-- 📖 **[Readme](./README.md)** – Full documentation covering features & usage.
+- 📖 **[Readme](../README.md)** – Full documentation covering features & usage.
 
 Start **building smarter** with OptiCore today! 🎯  

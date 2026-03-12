@@ -84,20 +84,38 @@ class InternetConnectionHandler {
   ///
   static bool get isConnected => _isConnected;
 
+  /// The active connectivity subscription, stored so it can be cancelled.
+  static StreamSubscription<InternetStatus>? _connectivitySubscription;
+
   /// Starts listening to the internet connection status changes.
   ///
-  /// This method listens to the internet connection status changes and updates the [isConnected] flag accordingly.
-  /// which determines whether the device is connected to the internet.
-  /// By subscribing to the stream [internetConnectionStatusStream], the class can track the internet connection status changes in real-time.
+  /// This method listens to the internet connection status changes and updates
+  /// the [isConnected] flag accordingly. It also keeps the cached connectivity
+  /// status in sync so that [isInternetConnected] returns accurate results.
+  ///
+  /// Calling this multiple times is safe — the previous subscription is
+  /// cancelled before creating a new one.
   ///
   /// ### Example Usage:
   /// ```dart
   /// InternetConnectionHandler.startListeningToConnectivity();
   /// ```
   static void startListeningToConnectivity() {
-    _internetConnectionStream.listen((isConnected) {
-      _isConnected = isConnected == InternetStatus.connected;
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription =
+        _internetConnectionStream.listen((status) {
+      final connected = status == InternetStatus.connected;
+      _isConnected = connected;
+      _cachedIsConnected = connected;
     });
+  }
+
+  /// Stops listening to the internet connection status changes.
+  ///
+  /// Call this when connectivity monitoring is no longer needed to free resources.
+  static void stopListeningToConnectivity() {
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription = null;
   }
 
   /// Flag indicating whether the "No Internet Scene" has been displayed.

@@ -85,11 +85,11 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// retryFunc: retryFunc,
   /// );
   /// ```
-  dynamic handleApiResponse<M>(
+  BaseState handleApiResponse<M>(
     ApiResponse<M>? apiResponse, {
     BaseState? Function(int?, String?)? onApiErrorAction,
     String? errorType,
-    required Function? retryFunc,
+    Function? retryFunc,
   }) {
     Logger.info(
         "BaseBloc | API RESPONSE: ${apiResponse?.type} - ${stateFactory.runtimeType}");
@@ -165,6 +165,13 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
         apiErrorType: ApiResponseType.apiError,
       );
     }
+
+    // Fallback for unhandled response types
+    return returnErrorHandler(
+      errorMsg: "Unhandled API response type: ${apiResponse.type}",
+      errorType: errorType,
+      apiErrorType: ApiResponseType.apiError,
+    );
   }
 
   /// Handles API and network-related errors, including unauthorized access.
@@ -185,7 +192,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// errorType: errorType,
   /// );
   /// ```
-  dynamic handleErrorAndException<M>(
+  BaseState handleErrorAndException<M>(
     ApiResponse<M>? apiResponse, {
     BaseState? Function(int?, String?)? onApiErrorAction,
     String? errorType,
@@ -222,6 +229,13 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
         apiErrorType: ApiResponseType.apiError,
       );
     }
+
+    // Fallback for unmatched error types
+    return returnErrorHandler(
+      errorMsg: "Unhandled error type",
+      errorType: errorType,
+      apiErrorType: ApiResponseType.apiError,
+    );
   }
 
   /// Handles API errors, such as unauthorized access or server-side validation failures.
@@ -242,13 +256,21 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// errorType: errorType,
   /// );
   /// ```
-  dynamic handleApiError<M>(
+  BaseState handleApiError<M>(
     ApiResponse<M>? apiResponse, {
     BaseState? Function(int?, String?)? onApiErrorAction,
     String? errorType,
   }) {
+    if (apiResponse == null) {
+      return returnErrorHandler(
+        errorMsg: "Invalid API response",
+        errorType: errorType,
+        apiErrorType: ApiResponseType.apiError,
+      );
+    }
+
     /// Un-Authorized
-    if (apiResponse!.statusCode == HttpStatus.unauthorized) {
+    if (apiResponse.statusCode == HttpStatus.unauthorized) {
       /// Error (Non Render)
       // No need to handle Render Case because it always navigates to Splash Screen and remove User Cache
       return ErrorStateNonRender(
@@ -260,23 +282,23 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     /// Api Error Action
     if (onApiErrorAction != null) {
       return onApiErrorAction(
-        apiResponse.statusCode,
-        (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
-      );
+            apiResponse.statusCode,
+            (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
+          ) ??
+          returnErrorHandler(
+            errorMsg: "An error occurred",
+            errorType: errorType,
+            apiErrorType: ApiResponseType.apiError,
+          );
     }
 
-    /// Else
-    else {
-      /// Error
-      if (apiResponse.apiError != null) {
-        return returnErrorHandler(
-          errorMsg:
-              (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
-          errorType: errorType,
-          apiErrorType: ApiResponseType.apiError,
-        );
-      }
-    }
+    /// Default error handling
+    return returnErrorHandler(
+      errorMsg:
+          (apiResponse.apiError ?? []).firstOrNull ?? "An error occurred",
+      errorType: errorType,
+      apiErrorType: ApiResponseType.apiError,
+    );
   }
 
   /// Handles network-related errors, such as connectivity issues or request failures.
@@ -295,25 +317,40 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// errorType: errorType,
   /// );
   /// ```
-  dynamic handleNetworkException(
+  BaseState handleNetworkException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
   }) {
-    if (apiResponse!.type == ApiResponseType.networkError) {
-      /// Error
+    if (apiResponse == null) {
+      return returnErrorHandler(
+        errorMsg: "Network error occurred",
+        errorType: errorType,
+        apiErrorType: ApiResponseType.networkError,
+      );
+    }
+
+    if (apiResponse.type == ApiResponseType.networkError) {
       return returnErrorHandler(
         errorMsg: apiResponse.exceptionMessage,
         errorType: errorType,
         apiErrorType: ApiResponseType.networkError,
       );
-    } else if (apiResponse.type == ApiResponseType.parsingError && kDebugMode) {
-      /// Error
+    } else if (apiResponse.type == ApiResponseType.parsingError) {
       return returnErrorHandler(
-        errorMsg: apiResponse.exceptionMessage,
+        errorMsg: kDebugMode
+            ? apiResponse.exceptionMessage
+            : ApiResponseConfig.errorMessage,
         errorType: errorType,
         apiErrorType: ApiResponseType.parsingError,
       );
     }
+
+    // Fallback
+    return returnErrorHandler(
+      errorMsg: apiResponse.exceptionMessage ?? "An error occurred",
+      errorType: errorType,
+      apiErrorType: apiResponse.type ?? ApiResponseType.networkError,
+    );
   }
 
   /// Handles no internet connection errors.
@@ -334,26 +371,32 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// retryFunc: retryFunc,
   /// );
   /// ```
-  dynamic handleNoInternetException(
+  BaseState handleNoInternetException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
     Function? retryFunc,
   }) {
-    if (apiResponse!.type == ApiResponseType.noInternetError) {
+    if (apiResponse?.type == ApiResponseType.noInternetError) {
       _navigate(
         NoInternetScreen(
           refreshCallBack: () {
-            retryFunc!();
+            retryFunc?.call();
           },
         ),
       );
 
       return returnErrorHandler(
-        errorMsg: apiResponse.exceptionMessage,
+        errorMsg: apiResponse?.exceptionMessage,
         errorType: ErrorType.none,
         apiErrorType: ApiResponseType.noInternetError,
       );
     }
+
+    return returnErrorHandler(
+      errorMsg: apiResponse?.exceptionMessage ?? "No internet connection",
+      errorType: errorType,
+      apiErrorType: ApiResponseType.noInternetError,
+    );
   }
 
   /// Handles server errors, such as maintenance or server-side issues.
@@ -374,26 +417,32 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// retryFunc: retryFunc,
   /// );
   /// ```
-  dynamic handleServerErrorException(
+  BaseState handleServerErrorException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
     Function? retryFunc,
   }) {
-    if (apiResponse!.type == ApiResponseType.serverError) {
+    if (apiResponse?.type == ApiResponseType.serverError) {
       _navigate(
         MaintenanceScreen(
           refreshCallBack: () {
-            retryFunc!();
+            retryFunc?.call();
           },
         ),
       );
 
       return returnErrorHandler(
-        errorMsg: apiResponse.exceptionMessage,
+        errorMsg: apiResponse?.exceptionMessage,
         errorType: ErrorType.none,
         apiErrorType: ApiResponseType.serverError,
       );
     }
+
+    return returnErrorHandler(
+      errorMsg: apiResponse?.exceptionMessage ?? "Server error occurred",
+      errorType: errorType,
+      apiErrorType: ApiResponseType.serverError,
+    );
   }
 
   /// Handles unauthorized access errors.
@@ -414,20 +463,19 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   ///  retryFunc: retryFunc,
   ///  );
   ///  ```
-  dynamic handleUnAuthorizedException(
+  BaseState handleUnAuthorizedException(
     ApiResponse<dynamic>? apiResponse, {
     String? errorType,
     Function? retryFunc,
   }) {
-    if (apiResponse!.type == ApiResponseType.unauthorizedError) {
+    if (apiResponse?.type == ApiResponseType.unauthorizedError) {
       return returnErrorHandler(
-        errorMsg: apiResponse.exceptionMessage,
+        errorMsg: apiResponse?.exceptionMessage,
         errorType: ErrorType.none,
         apiErrorType: ApiResponseType.unauthorizedError,
       );
     }
 
-    // Add default return to prevent null returns
     return returnErrorHandler(
       errorMsg: "Unknown authorization error",
       errorType: ErrorType.nonRender,
@@ -454,7 +502,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   ///  apiErrorType: ApiResponseType.API_ERROR,
   ///  );
   ///  ```
-  dynamic returnErrorHandler({
+  BaseState returnErrorHandler({
     String? errorMsg,
     bool isException = false,
     String? errorType,
@@ -486,7 +534,7 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
   /// - `screen`: The [Widget] to navigate to.
   void _navigate(Widget screen) {
     ToolsHelper.stopRepeating(
-      action: () => RouteHelper.navigatorKey.currentState!.push(
+      action: () => RouteHelper.navigatorKey.currentState?.push(
         CupertinoPageRoute(
           builder: (_) => screen,
         ),

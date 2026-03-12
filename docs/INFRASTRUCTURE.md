@@ -112,6 +112,6 @@ This document provides an in-depth overview of the core infrastructure component
 
 📌 For further details, refer to the **full documentation**:
 
-- **[Readme](./README.md)** – Comprehensive documentation covering utilities and features in detail.
+- **[Readme](../README.md)** – Comprehensive documentation covering utilities and features in detail.
 
 🚀 **Start building smarter with OptiCore today!**

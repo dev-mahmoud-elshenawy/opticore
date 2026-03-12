@@ -25,7 +25,10 @@ class StateBuilder<B extends BaseBloc, S extends ComponentState>
   /// Function that builds the widget based on the current component state
   final Widget Function(BuildContext context, S state) builder;
 
-  /// Optional function to determine whether the builder should rebuild
+  /// Optional function to determine whether the builder should rebuild.
+  ///
+  /// Only called when both previous and current states are of type [S].
+  /// If `null`, rebuilds on every [S] emission.
   final bool Function(S previous, S current)? buildWhen;
 
   /// Optional initial widget to show when the specific component state hasn't been emitted yet
@@ -40,44 +43,23 @@ class StateBuilder<B extends BaseBloc, S extends ComponentState>
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<B, BaseState, _StateHolder<S>>(
-      selector: (state) {
-        if (state is S) {
-          return _StateHolder<S>(state);
+    return BlocBuilder<B, BaseState>(
+      buildWhen: (previous, current) {
+        // Only rebuild when the current state is of type S
+        if (current is! S) return false;
+        // If buildWhen is provided and previous is also S, delegate to it
+        if (buildWhen != null && previous is S) {
+          return buildWhen!(previous, current);
         }
-        return _StateHolder<S>(null);
+        // Rebuild when we first get a state of type S, or when it changes
+        return true;
       },
-      builder: (context, holder) {
-        if (holder.state != null) {
-          return builder(context, holder.state!);
+      builder: (context, state) {
+        if (state is S) {
+          return builder(context, state);
         }
         return initialWidget ?? const SizedBox.shrink();
       },
     );
   }
-}
-
-/// A simple holder class that helps with equality comparison
-class _StateHolder<S> {
-  final S? state;
-
-  _StateHolder(this.state);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! _StateHolder<S>) return false;
-
-    // Both null case
-    if (state == null && other.state == null) return true;
-
-    // One null case
-    if (state == null || other.state == null) return false;
-
-    // Compare actual states
-    return state == other.state;
-  }
-
-  @override
-  int get hashCode => state?.hashCode ?? 0;
 }

@@ -1039,4 +1039,4 @@ BaseScreen
 
 ---
 
-*OptiCore v2.2.0 | MIT License | Created by Mahmoud El Shenawy*
+*OptiCore | MIT License | Created by Mahmoud El Shenawy*

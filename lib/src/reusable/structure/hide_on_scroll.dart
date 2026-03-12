@@ -126,6 +126,7 @@ class _HideOnScrollState extends State<HideOnScroll> {
   ///
   /// When the user scrolls forward (down), the child is shown. When the user scrolls backward (up), the child is hidden.
   void _onScroll() {
+    if (!widget.scrollController.hasClients) return;
     final direction = widget.scrollController.position.userScrollDirection;
     if (direction == ScrollDirection.forward) {
       _showChild();

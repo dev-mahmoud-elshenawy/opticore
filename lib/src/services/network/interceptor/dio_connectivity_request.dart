@@ -51,8 +51,9 @@ class DioConnectivityRequest {
   /// Returns a [Future<Response>] that will complete once the request is successfully sent.
   /// If the request fails, it will return an error.
   Future<Response> scheduleRequestRetry(RequestOptions requestOptions) async {
-    late StreamSubscription streamSubscription;
+    StreamSubscription? streamSubscription;
     final responseCompleter = Completer<Response>();
+    bool isRetrying = false;
 
     try {
       // Listens for changes in connectivity status.
@@ -60,40 +61,46 @@ class DioConnectivityRequest {
         (connectivityResult) async {
           // Only proceed if the device has internet connectivity
           if (!connectivityResult.contains(ConnectivityResult.none)) {
-            // Ensure the request is not already in progress
-            if (!responseCompleter.isCompleted) {
-              streamSubscription
-                  .cancel(); // Stop listening after connection is restored.
-              try {
-                // Attempt to send the request again using Dio
-                final response = await dio.request<dynamic>(
-                  requestOptions.path,
-                  cancelToken: requestOptions.cancelToken,
-                  data: requestOptions.data,
-                  onReceiveProgress: requestOptions.onReceiveProgress,
-                  onSendProgress: requestOptions.onSendProgress,
-                  queryParameters: requestOptions.queryParameters,
-                  options: Options(
-                    headers: requestOptions.headers,
-                    contentType: requestOptions.contentType,
-                    followRedirects: requestOptions.followRedirects,
-                    listFormat: requestOptions.listFormat,
-                    maxRedirects: requestOptions.maxRedirects,
-                    method: requestOptions.method,
-                    receiveDataWhenStatusError:
-                        requestOptions.receiveDataWhenStatusError,
-                    receiveTimeout: requestOptions.receiveTimeout,
-                    requestEncoder: requestOptions.requestEncoder,
-                    responseDecoder: requestOptions.responseDecoder,
-                    responseType: requestOptions.responseType,
-                    sendTimeout: requestOptions.sendTimeout,
-                    validateStatus: requestOptions.validateStatus,
-                  ),
-                );
-                // Completes the future with the response.
+            // Guard against concurrent retry attempts
+            if (isRetrying || responseCompleter.isCompleted) return;
+            isRetrying = true;
+
+            // Stop listening after connection is restored.
+            streamSubscription?.cancel();
+
+            try {
+              // Attempt to send the request again using Dio
+              final response = await dio.request<dynamic>(
+                requestOptions.path,
+                cancelToken: requestOptions.cancelToken,
+                data: requestOptions.data,
+                onReceiveProgress: requestOptions.onReceiveProgress,
+                onSendProgress: requestOptions.onSendProgress,
+                queryParameters: requestOptions.queryParameters,
+                options: Options(
+                  headers: requestOptions.headers,
+                  contentType: requestOptions.contentType,
+                  followRedirects: requestOptions.followRedirects,
+                  listFormat: requestOptions.listFormat,
+                  maxRedirects: requestOptions.maxRedirects,
+                  method: requestOptions.method,
+                  receiveDataWhenStatusError:
+                      requestOptions.receiveDataWhenStatusError,
+                  receiveTimeout: requestOptions.receiveTimeout,
+                  requestEncoder: requestOptions.requestEncoder,
+                  responseDecoder: requestOptions.responseDecoder,
+                  responseType: requestOptions.responseType,
+                  sendTimeout: requestOptions.sendTimeout,
+                  validateStatus: requestOptions.validateStatus,
+                ),
+              );
+              // Completes the future with the response.
+              if (!responseCompleter.isCompleted) {
                 responseCompleter.complete(response);
-              } catch (error) {
-                // In case of an error, complete with an error.
+              }
+            } catch (error) {
+              // In case of an error, complete with an error.
+              if (!responseCompleter.isCompleted) {
                 responseCompleter.completeError(error);
               }
             }
@@ -102,14 +109,16 @@ class DioConnectivityRequest {
       );
     } catch (error) {
       // Completes with an error in case of failure in setup.
-      responseCompleter.completeError(error);
+      if (!responseCompleter.isCompleted) {
+        responseCompleter.completeError(error);
+      }
     }
 
     // Set a timeout for the operation to avoid indefinite waiting.
     return responseCompleter.future.timeout(
       NetworkHelper.connectionTimeout, // Timeout duration from `NetworkHelper`.
       onTimeout: () {
-        streamSubscription.cancel(); // Cancel the subscription on timeout.
+        streamSubscription?.cancel(); // Cancel the subscription on timeout.
         return Future.error('Request timed out');
       },
     );

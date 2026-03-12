@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:opticore/opticore.dart';
 
+import 'network/infrastructure/no_internet_exception.dart';
 import 'network/interceptor/dio_connectivity_request.dart';
 
 part '../services/network/infrastructure/api_response.dart';

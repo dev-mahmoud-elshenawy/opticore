@@ -12,6 +12,43 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🎯 [2.3.0] - Stability & Network Enhancements
+
+- 🆕 **New Features**:
+  - Added `ReactiveSelector<T, S>` widget for type-safe property selection (replaces `Reactive.select` with proper generics)
+  - Added `ReactiveBuilder<T>` widget for lightweight `ValueListenable` rebuilds with `buildWhen` support
+  - Added `BlocPartBuilder` for building specific parts of BLoC state
+  - Added `CancelToken` support in `NetworkHelper.request()` for request cancellation
+  - Added `addInterceptor()` / `removeInterceptor()` to `NetworkHelper` for custom Dio interceptors
+  - Added per-request `connectTimeout` and `receiveTimeout` in `NetworkHelper.request()`
+  - Added `timeout` parameter to `SafeCall.execute()`
+  - Added `NoInternetException` type for type-safe no-internet detection
+  - Added SSL certificate pinning support via `NetworkHelper.loadPinningCertificate()`
+  - Added `builder` parameter to `AppConfig` for custom root-level widget wrappers
+  - Added `ToastConfig` for global toast color customization
+
+- 🐛 **Bug Fixes**:
+  - Fixed `NetworkHelper` creating new Dio instance per repository (now singleton)
+  - Fixed memory leak in `TextInputHelper` — listener removal callback now returned
+  - Fixed magic string `"487"` for no-internet detection — replaced with `NoInternetException` type check
+  - Fixed force-unwrap crash in `MaintenanceScreen.refreshCallBack`
+  - Fixed `ConnectionHelper` subscription never cancelled and stale cache
+  - Fixed `BaseScreen.showLoading()` using 300s uncancellable timeout (now 30s cancellable Timer)
+  - Fixed `BaseScreen.closeKeyboard()` and `CoreSetup` force-unwrap on `primaryFocus`
+  - Fixed `BaseScreen._handleNullBuilder()` returning `dynamic` instead of `Widget`
+  - Fixed `NoInternetScreen` setting static flag inside `build()` (moved to `initState()`)
+  - Fixed `LazyIndexedStack` force-unwraps on nullable controllers and `pageBuilder`
+  - Fixed `ApiResponse` only extracting `data["message"]` — now tries `error`, `detail`, `error_message`
+  - Fixed `ApiResponse` treating 403 as generic error — now handled as `unauthorizedError` like 401
+  - Fixed unsafe `_previousValue as T` cast in `Reactive` widget
+  - Fixed `AsyncReactiveNotifier.execute()` race condition with concurrent calls (operation ID guard)
+  - Fixed `ContentBuilder` not caching BLoC when `disposeBloc: false`
+  - Fixed `StateBuilder` `buildWhen` not working (rewritten with `BlocBuilder`)
+  - Fixed `EventTransformers` debounce missing `isClosed` guard
+  - Fixed `DioConnectivityRequest` missing retry guard and completion checks
+  - Fixed `ExpandableText` hardcoded LTR direction
+  - Fixed `HideOnScroll` accessing `scrollController.position` without `hasClients` guard
+
 ### 🛠 [2.2.1] - CoreSetup Builder & Toast Customization
 
 - 🆕 **New Features**:

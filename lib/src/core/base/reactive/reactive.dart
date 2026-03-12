@@ -385,11 +385,13 @@ class _ReactiveState<T> extends State<Reactive<T>> {
 
   void _onNotifierChanged() {
     final currentValue = widget._notifier!.value;
+    final previous = _previousValue;
 
     // Handle listener
     if (widget._listener != null) {
-      final shouldListen =
-          widget._listenWhen?.call(_previousValue as T, currentValue) ?? true;
+      final shouldListen = (previous != null)
+          ? widget._listenWhen?.call(previous, currentValue) ?? true
+          : true;
       if (shouldListen) {
         widget._listener!(context, currentValue);
       }
@@ -407,8 +409,9 @@ class _ReactiveState<T> extends State<Reactive<T>> {
     }
 
     // Handle buildWhen for single type
-    final shouldBuild =
-        widget._buildWhen?.call(_previousValue as T, currentValue) ?? true;
+    final shouldBuild = (previous != null)
+        ? widget._buildWhen?.call(previous, currentValue) ?? true
+        : true;
     _previousValue = currentValue;
 
     if (shouldBuild) {

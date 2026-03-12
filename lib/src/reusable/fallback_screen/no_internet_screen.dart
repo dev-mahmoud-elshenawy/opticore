@@ -32,7 +32,7 @@ part of '../reusable_import.dart';
 /// - `key`: The optional `Key` used for widget identification.
 /// - `refreshCallBack`: A function to handle the refresh logic when the refresh button is pressed.
 /// - `withPop`: A boolean indicating whether the screen should pop after attempting to refresh the internet connection.
-class NoInternetScreen extends StatelessWidget {
+class NoInternetScreen extends StatefulWidget {
   final Function? refreshCallBack;
   final bool? withPop;
   final bool? isGoogleCheck;
@@ -45,10 +45,19 @@ class NoInternetScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Mark that the "No Internet" scene is being shown.
-    InternetConnectionHandler.isNoInternetSceneShown = true;
+  State<NoInternetScreen> createState() => _NoInternetScreenState();
+}
 
+class _NoInternetScreenState extends State<NoInternetScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Mark that the "No Internet" scene is being shown (once, not on every rebuild).
+    InternetConnectionHandler.isNoInternetSceneShown = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
     return PopScope(
@@ -90,18 +99,18 @@ class NoInternetScreen extends StatelessWidget {
                     // Attempt to reconnect to the internet
                     ToolsHelper.triggerWithInternet(
                       () {
-                        if (refreshCallBack != null) {
+                        if (widget.refreshCallBack != null) {
                           InternetConnectionHandler.isNoInternetSceneShown =
                               false;
-                          refreshCallBack
+                          widget.refreshCallBack
                               ?.call(); // Invoke the refresh callback
-                          if ((withPop ?? true)) {
+                          if ((widget.withPop ?? true)) {
                             context
                                 .pop(); // Optionally pop the screen after refreshing
                           }
                         }
                       },
-                      isGoogleInternetCheck: isGoogleCheck ?? false,
+                      isGoogleInternetCheck: widget.isGoogleCheck ?? false,
                     );
                   },
                 ),

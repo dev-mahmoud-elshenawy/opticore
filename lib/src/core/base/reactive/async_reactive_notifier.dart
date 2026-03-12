@@ -87,7 +87,7 @@ class AsyncReactiveNotifier<T> extends ChangeNotifier {
   ///
   /// By default, starts in [AsyncInitial] state. You can optionally
   /// provide initial data using [AsyncReactiveNotifier.withData].
-  AsyncReactiveNotifier() : _state = AsyncInitial<T>();
+  AsyncReactiveNotifier() : _state = AsyncInitial<T>(), _operationId = 0;
 
   /// Creates an [AsyncReactiveNotifier] with initial data.
   ///
@@ -97,9 +97,12 @@ class AsyncReactiveNotifier<T> extends ChangeNotifier {
   /// print(counter.hasData); // true
   /// print(counter.valueOrNull); // 0
   /// ```
-  AsyncReactiveNotifier.withData(T data) : _state = AsyncData<T>(data);
+  AsyncReactiveNotifier.withData(T data)
+      : _state = AsyncData<T>(data),
+        _operationId = 0;
 
   AsyncValue<T> _state;
+  int _operationId;
 
   /// The current async state.
   ///
@@ -158,13 +161,16 @@ class AsyncReactiveNotifier<T> extends ChangeNotifier {
   /// });
   /// ```
   Future<void> execute(Future<T> Function() asyncFunction) async {
+    final id = ++_operationId;
     _state = AsyncLoading<T>();
     notifyListeners();
 
     try {
       final result = await asyncFunction();
+      if (_operationId != id) return;
       _state = AsyncData<T>(result);
     } catch (error, stackTrace) {
+      if (_operationId != id) return;
       _state = AsyncError<T>(error, stackTrace: stackTrace);
     }
 

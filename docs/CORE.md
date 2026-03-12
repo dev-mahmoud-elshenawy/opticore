@@ -292,4 +292,4 @@ A state representing a **background process error**.
 
 📌 **Further Documentation:**
 
-- **[Readme](./README.md)** – Overview of utilities and features.
+- **[Readme](../README.md)** – Overview of utilities and features.

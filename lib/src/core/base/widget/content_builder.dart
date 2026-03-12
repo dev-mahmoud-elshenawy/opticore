@@ -70,7 +70,7 @@ import 'package:opticore/opticore.dart';
 ///   },
 /// );
 /// ```
-class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
+class ContentBuilder<M extends BlocBase<BaseState>> extends StatefulWidget {
   /// Callback for handling non-render state changes.
   ///
   /// This function is called whenever a [NonRenderState] is emitted.
@@ -110,20 +110,40 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
   });
 
   @override
+  State<ContentBuilder<M>> createState() => _ContentBuilderState<M>();
+}
+
+class _ContentBuilderState<M extends BlocBase<BaseState>>
+    extends State<ContentBuilder<M>> {
+  /// Cached BLoC instance for [BlocProvider.value] when [disposeBloc] is false.
+  /// This prevents calling [create] on every rebuild.
+  M? _cachedBloc;
+
+  @override
+  void dispose() {
+    // _cachedBloc is only set when disposeBloc is false,
+    // meaning the caller manages the BLoC lifecycle — we don't close it.
+    _cachedBloc = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final consumer = BlocConsumer<M, BaseState>(
       // Rebuilds UI only for states that implement RenderState.
       buildWhen: (previous, current) => current is RenderState,
       // Listens only for states that implement NonRenderState.
       listenWhen: (previous, current) => current is NonRenderState,
-      listener: (context, state) => stateListener(context, state),
-      builder: (context, state) => widgetRenderer(context, state),
+      listener: (context, state) => widget.stateListener(context, state),
+      builder: (context, state) => widget.widgetRenderer(context, state),
     );
 
-    // If disposeBloc is false, use BlocProvider.value to prevent disposal
-    if (!disposeBloc) {
+    // If disposeBloc is false, use BlocProvider.value to prevent disposal.
+    // Cache the BLoC so create() is only called once.
+    if (!widget.disposeBloc) {
+      _cachedBloc ??= widget.create(context);
       return BlocProvider<M>.value(
-        value: create(context),
+        value: _cachedBloc!,
         child: consumer,
       );
     }
@@ -131,7 +151,7 @@ class ContentBuilder<M extends BlocBase<BaseState>> extends StatelessWidget {
     // Otherwise, use regular BlocProvider which will auto-dispose
     return BlocProvider<M>(
       lazy: false,
-      create: create,
+      create: widget.create,
       child: consumer,
     );
   }

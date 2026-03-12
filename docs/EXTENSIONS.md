@@ -197,6 +197,6 @@ This document provides a comprehensive overview of the powerful extensions inclu
 
 📌 For further details, refer to the **full documentation**:
 
-- **[Readme](./README.md)** – Comprehensive documentation covering utilities and features in detail.
+- **[Readme](../README.md)** – Comprehensive documentation covering utilities and features in detail.
 
 🚀 **Start building smarter with OptiCore today!**

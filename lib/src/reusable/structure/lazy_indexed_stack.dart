@@ -88,8 +88,8 @@ class LazyIndexedStack extends StatefulWidget {
 
 class _LazyIndexedStackState extends State<LazyIndexedStack>
     with SingleTickerProviderStateMixin {
-  AnimationController? _controller;
-  PageController? _pageController;
+  late final AnimationController _controller;
+  late final PageController _pageController;
 
   @override
   void didUpdateWidget(LazyIndexedStack oldWidget) {
@@ -97,9 +97,9 @@ class _LazyIndexedStackState extends State<LazyIndexedStack>
 
     // Animate and change page only if the index changes
     if (widget.index != oldWidget.index) {
-      _controller!.forward(from: 0.0);
-      _pageController!.animateToPage(
-        widget.index!,
+      _controller.forward(from: 0.0);
+      _pageController.animateToPage(
+        widget.index ?? 0,
         duration: const Duration(milliseconds: 1),
         curve: Curves.easeInToLinear,
       );
@@ -121,15 +121,15 @@ class _LazyIndexedStackState extends State<LazyIndexedStack>
   @override
   void dispose() {
     // Dispose the controllers
-    _controller!.dispose();
-    _pageController!.dispose();
+    _controller.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
-      opacity: _controller!,
+      opacity: _controller,
       child: PageView.builder(
         controller: _pageController,
         itemCount: widget.length,
@@ -137,7 +137,7 @@ class _LazyIndexedStackState extends State<LazyIndexedStack>
         itemBuilder: (BuildContext context, int itemIndex) {
           // Build only the selected page and preloaded pages
           if (itemIndex == widget.index) {
-            return widget.pageBuilder!(itemIndex)!;
+            return widget.pageBuilder?.call(itemIndex) ?? widget.unloadWidget;
           } else {
             return widget
                 .unloadWidget; // Replace unloaded pages with placeholder

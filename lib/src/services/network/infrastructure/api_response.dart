@@ -207,7 +207,7 @@ class ApiResponse<M> {
         type: ApiResponseType.networkError,
         exceptionMessage: ApiResponseConfig.requestTimeoutMessage,
       );
-    } else if (exception.toString().contains("487")) {
+    } else if (exception is NoInternetException) {
       return ApiResponse<M>(
         type: ApiResponseType.noInternetError,
         exceptionMessage: ApiResponseConfig.networkIssuesMessage,
@@ -251,9 +251,22 @@ class ApiResponse<M> {
     List<String> errors = [];
     if (dioError.response != null) {
       try {
-        errors.add(
-          dioError.response?.data["message"] ?? ApiResponseConfig.errorMessage,
-        );
+        final data = dioError.response?.data;
+        if (data is Map) {
+          final message = data["message"] ??
+              data["error"] ??
+              data["detail"] ??
+              data["error_message"];
+          errors.add(
+            (message is String && message.isNotEmpty)
+                ? message
+                : ApiResponseConfig.errorMessage,
+          );
+        } else if (data is String && data.isNotEmpty) {
+          errors.add(data);
+        } else {
+          errors.add(ApiResponseConfig.errorMessage);
+        }
       } catch (e) {
         Logger.error('Error extracting API error message: $e');
         errors.add(ApiResponseConfig.errorMessage);
@@ -273,7 +286,7 @@ class ApiResponse<M> {
   /// ```
   static ApiResponseType _getApiErrorType(DioException dioError) {
     int? statusCode = dioError.response?.statusCode ?? 0;
-    if (statusCode == 401) {
+    if (statusCode == 401 || statusCode == 403) {
       if (UnAuthenticatedConfig.onUnauthenticated != null) {
         UnAuthenticatedConfig.onUnauthenticated!();
       }

@@ -26,14 +26,24 @@ class NetworkHelper {
   static const Duration receiveTimeout = Duration(seconds: 300);
   static const Duration connectionTimeout = Duration(seconds: 300);
 
-  /// Initializes the [NetworkHelper] instance and sets up Dio with the
-  /// necessary configurations, including request timeouts, headers, logging,
-  /// and retry mechanisms.
+  /// The shared singleton instance of [NetworkHelper].
+  static NetworkHelper? _instance;
+
+  /// Returns the shared singleton instance of [NetworkHelper].
   ///
-  /// The constructor also adds Dio interceptors for logging in debug mode
-  /// and handles retries on network failures using the [RetryConnection]
-  /// class.
-  NetworkHelper() {
+  /// Creates the instance on first access. All repositories share this
+  /// single instance, avoiding duplicate Dio instances, interceptors,
+  /// and connection pools.
+  static NetworkHelper get instance => _instance ??= NetworkHelper._internal();
+
+  /// Factory constructor that always returns the shared singleton instance.
+  ///
+  /// This preserves backward compatibility — `NetworkHelper()` now returns
+  /// the same instance every time instead of creating a new one.
+  factory NetworkHelper() => instance;
+
+  /// Internal constructor that performs the actual initialization.
+  NetworkHelper._internal() {
     dio = Dio();
     dio.options = BaseOptions(headers: NetworkConfig.headers);
 
@@ -145,6 +155,31 @@ class NetworkHelper {
     }
   }
 
+  /// Adds a custom interceptor to the Dio instance.
+  ///
+  /// Use this to register interceptors for auth refresh, request signing,
+  /// analytics, or any custom request/response processing.
+  ///
+  /// Example:
+  /// ```dart
+  /// NetworkHelper.instance.addInterceptor(
+  ///   InterceptorsWrapper(
+  ///     onRequest: (options, handler) {
+  ///       options.headers['X-Custom'] = 'value';
+  ///       handler.next(options);
+  ///     },
+  ///   ),
+  /// );
+  /// ```
+  void addInterceptor(Interceptor interceptor) {
+    dio.interceptors.add(interceptor);
+  }
+
+  /// Removes a previously added interceptor from the Dio instance.
+  void removeInterceptor(Interceptor interceptor) {
+    dio.interceptors.remove(interceptor);
+  }
+
   /// Updates the headers in the Dio instance.
   ///
   /// This method takes a map of headers and updates the Dio instance's headers.
@@ -200,6 +235,9 @@ class NetworkHelper {
     Function(int, int)? onSendProgress,
     Function(int, int)? onReceiveProgress,
     bool? isGoogleCheck,
+    CancelToken? cancelToken,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
   }) async {
     bool connected = await InternetConnectionHandler.checkInternetConnection(
       isGoogleCheck ?? true,
@@ -217,9 +255,12 @@ class NetworkHelper {
         requestBodyType: requestBodyType,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
+        connectTimeout: connectTimeout,
+        receiveTimeout: receiveTimeout,
       );
     } else {
-      Exception exception = Exception(487);
+      const exception = NoInternetException();
       ApiResponse response = ApiResponse<T>.exception(exception);
       return response as FutureOr<ApiResponse<T?>>;
     }
@@ -252,6 +293,9 @@ class NetworkHelper {
     Function(int, int)? onSendProgress,
     Function(int, int)? onReceiveProgress,
     String? savePath,
+    CancelToken? cancelToken,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
   }) async {
     params ??= {};
     body ??= {};
@@ -269,6 +313,9 @@ class NetworkHelper {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
         savePath: savePath,
+        cancelToken: cancelToken,
+        connectTimeout: connectTimeout,
+        receiveTimeout: receiveTimeout,
       );
 
       // Return success response.
@@ -307,55 +354,70 @@ class NetworkHelper {
     Function(int, int)? onSendProgress,
     Function(int, int)? onReceiveProgress,
     String? savePath,
+    CancelToken? cancelToken,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
   }) async {
     final data = requestBodyType == RequestBodyType.formData
         ? (body != null ? FormData.fromMap(body) : null)
         : jsonEncode(body);
+
+    final options = Options(
+      headers: NetworkConfig.headers,
+      sendTimeout: connectTimeout,
+      receiveTimeout: receiveTimeout,
+    );
 
     switch (method) {
       case HTTPMethod.get:
         return dio.get(
           url,
           queryParameters: params,
-          options: Options(headers: NetworkConfig.headers),
+          options: options,
+          cancelToken: cancelToken,
         );
       case HTTPMethod.post:
         return dio.post(
           url,
           queryParameters: params,
           data: data,
-          options: Options(headers: NetworkConfig.headers),
+          options: options,
           onSendProgress: onSendProgress,
+          cancelToken: cancelToken,
         );
       case HTTPMethod.put:
         return dio.put(
           url,
           queryParameters: params,
           data: data,
-          options: Options(headers: NetworkConfig.headers),
+          options: options,
           onSendProgress: onSendProgress,
+          cancelToken: cancelToken,
         );
       case HTTPMethod.patch:
         return dio.patch(
           url,
           queryParameters: params,
           data: data,
-          options: Options(headers: NetworkConfig.headers),
+          options: options,
           onSendProgress: onSendProgress,
+          cancelToken: cancelToken,
         );
       case HTTPMethod.delete:
         return dio.delete(
           url,
           queryParameters: params,
-          options: Options(headers: NetworkConfig.headers),
+          options: options,
+          cancelToken: cancelToken,
         );
       case HTTPMethod.download:
         return dio.download(
           url,
           savePath,
           queryParameters: params,
-          options: Options(headers: NetworkConfig.headers),
+          options: options,
           onReceiveProgress: onReceiveProgress,
+          cancelToken: cancelToken,
         );
       default:
         throw Exception("Unsupported HTTP method");

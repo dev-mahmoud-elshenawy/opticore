@@ -451,6 +451,6 @@ class MyScreenState extends BaseScreen<MyBloc, MyScreen, MyData> {
 
 📌 For further details, refer to the **full documentation**:
 
-- **[Readme](./README.md)** – Detailed utilities and feature documentation.
+- **[Readme](../README.md)** – Detailed utilities and feature documentation.
 
 🚀 **Start building smarter with OptiCore today!**

@@ -108,6 +108,9 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   /// A cancel function used to hide loading indicators.
   CancelFunc? _cancelFunc;
 
+  /// Timer for auto-hiding the loading indicator after a timeout.
+  Timer? _loadingTimer;
+
   /// Builder for rendering content and handling state changes.
   ContentBuilder? _builder;
 
@@ -216,6 +219,8 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
 
   @override
   void dispose() {
+    _loadingTimer?.cancel();
+    _loadingTimer = null;
     RouteHelper.routeObserver.unsubscribe(this);
     disposeData();
     super.dispose();
@@ -261,25 +266,20 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   @override
   void didPop() {
     // Called when this screen is popped
-    // No need to do anything here
   }
 
+  /// Imperatively re-applies the status bar style when the screen becomes
+  /// visible via push/pop. This complements the declarative [AnnotatedRegion]
+  /// in [build], which may not re-trigger on navigation changes.
   void _refreshStatusBar() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        if (isDarkStatusBarIcon) {
-          // Dark icons (for light backgrounds)
-          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light, // iOS
-          ));
-        } else {
-          // Light icons (for dark backgrounds)
-          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.dark, // iOS
-          ));
-        }
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          statusBarIconBrightness:
+              isDarkStatusBarIcon ? Brightness.dark : Brightness.light,
+          statusBarBrightness:
+              isDarkStatusBarIcon ? Brightness.light : Brightness.dark,
+        ));
       }
     });
   }
@@ -329,11 +329,11 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   }
 
   /// Handle null scenario checker for [_builder]
-  dynamic _handleNullBuilder() {
+  Widget _handleNullBuilder() {
     if (_builder == null) {
       return SizedBox.shrink();
     } else {
-      return _builder;
+      return _builder!;
     }
   }
 
@@ -413,22 +413,28 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   // Utility Methods
 
   /// Shows a loading indicator using the [BotToast] library.
+  ///
+  /// The loading indicator is automatically hidden after 30 seconds to prevent
+  /// it from being stuck indefinitely. The timer is cancelled when
+  /// [hideLoading] is called, so it won't interfere with newer loading states.
   @override
   void showLoading() {
     closeKeyboard();
     _cancelFunc?.call();
+    _loadingTimer?.cancel();
     _cancelFunc = BotToast.showLoading();
-    Future.delayed(NetworkHelper.connectionTimeout, () {
-      if (_cancelFunc != null) {
-        hideLoading();
-      }
+    _loadingTimer = Timer(const Duration(seconds: 30), () {
+      hideLoading();
     });
   }
 
   /// Hides the loading indicator if it's showing.
   @override
   void hideLoading() {
+    _loadingTimer?.cancel();
+    _loadingTimer = null;
     _cancelFunc?.call();
+    _cancelFunc = null;
   }
 
   /// Sets the state of the widget only if it is mounted.
@@ -442,7 +448,7 @@ abstract class BaseScreen<M extends BaseBloc, T extends StatefulWidget, F>
   void closeKeyboard() {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus!.unfocus();
+      FocusManager.instance.primaryFocus?.unfocus();
     }
   }
 

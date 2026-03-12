@@ -21,9 +21,11 @@ class SafeCall {
   static Future<T?> execute<T>(
     Future<T> Function() operation, [
     T? defaultValue,
+    Duration? timeout,
   ]) async {
     try {
-      return await operation();
+      final future = operation();
+      return timeout != null ? await future.timeout(timeout) : await future;
     } catch (e, stackTrace) {
       Logger.error('SafeCall Error: $e\n$stackTrace');
       return defaultValue;

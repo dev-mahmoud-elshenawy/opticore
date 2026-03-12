@@ -13,24 +13,39 @@ class TextInputHelper {
   ///   it will remove the leading '0'.
   /// - Non-printing characters like Left-To-Right marks (LTR) are also removed.
   ///
+  /// Returns a [VoidCallback] that removes the listener when called.
+  /// Call the returned callback in your widget's `dispose()` to avoid memory leaks.
+  ///
   /// Example usage:
   /// ```dart
-  /// TextInputHelper.handleEgyptPhoneInput(
-  ///   controller: _phoneController,
-  ///   countryPhoneCode: selectedCountry?.phoneCode ?? '',
-  /// );
+  /// late final VoidCallback _removePhoneListener;
+  ///
+  /// @override
+  /// void initState() {
+  ///   super.initState();
+  ///   _removePhoneListener = TextInputHelper.handleEgyptPhoneInput(
+  ///     controller: _phoneController,
+  ///     countryPhoneCode: selectedCountry?.phoneCode ?? '',
+  ///   );
+  /// }
+  ///
+  /// @override
+  /// void dispose() {
+  ///   _removePhoneListener();
+  ///   super.dispose();
+  /// }
   /// ```
   ///
   /// Parameters:
   /// - [controller]: The `TextEditingController` that controls the phone number field.
   /// - [countryPhoneCode]: The phone code of the country (e.g., '20' for Egypt).
-  static void handleEgyptPhoneInput({
+  static VoidCallback handleEgyptPhoneInput({
     TextEditingController? controller,
     String? countryPhoneCode,
   }) {
-    if (controller == null || countryPhoneCode == null) return;
+    if (controller == null || countryPhoneCode == null) return () {};
 
-    controller.addListener(() {
+    void listener() {
       final String text = controller.text;
 
       // Remove non-printing characters like LTR mark before performing any operations
@@ -48,6 +63,9 @@ class TextInputHelper {
           TextPosition(offset: controller.text.length),
         );
       }
-    });
+    }
+
+    controller.addListener(listener);
+    return () => controller.removeListener(listener);
   }
 }
