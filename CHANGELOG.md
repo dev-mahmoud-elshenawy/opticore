@@ -12,6 +12,17 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🛠 [2.3.1] - Reactive Module Extraction & BlocPartBuilder Enhancement
+
+- 🔀 **Breaking Changes**:
+  - Removed Reactive state management module (`ReactiveNotifier`, `AsyncReactiveNotifier`, `Reactive`, `ReactiveBuilder`, `ReactiveProvider`, `ReactiveSelector`) — now available as a standalone package: [optireact](https://pub.dev/packages/optireact)
+
+- 🆕 **New Features**:
+  - Added multi-state support to `BlocPartBuilder` — pass a `states` list to handle multiple state types in a single widget using Dart 3 pattern matching
+
+- 🐛 **Bug Fixes**:
+  - Fixed `ShowIfHasValue` assertion crash when both `value` and `values` are null — widget now gracefully handles null inputs instead of throwing
+
 ### 🎯 [2.3.0] - Stability & Network Enhancements
 
 - 🆕 **New Features**:
@@ -34,7 +45,7 @@ Each section lists the changes in **chronological order**, with the **most recen
   - Fixed magic string `"487"` for no-internet detection — replaced with `NoInternetException` type check
   - Fixed force-unwrap crash in `MaintenanceScreen.refreshCallBack`
   - Fixed `ConnectionHelper` subscription never cancelled and stale cache
-  - Fixed `BaseScreen.showLoading()` using 300s uncancellable timeout (now 30s cancellable Timer)
+  - Fixed `BaseScreen.showLoading()` using 300s unCancellable timeout (now 30s cancellable Timer)
   - Fixed `BaseScreen.closeKeyboard()` and `CoreSetup` force-unwrap on `primaryFocus`
   - Fixed `BaseScreen._handleNullBuilder()` returning `dynamic` instead of `Widget`
   - Fixed `NoInternetScreen` setting static flag inside `build()` (moved to `initState()`)

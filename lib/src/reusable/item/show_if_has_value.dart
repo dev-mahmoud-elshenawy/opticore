@@ -52,10 +52,7 @@ class ShowIfHasValue<T> extends StatelessWidget {
     this.values,
     required this.child,
     this.replacement = const SizedBox.shrink(),
-  }) : assert(
-          value != null || values != null,
-          'Either value or values must be provided',
-        );
+  });
 
   static bool isEmpty(dynamic value) {
     if (value == null) return true;
