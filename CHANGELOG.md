@@ -12,10 +12,12 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
-### 🎯 [2.3.2] - Connection Check Optimization
+### 🎯 [2.3.2] - Connection Helper Refactor
 
-- 🆕 **Enhancements**:
-  - Added 5s TTL cache and request deduplication to `isGoogleInternetConnected()` — fixes false "no internet" during rapid navigation
+- 🔄 **Refactored**:
+  - Unified `InternetConnectionHandler` to use a single shared `InternetConnection` instance
+  - Added 5s TTL cache, request deduplication, and 5s ping timeout across all check methods
+  - `isGoogleInternetConnected()` now falls back to network-adapter check when ping fails — fixes false "no internet" on active Wi-Fi/mobile
 
 ### 🛠 [2.3.1] - Reactive Module Extraction & BlocPartBuilder Enhancement
 

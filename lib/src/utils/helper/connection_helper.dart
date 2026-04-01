@@ -21,237 +21,292 @@ part of '../util_import.dart';
 ///   // Handle no internet connection scenario
 /// }
 /// ```
+/// Manages and checks internet connectivity with caching, deduplication,
+/// and network-adapter fallback.
+///
+/// ## Architecture
+///
+/// The handler uses a **two-layer** verification strategy:
+///
+/// 1. **Ping check** — [InternetConnection.hasInternetAccess] pings an external
+///    host to confirm real internet access. Fast but can fail intermittently
+///    on mobile networks (DNS timeouts, captive portals, slow handshake).
+///
+/// 2. **Network-adapter check** — [Connectivity] plugin checks whether Wi-Fi
+///    or mobile data is active. Cheap and reliable, but does not prove real
+///    internet access (e.g. connected to Wi-Fi with no upstream).
+///
+/// The two public check methods combine these layers differently:
+///
+/// | Method | Strategy |
+/// |--------|----------|
+/// | [isInternetConnected] | adapter first → ping to verify |
+/// | [isGoogleInternetConnected] | ping first → adapter fallback if ping fails |
+///
+/// Both methods share a **5-second TTL cache** and a **deduplication guard**
+/// so that rapid navigation or concurrent API calls never trigger redundant
+/// checks.
+///
+/// ## Usage
+///
+/// ```dart
+/// // One-shot check (default for NetworkHelper)
+/// final online = await InternetConnectionHandler.checkInternetConnection(true);
+///
+/// // Real-time stream
+/// InternetConnectionHandler.startListeningToConnectivity();
+/// InternetConnectionHandler.internetConnectionStatusStream.listen((status) {
+///   print(status == InternetStatus.connected ? 'online' : 'offline');
+/// });
+/// ```
+///
+/// ## Public API (non-breaking)
+///
+/// All public members keep their original signatures. Internal improvements
+/// (caching, deduplication, fallback, timeout) are transparent to consumers.
 class InternetConnectionHandler {
-  /// Instance of the [InternetConnection] class used for checking actual internet access.
+  // ---------------------------------------------------------------------------
+  // Shared instance
+  // ---------------------------------------------------------------------------
+
+  /// Single [InternetConnection] instance used for both the status stream and
+  /// on-demand ping checks. Using one instance avoids duplicate sockets and
+  /// keeps the stream / check results consistent.
   static final InternetConnection _checker = InternetConnection();
 
-  /// Flag indicating whether the device is currently connected to the internet.
+  // ---------------------------------------------------------------------------
+  // Stream & real-time status
+  // ---------------------------------------------------------------------------
+
+  /// Real-time stream of internet status changes.
+  ///
+  /// Emits [InternetStatus.connected] or [InternetStatus.disconnected].
+  ///
+  /// ```dart
+  /// InternetConnectionHandler.internetConnectionStatusStream.listen((status) {
+  ///   if (status == InternetStatus.connected) {
+  ///     // online
+  ///   } else {
+  ///     // offline
+  ///   }
+  /// });
+  /// ```
+  static Stream<InternetStatus> get internetConnectionStatusStream =>
+      _checker.onStatusChange;
+
+  /// Whether the device is currently connected.
+  ///
+  /// Updated automatically when [startListeningToConnectivity] is active.
+  /// Returns `false` until the first stream event arrives.
+  static bool get isConnected => _isConnected;
   static bool _isConnected = false;
 
-  /// Stream that emits the internet connection status changes.
-  ///
-  /// This stream provides real-time updates on the internet connection status, emitting
-  /// [InternetStatus.connected] when the device is connected to the internet and
-  /// [InternetStatus.disconnected] when the device is disconnected.
-  /// The stream can be used to listen for changes in the internet connection status.
-  /// ```dart
-  /// InternetConnectionHandler.internetConnectionStatusStream.listen((status) {
-  ///  if (status == InternetStatus.connected) {
-  ///  // Handle internet connection
-  ///  } else {
-  ///  // Handle no internet connection
-  ///  }
-  ///  });
-  ///  ```
-  static final Stream<InternetStatus> _internetConnectionStream =
-      InternetConnection().onStatusChange;
-
-  /// Stream that emits the internet connection status changes.
-  ///
-  /// This stream provides real-time updates on the internet connection status, emitting
-  /// [InternetStatus.connected] when the device is connected to the internet and
-  /// [InternetStatus.disconnected] when the device is disconnected.
-  /// The stream can be used to listen for changes in the internet connection status.
-  ///
-  /// ### Example Usage:
-  /// ```dart
-  /// InternetConnectionHandler.internetConnectionStatusStream.listen((status) {
-  ///  if (status == InternetStatus.connected) {
-  ///  // Handle internet connection
-  ///  } else {
-  ///  // Handle no internet connection
-  ///  }
-  ///  });
-  ///  ```
-  static Stream<InternetStatus> get internetConnectionStatusStream {
-    return _internetConnectionStream;
-  }
-
-  /// Flag indicating whether the device is currently connected to the internet.
-  ///
-  /// This flag is updated based on the internet connection status changes.
-  /// It can be used to determine whether the device has internet access.
-  /// But you need to [startListeningToConnectivity] to start listening to the internet connection status changes.
-  ///
-  /// ### Example Usage:
-  /// ```dart
-  /// if (InternetConnectionHandler.isConnected) {
-  /// // Proceed with internet-dependent actions
-  /// } else {
-  /// // Handle no internet connection scenario
-  /// }
-  /// ```
-  ///
-  static bool get isConnected => _isConnected;
-
-  /// The active connectivity subscription, stored so it can be cancelled.
+  /// Active subscription created by [startListeningToConnectivity].
   static StreamSubscription<InternetStatus>? _connectivitySubscription;
 
-  /// Starts listening to the internet connection status changes.
+  /// Starts listening to connectivity changes and keeps the cache in sync.
   ///
-  /// This method listens to the internet connection status changes and updates
-  /// the [isConnected] flag accordingly. It also keeps the cached connectivity
-  /// status in sync so that [isInternetConnected] returns accurate results.
+  /// Safe to call multiple times — the previous subscription is cancelled.
   ///
-  /// Calling this multiple times is safe — the previous subscription is
-  /// cancelled before creating a new one.
-  ///
-  /// ### Example Usage:
   /// ```dart
   /// InternetConnectionHandler.startListeningToConnectivity();
   /// ```
   static void startListeningToConnectivity() {
     _connectivitySubscription?.cancel();
-    _connectivitySubscription = _internetConnectionStream.listen((status) {
+    _connectivitySubscription =
+        internetConnectionStatusStream.listen((status) {
       final connected = status == InternetStatus.connected;
       _isConnected = connected;
-      _cachedIsConnected = connected;
-      _lastGoogleCheckTime = DateTime.now();
+      _updateCache(connected);
     });
   }
 
-  /// Stops listening to the internet connection status changes.
-  ///
-  /// Call this when connectivity monitoring is no longer needed to free resources.
+  /// Stops listening to connectivity changes and frees resources.
   static void stopListeningToConnectivity() {
     _connectivitySubscription?.cancel();
     _connectivitySubscription = null;
   }
 
-  /// Flag indicating whether the "No Internet Scene" has been displayed.
-  /// This can be used to manage the UI state, ensuring that the "No Internet" message
-  /// is not repeatedly shown while the device remains disconnected.
+  // ---------------------------------------------------------------------------
+  // UI state
+  // ---------------------------------------------------------------------------
+
+  /// Whether the "No Internet" screen is currently displayed.
+  ///
+  /// Managed by the fallback screen widgets to avoid showing the screen
+  /// repeatedly while the device remains offline.
   static bool isNoInternetSceneShown = false;
 
-  /// Cached result of the internet connectivity check. This flag helps to avoid
-  /// unnecessary repeated connectivity checks when the status has not changed.
+  // ---------------------------------------------------------------------------
+  // Cache internals
+  // ---------------------------------------------------------------------------
+
+  /// Last known connectivity result (shared by all check methods).
   static bool _cachedIsConnected = false;
 
-  /// Completer to deduplicate concurrent Google internet checks.
-  static Completer<bool>? _googleCheckCompleter;
+  /// When [_cachedIsConnected] was last written.
+  static DateTime? _lastCheckTime;
 
-  /// Timestamp of the last successful Google internet check.
-  static DateTime? _lastGoogleCheckTime;
+  /// Results are trusted for this duration before a fresh check runs.
+  static const Duration _cacheTtl = Duration(seconds: 5);
 
-  /// Cache duration for Google internet check results.
-  static const Duration _googleCheckCacheDuration = Duration(seconds: 5);
+  /// Guards against overlapping checks — concurrent callers get the same
+  /// [Future] instead of spawning parallel pings.
+  static Completer<bool>? _activeCheck;
 
-  /// Checks whether the device is currently connected to the internet.
-  ///
-  /// This method first checks the cached connectivity status. If the cached status is
-  /// unavailable or the connection status has changed, it checks the device's connectivity
-  /// using the [Connectivity] plugin (whether on mobile data or Wi-Fi). Then, it verifies
-  /// actual internet access using an external checker.
-  ///
-  /// This method returns a [Future<bool>] indicating whether the device is connected to the internet.
-  ///
-  /// ## Flow:
-  /// 1. If the cached status is available, it is returned immediately.
-  /// 2. If the cached status is unavailable or has changed, the method checks the device's network connectivity.
-  /// 3. If the device is connected to a network (Wi-Fi or mobile), the method checks for actual internet access.
-  ///
-  /// ### Returns:
-  /// A [Future<bool>] that resolves to `true` if the device is connected to the internet, or `false` otherwise.
-  static Future<bool> isInternetConnected() async {
-    // Return cached connection status if available
-    if (_cachedIsConnected) {
-      Logger.verbose(
-          'Using cached internet connection status: $_cachedIsConnected');
-      return _cachedIsConnected;
-    }
-
-    Logger.verbose('Checking internet connectivity status...');
-
-    try {
-      // Check for network connectivity (Wi-Fi or mobile)
-      final List<ConnectivityResult> connectivityResult =
-          await Connectivity().checkConnectivity();
-      if (connectivityResult.contains(ConnectivityResult.mobile) ||
-          connectivityResult.contains(ConnectivityResult.wifi)) {
-        Logger.verbose(
-            'Network connection detected (Mobile or Wi-Fi), checking actual internet access...');
-        // Check for actual internet access using the external checker
-        _cachedIsConnected = await _checkInternetWithChecker();
-        return _cachedIsConnected;
-      } else {
-        Logger.error('No network connection (Mobile or Wi-Fi) detected.');
-        _cachedIsConnected = false;
-        return _cachedIsConnected;
-      }
-    } catch (e) {
-      Logger.error('Error occurred while checking connectivity: $e');
-      _cachedIsConnected = false;
-      return _cachedIsConnected;
-    }
+  /// Writes [connected] to the cache and stamps the current time.
+  static void _updateCache(bool connected) {
+    _cachedIsConnected = connected;
+    _lastCheckTime = DateTime.now();
   }
 
-  static Future<bool> isGoogleInternetConnected() async {
-    // Return cached result if within TTL
-    if (_lastGoogleCheckTime != null &&
-        DateTime.now().difference(_lastGoogleCheckTime!) <
-            _googleCheckCacheDuration) {
-      Logger.verbose(
-          'Using cached Google internet check: $_cachedIsConnected');
+  /// `true` when the cached result is still within [_cacheTtl].
+  static bool get _isCacheValid =>
+      _lastCheckTime != null &&
+      DateTime.now().difference(_lastCheckTime!) < _cacheTtl;
+
+  // ---------------------------------------------------------------------------
+  // Public check methods
+  // ---------------------------------------------------------------------------
+
+  /// Routes to [isGoogleInternetConnected] or [isInternetConnected] based on
+  /// the [isGoogle] flag.
+  ///
+  /// This is the main entry point used by [NetworkHelper] before every request.
+  ///
+  /// * `true`  → ping-first with network-adapter fallback
+  /// * `false` → adapter-first with ping verification
+  static Future<bool> checkInternetConnection(bool isGoogle) {
+    return isGoogle
+        ? isGoogleInternetConnected()
+        : isInternetConnected();
+  }
+
+  /// **Adapter-first** connectivity check.
+  ///
+  /// ### Flow
+  /// 1. Return cached result if TTL has not expired.
+  /// 2. Check whether a network adapter (Wi-Fi / mobile) is active.
+  /// 3. If active, verify real internet access via a 5-second ping.
+  /// 4. Cache and return the result.
+  ///
+  /// Concurrent calls are deduplicated — only one check runs at a time.
+  static Future<bool> isInternetConnected() async {
+    if (_isCacheValid) {
+      Logger.verbose('Using cached connection status: $_cachedIsConnected');
       return _cachedIsConnected;
     }
 
-    // Deduplicate concurrent calls
-    if (_googleCheckCompleter != null &&
-        !_googleCheckCompleter!.isCompleted) {
-      return _googleCheckCompleter!.future;
+    return _deduplicatedCheck(() async {
+      Logger.verbose('Checking internet connectivity status...');
+      try {
+        if (!await _hasNetworkAdapter()) {
+          Logger.error('No network adapter (Wi-Fi / mobile) detected.');
+          _updateCache(false);
+          return false;
+        }
+
+        Logger.verbose(
+            'Network adapter active, verifying internet access...');
+        final hasAccess = await _pingWithTimeout();
+        _updateCache(hasAccess);
+        return hasAccess;
+      } catch (e) {
+        Logger.error('Connectivity check failed: $e');
+        _updateCache(false);
+        return false;
+      }
+    });
+  }
+
+  /// **Ping-first** connectivity check with network-adapter fallback.
+  ///
+  /// ### Flow
+  /// 1. Return cached result if TTL has not expired.
+  /// 2. Ping an external host (5-second timeout).
+  /// 3. If the ping **succeeds** → connected.
+  /// 4. If the ping **fails** but a network adapter is active → treat as
+  ///    connected and let the actual HTTP request be the final judge.
+  ///    This prevents false "no internet" errors caused by transient DNS
+  ///    timeouts or slow handshakes on mobile networks.
+  /// 5. If the ping fails **and** no adapter is active → offline.
+  ///
+  /// Concurrent calls are deduplicated — only one check runs at a time.
+  static Future<bool> isGoogleInternetConnected() async {
+    if (_isCacheValid) {
+      Logger.verbose('Using cached connection status: $_cachedIsConnected');
+      return _cachedIsConnected;
     }
 
-    _googleCheckCompleter = Completer<bool>();
+    return _deduplicatedCheck(() async {
+      Logger.verbose('Checking internet connectivity status...');
+      try {
+        final hasAccess = await _pingWithTimeout();
+        if (hasAccess) {
+          Logger.verbose('Internet access confirmed via ping.');
+          _updateCache(true);
+          return true;
+        }
 
-    Logger.verbose('Checking internet connectivity status...');
+        // Ping failed — fall back to the network adapter before giving up.
+        if (await _hasNetworkAdapter()) {
+          Logger.verbose(
+              'Ping failed but network adapter is active — treating as connected.');
+          _updateCache(true);
+          return true;
+        }
 
-    try {
-      final result = await _checker.hasInternetAccess;
-      _lastGoogleCheckTime = DateTime.now();
-      _cachedIsConnected = result;
-
-      if (result) {
-        Logger.verbose('Internet access is available.');
-      } else {
         Logger.error('No internet connection detected.');
+        _updateCache(false);
+        return false;
+      } catch (_) {
+        Logger.error('No internet connection detected.');
+        _updateCache(false);
+        return false;
       }
+    });
+  }
 
-      _googleCheckCompleter!.complete(result);
+  // ---------------------------------------------------------------------------
+  // Internal helpers
+  // ---------------------------------------------------------------------------
+
+  /// Ensures only one connectivity check runs at a time.
+  ///
+  /// If a check is already in-flight, concurrent callers receive the same
+  /// [Future] instead of spawning duplicate pings.
+  static Future<bool> _deduplicatedCheck(
+      Future<bool> Function() check) async {
+    if (_activeCheck != null && !_activeCheck!.isCompleted) {
+      return _activeCheck!.future;
+    }
+
+    _activeCheck = Completer<bool>();
+    try {
+      final result = await check();
+      _activeCheck!.complete(result);
       return result;
-    } catch (_) {
-      Logger.error('No internet connection detected.');
-      _googleCheckCompleter!.complete(false);
+    } catch (e) {
+      _activeCheck!.complete(false);
       return false;
     }
   }
 
-  static Future<bool> checkInternetConnection(bool isGoogle) {
-    if (isGoogle) {
-      return isGoogleInternetConnected();
-    } else {
-      return isInternetConnected();
-    }
+  /// Returns `true` when a Wi-Fi or mobile network adapter is active.
+  static Future<bool> _hasNetworkAdapter() async {
+    final results = await Connectivity().checkConnectivity();
+    return results.contains(ConnectivityResult.mobile) ||
+        results.contains(ConnectivityResult.wifi);
   }
 
-  /// Verifies the actual internet access by using the [InternetConnection] instance.
+  /// Pings an external host with a **5-second timeout**.
   ///
-  /// This method checks if the device has internet access by pinging an external service
-  /// to confirm that the device is connected to the internet, even if it has network connectivity.
-  ///
-  /// ### Returns:
-  /// A [Future<bool>] that resolves to `true` if the device has internet access, or `false` otherwise.
-  static Future<bool> _checkInternetWithChecker() async {
+  /// Returns `false` on timeout or exception instead of hanging indefinitely.
+  static Future<bool> _pingWithTimeout() async {
     try {
-      bool result = await _checker.hasInternetAccess;
-      if (result) {
-        Logger.verbose('Internet access is available.');
-        return true;
-      } else {
-        Logger.verbose('No internet access detected.');
-        return false;
-      }
-    } catch (e) {
-      Logger.error('Error occurred while checking internet access: $e');
+      return await _checker.hasInternetAccess
+          .timeout(const Duration(seconds: 5), onTimeout: () => false);
+    } catch (_) {
       return false;
     }
   }
