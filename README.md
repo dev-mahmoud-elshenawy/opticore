@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>A lightweight BLoC-based micro-framework designed to accelerate Flutter app development.</strong><br/>
-  Optimized state management · Built-in API handling · Reusable utilities · Reactive state
+  Optimized state management · Built-in API handling · Reusable utilities
 </p>
 
 <p align="center">
@@ -40,7 +40,6 @@ Take your workflow to the next level with **OptiKit CLI**—a command-line tool 
 | Feature | Description |
 |---------|-------------|
 | ✅ **BLoC-Powered** | Built on top of **Flutter BLoC** for seamless state management |
-| ✅ **Reactive State** | Lightweight `ReactiveNotifier` & `AsyncReactiveNotifier` for simple state |
 | ✅ **Optimized API Handling** | Integrated utilities for **network requests** and **error handling** |
 | ✅ **Reusable Components** | Prebuilt UI elements to **reduce development time** |
 | ✅ **Performance-Focused** | **Minimal overhead** and **efficient memory management** |
@@ -75,7 +74,8 @@ Get started with **OptiCore** using our **comprehensive documentation**:
 | 📱 **[Screen Patterns](./doc/patterns/SCREEN_PATTERNS.md)** | Screen setup, configuration, lifecycle hooks |
 | 🗄 **[Repository Patterns](./doc/patterns/REPOSITORY_PATTERNS.md)** | Simple fetch, query params, mutations |
 | 📦 **[Model Patterns](./doc/patterns/MODEL_PATTERNS.md)** | JSON parsing, serialization, copyWith |
-| ⚛️ **[Reactive Patterns](./doc/patterns/REACTIVE_PATTERNS.md)** | ReactiveNotifier, AsyncReactiveNotifier, Reactive widgets |  
+
+> **Note:** Reactive state management (`ReactiveNotifier`, `AsyncReactiveNotifier`, `Reactive` widgets) has been extracted to the standalone [optireact](https://pub.dev/packages/optireact) package as of v2.3.1.
 
 ---
 

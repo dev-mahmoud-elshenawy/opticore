@@ -106,6 +106,7 @@ class InternetConnectionHandler {
       final connected = status == InternetStatus.connected;
       _isConnected = connected;
       _cachedIsConnected = connected;
+      _lastGoogleCheckTime = DateTime.now();
     });
   }
 
@@ -125,6 +126,15 @@ class InternetConnectionHandler {
   /// Cached result of the internet connectivity check. This flag helps to avoid
   /// unnecessary repeated connectivity checks when the status has not changed.
   static bool _cachedIsConnected = false;
+
+  /// Completer to deduplicate concurrent Google internet checks.
+  static Completer<bool>? _googleCheckCompleter;
+
+  /// Timestamp of the last successful Google internet check.
+  static DateTime? _lastGoogleCheckTime;
+
+  /// Cache duration for Google internet check results.
+  static const Duration _googleCheckCacheDuration = Duration(seconds: 5);
 
   /// Checks whether the device is currently connected to the internet.
   ///
@@ -176,19 +186,41 @@ class InternetConnectionHandler {
   }
 
   static Future<bool> isGoogleInternetConnected() async {
+    // Return cached result if within TTL
+    if (_lastGoogleCheckTime != null &&
+        DateTime.now().difference(_lastGoogleCheckTime!) <
+            _googleCheckCacheDuration) {
+      Logger.verbose(
+          'Using cached Google internet check: $_cachedIsConnected');
+      return _cachedIsConnected;
+    }
+
+    // Deduplicate concurrent calls
+    if (_googleCheckCompleter != null &&
+        !_googleCheckCompleter!.isCompleted) {
+      return _googleCheckCompleter!.future;
+    }
+
+    _googleCheckCompleter = Completer<bool>();
+
     Logger.verbose('Checking internet connectivity status...');
 
     try {
       final result = await _checker.hasInternetAccess;
+      _lastGoogleCheckTime = DateTime.now();
+      _cachedIsConnected = result;
+
       if (result) {
         Logger.verbose('Internet access is available.');
-        return true;
       } else {
         Logger.error('No internet connection detected.');
-        return false;
       }
+
+      _googleCheckCompleter!.complete(result);
+      return result;
     } catch (_) {
       Logger.error('No internet connection detected.');
+      _googleCheckCompleter!.complete(false);
       return false;
     }
   }

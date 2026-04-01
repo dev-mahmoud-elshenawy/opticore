@@ -12,6 +12,11 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
+### 🎯 [2.3.2] - Connection Check Optimization
+
+- 🆕 **Enhancements**:
+  - Added 5s TTL cache and request deduplication to `isGoogleInternetConnected()` — fixes false "no internet" during rapid navigation
+
 ### 🛠 [2.3.1] - Reactive Module Extraction & BlocPartBuilder Enhancement
 
 - 🔀 **Breaking Changes**:
