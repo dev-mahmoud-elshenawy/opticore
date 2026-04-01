@@ -16,7 +16,7 @@ Each section lists the changes in **chronological order**, with the **most recen
 
 - 🔄 **Refactored**:
   - Unified `InternetConnectionHandler` to use a single shared `InternetConnection` instance
-  - Added 5s TTL cache, request deduplication, and 5s ping timeout across all check methods
+  - Added 5s TTL cache, request deduplication, and adaptive ping timeout (10s cold start, 5s afterwards)
   - `isGoogleInternetConnected()` now falls back to network-adapter check when ping fails — fixes false "no internet" on active Wi-Fi/mobile
 
 ### 🛠 [2.3.1] - Reactive Module Extraction & BlocPartBuilder Enhancement

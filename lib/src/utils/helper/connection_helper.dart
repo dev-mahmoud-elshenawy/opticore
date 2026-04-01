@@ -299,14 +299,25 @@ class InternetConnectionHandler {
         results.contains(ConnectivityResult.wifi);
   }
 
-  /// Pings an external host with a **5-second timeout**.
+  /// Whether [_pingWithTimeout] has completed at least once.
+  static bool _hasCompletedFirstCheck = false;
+
+  /// Pings an external host with a timeout guard.
   ///
+  /// Uses a **10-second** timeout on the very first call (cold start: DNS
+  /// cache empty, SSL handshake needed) and **5 seconds** afterwards.
   /// Returns `false` on timeout or exception instead of hanging indefinitely.
   static Future<bool> _pingWithTimeout() async {
+    final timeout = _hasCompletedFirstCheck
+        ? const Duration(seconds: 5)
+        : const Duration(seconds: 10);
     try {
-      return await _checker.hasInternetAccess
-          .timeout(const Duration(seconds: 5), onTimeout: () => false);
+      final result = await _checker.hasInternetAccess
+          .timeout(timeout, onTimeout: () => false);
+      _hasCompletedFirstCheck = true;
+      return result;
     } catch (_) {
+      _hasCompletedFirstCheck = true;
       return false;
     }
   }
