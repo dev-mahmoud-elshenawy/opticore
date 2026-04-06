@@ -12,12 +12,22 @@ We follow **Semantic Versioning (SemVer)** to indicate the nature of changes:
 
 Each section lists the changes in **chronological order**, with the **most recent release at the top**. Where applicable, links to relevant discussions or issues are provided.
 
-### 🎯 [2.3.2] - Connection Helper Refactor
+### 🎯 [2.3.2] - Connection & Error Navigation Hardening
+
+- 🐛 **Bug Fixes**:
+  - Fixed `_hasNetworkAdapter()` ignoring ethernet and VPN — desktop/VPN users were falsely reported as offline
+  - Fixed `_deduplicatedCheck` completer never resetting on error — could permanently block all future connectivity checks
+  - Fixed stale `true` cache served after connectivity drops — cache is now invalidated immediately when the stream reports disconnect
+  - Fixed multiple `NoInternetScreen` stacking when concurrent API calls fail — guarded by `isNoInternetSceneShown` check before navigation
+  - Fixed duplicate "Network issues" bottom sheets / toasts in consumer apps — subsequent no-internet failures return `NullNonRenderState` instead of emitting `ErrorStateNonRender` while `NoInternetScreen` is already shown
+  - Fixed `NoInternetScreen` refresh button showing no feedback when still offline — now shows an error toast
+  - Fixed `isNoInternetSceneShown` flag never resetting if screen is removed without refresh (e.g. app restart) — added `dispose()` to reset the flag
 
 - 🔄 **Refactored**:
   - Unified `InternetConnectionHandler` to use a single shared `InternetConnection` instance
   - Added 5s TTL cache, request deduplication, and adaptive ping timeout (10s cold start, 5s afterwards)
   - `isGoogleInternetConnected()` now falls back to network-adapter check when ping fails — fixes false "no internet" on active Wi-Fi/mobile
+  - Replaced shared global `ToolsHelper.stopRepeating` debounce in `BaseBloc._navigate()` with per-screen-type debounce — different error screens (no-internet, maintenance) no longer block each other
 
 ### 🛠 [2.3.1] - Reactive Module Extraction & BlocPartBuilder Enhancement
 

@@ -117,7 +117,13 @@ class InternetConnectionHandler {
         internetConnectionStatusStream.listen((status) {
       final connected = status == InternetStatus.connected;
       _isConnected = connected;
-      _updateCache(connected);
+      if (!connected) {
+        // Immediately invalidate cache on disconnect so the next API call
+        // performs a fresh check instead of serving a stale `true`.
+        _invalidateCache();
+      } else {
+        _updateCache(true);
+      }
     });
   }
 
@@ -158,6 +164,12 @@ class InternetConnectionHandler {
   static void _updateCache(bool connected) {
     _cachedIsConnected = connected;
     _lastCheckTime = DateTime.now();
+  }
+
+  /// Clears the cached result so the next check runs a fresh ping.
+  static void _invalidateCache() {
+    _cachedIsConnected = false;
+    _lastCheckTime = null;
   }
 
   /// `true` when the cached result is still within [_cacheTtl].
@@ -275,6 +287,8 @@ class InternetConnectionHandler {
   ///
   /// If a check is already in-flight, concurrent callers receive the same
   /// [Future] instead of spawning duplicate pings.
+  /// The completer is always reset in the `finally` block to prevent
+  /// permanently blocking future checks.
   static Future<bool> _deduplicatedCheck(
       Future<bool> Function() check) async {
     if (_activeCheck != null && !_activeCheck!.isCompleted) {
@@ -289,14 +303,19 @@ class InternetConnectionHandler {
     } catch (e) {
       _activeCheck!.complete(false);
       return false;
+    } finally {
+      _activeCheck = null;
     }
   }
 
-  /// Returns `true` when a Wi-Fi or mobile network adapter is active.
+  /// Returns `true` when a network adapter (Wi-Fi, mobile, ethernet, or VPN)
+  /// is active.
   static Future<bool> _hasNetworkAdapter() async {
     final results = await Connectivity().checkConnectivity();
     return results.contains(ConnectivityResult.mobile) ||
-        results.contains(ConnectivityResult.wifi);
+        results.contains(ConnectivityResult.wifi) ||
+        results.contains(ConnectivityResult.ethernet) ||
+        results.contains(ConnectivityResult.vpn);
   }
 
   /// Whether [_pingWithTimeout] has completed at least once.

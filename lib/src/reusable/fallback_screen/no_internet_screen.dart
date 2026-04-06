@@ -57,6 +57,15 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
   }
 
   @override
+  void dispose() {
+    // Always reset the flag so that future no-internet events can navigate
+    // again. This covers edge cases where the screen is removed without
+    // going through the refresh button (e.g. app restart, programmatic pop).
+    InternetConnectionHandler.isNoInternetSceneShown = false;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
@@ -96,22 +105,24 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                   title: NoInternetConfig.messageButton,
                   // Custom button text from config
                   onTap: () async {
-                    // Attempt to reconnect to the internet
-                    ToolsHelper.triggerWithInternet(
-                      () {
-                        if (widget.refreshCallBack != null) {
-                          InternetConnectionHandler.isNoInternetSceneShown =
-                              false;
-                          widget.refreshCallBack
-                              ?.call(); // Invoke the refresh callback
-                          if ((widget.withPop ?? true)) {
-                            context
-                                .pop(); // Optionally pop the screen after refreshing
-                          }
-                        }
-                      },
-                      isGoogleInternetCheck: widget.isGoogleCheck ?? false,
+                    final isConnected =
+                        await InternetConnectionHandler.checkInternetConnection(
+                      widget.isGoogleCheck ?? false,
                     );
+
+                    if (isConnected) {
+                      InternetConnectionHandler.isNoInternetSceneShown = false;
+                      widget.refreshCallBack?.call();
+                      if ((widget.withPop ?? true) && context.mounted) {
+                        context.pop();
+                      }
+                    } else {
+                      // Show feedback so the user knows it's still offline
+                      ToastHelper.showToast(
+                        NoInternetConfig.message,
+                        type: ToastType.error,
+                      );
+                    }
                   },
                 ),
               ],

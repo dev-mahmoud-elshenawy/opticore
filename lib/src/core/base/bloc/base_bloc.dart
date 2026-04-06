@@ -376,6 +376,14 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     Function? retryFunc,
   }) {
     if (apiResponse?.type == ApiResponseType.noInternetError) {
+      // If the NoInternetScreen is already displayed, return a silent state.
+      // The screen already owns the recovery flow (retry button), so emitting
+      // another ErrorStateNonRender is redundant and causes duplicate
+      // bottom sheets / toasts in consumer apps.
+      if (InternetConnectionHandler.isNoInternetSceneShown) {
+        return NullNonRenderState();
+      }
+
       _navigate(
         NoInternetScreen(
           refreshCallBack: () {
@@ -526,18 +534,31 @@ abstract class BaseBloc extends Bloc<BaseEvent, BaseState> {
     }
   }
 
-  /// Utility function to navigate to error-specific screens.
+  /// Tracks the last navigation time **per screen type** so that different
+  /// error screens (no-internet, maintenance) do not block each other.
+  static final Map<Type, DateTime> _lastNavigateTime = {};
+
+  /// Minimum interval between navigations of the **same** screen type.
+  static const Duration _navigateDebounce = Duration(seconds: 10);
+
+  /// Navigates to an error-specific screen using [RouteHelper.navigatorKey].
   ///
-  /// ### Example:
-  /// Navigates to a maintenance screen or no-internet screen.
-  /// - `screen`: The [Widget] to navigate to.
+  /// Uses a per-screen-type debounce to prevent duplicate navigations of the
+  /// same kind (e.g. multiple concurrent API failures all trying to push
+  /// [NoInternetScreen]), while still allowing different screen types to
+  /// navigate independently.
   void _navigate(Widget screen) {
-    ToolsHelper.stopRepeating(
-      action: () => RouteHelper.navigatorKey.currentState?.push(
-        CupertinoPageRoute(
-          builder: (_) => screen,
-        ),
-      ),
+    final screenType = screen.runtimeType;
+    final now = DateTime.now();
+    final lastTime = _lastNavigateTime[screenType];
+
+    if (lastTime != null && now.difference(lastTime) < _navigateDebounce) {
+      return;
+    }
+
+    _lastNavigateTime[screenType] = now;
+    RouteHelper.navigatorKey.currentState?.push(
+      CupertinoPageRoute(builder: (_) => screen),
     );
   }
 }
